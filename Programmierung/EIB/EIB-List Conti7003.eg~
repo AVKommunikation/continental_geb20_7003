@@ -1,0 +1,860 @@
+<?xml version="1.0"?>
+<ProjektDaten xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjekVersion>Version 1.0 (2007-02-08)</ProjekVersion>
+  <ProjektDatei>E:\Crestron-Programme\Conti 7003\EIB-List Conti7003.eg2</ProjektDatei>
+  <ProjektTyp>Crestron</ProjektTyp>
+  <GruppenAdressen>
+    <HauptGruppen xsi:type="CMainGA">
+      <sName>Hauptgruppe-7</sName>
+      <sWert>7</sWert>
+      <alMittelGruppen xsi:type="CMiddleGA">
+        <sName>Mittelgruppe-3</sName>
+        <nWert>3</nWert>
+        <nHauptGruppe>7</nHauptGruppe>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Leinwand 7.005</sName>
+          <nWert>201</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Leinwand 7.005</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Leinwand 7.003</sName>
+          <nWert>204</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Leinwand 7.003</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>VertiSo1 7003 auf</sName>
+          <nWert>205</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>VertiSo1 7003 auf</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>VertiSo1 7003 zu</sName>
+          <nWert>206</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>VertiSo1 7003 zu</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>VertiSo2 7003 auf</sName>
+          <nWert>207</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>VertiSo2 7003 auf</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>VertiSo2 7003 zu</sName>
+          <nWert>208</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>VertiSo2 7003 zu</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Vorhang 7001 auf</sName>
+          <nWert>209</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Vorhang 7001 auf</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Vorhang 7001 auf</sName>
+          <nWert>210</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Vorhang 7001 auf</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>VertiSo1 7001 auf</sName>
+          <nWert>211</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>VertiSo1 7001 auf</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>VertiSo1 7001 zu</sName>
+          <nWert>212</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>VertiSo1 7001 zu</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>VertiSo2 7001 auf</sName>
+          <nWert>213</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>VertiSo2 7001 auf</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>VertiSo2 7001 zu</sName>
+          <nWert>214</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>VertiSo2 7001 zu</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>VertiSo 7005 auf</sName>
+          <nWert>202</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>VertiSo 7005 auf</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>VertiSo 7005 zu</sName>
+          <nWert>203</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>3</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>VertiSo 7005 zu</Name>
+        </alUnterGruppen>
+        <Name>Mittelgruppe-3</Name>
+      </alMittelGruppen>
+      <alMittelGruppen xsi:type="CMiddleGA">
+        <sName>Mittelgruppe-2</sName>
+        <nWert>2</nWert>
+        <nHauptGruppe>7</nHauptGruppe>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>R 7003 belegt</sName>
+          <nWert>32</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>R 7003 belegt</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>R 7005 belegt</sName>
+          <nWert>31</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>R 7005 belegt</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>R 7001 belegt</sName>
+          <nWert>33</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>R 7001 belegt</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>VidKonf EinAus</sName>
+          <nWert>34</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>VidKonf EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>VidKonf Tisch EinAus</sName>
+          <nWert>35</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>VidKonf Tisch EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 1 EinAus</sName>
+          <nWert>11</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 1 EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 2 EinAus</sName>
+          <nWert>12</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 2 EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 3 EinAus</sName>
+          <nWert>13</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 3 EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 4 EinAus</sName>
+          <nWert>14</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 4 EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 5 EinAus</sName>
+          <nWert>15</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 5 EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 6 EinAus</sName>
+          <nWert>16</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 6 EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 7 EinAus</sName>
+          <nWert>17</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 7 EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 8 EinAus</sName>
+          <nWert>18</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 8 EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 9 EinAus</sName>
+          <nWert>19</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 9 EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 10 EinAus</sName>
+          <nWert>20</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 10 EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 11 EinAus</sName>
+          <nWert>21</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 11 EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 12 EinAus</sName>
+          <nWert>22</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS1: EIB_switch</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 12 EinAus</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 1 dimmen</sName>
+          <nWert>111</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS2: EIB_dimming_control</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 1 dimmen</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 2 dimmen</sName>
+          <nWert>112</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS2: EIB_dimming_control</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 2 dimmen</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 3 dimmen</sName>
+          <nWert>113</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS2: EIB_dimming_control</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 3 dimmen</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 4 dimmen</sName>
+          <nWert>114</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS2: EIB_dimming_control</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 4 dimmen</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 5 dimmen</sName>
+          <nWert>115</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS2: EIB_dimming_control</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 5 dimmen</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 6 dimmen</sName>
+          <nWert>116</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS2: EIB_dimming_control</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 6 dimmen</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 7 dimmen</sName>
+          <nWert>117</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS2: EIB_dimming_control</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 7 dimmen</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 8 dimmen</sName>
+          <nWert>118</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS2: EIB_dimming_control</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 8 dimmen</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 9 dimmen</sName>
+          <nWert>119</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS2: EIB_dimming_control</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 9 dimmen</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 10 dimmen</sName>
+          <nWert>120</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS2: EIB_dimming_control</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 10 dimmen</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 11 dimmen</sName>
+          <nWert>121</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS2: EIB_dimming_control</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 11 dimmen</Name>
+        </alUnterGruppen>
+        <alUnterGruppen xsi:type="CSubGA">
+          <sName>Lichtkreis 12 dimmen</sName>
+          <nWert>122</nWert>
+          <fInitRequest>false</fInitRequest>
+          <nMittelGruppe>2</nMittelGruppe>
+          <nHauptGruppe>7</nHauptGruppe>
+          <eCode>EIS</eCode>
+          <nTPB>0</nTPB>
+          <sEIS>EIS2: EIB_dimming_control</sEIS>
+          <sDPT />
+          <sInfo />
+          <InitRequest>false</InitRequest>
+          <Name>Lichtkreis 12 dimmen</Name>
+        </alUnterGruppen>
+        <Name>Mittelgruppe-2</Name>
+      </alMittelGruppen>
+      <Name>Hauptgruppe-7</Name>
+    </HauptGruppen>
+  </GruppenAdressen>
+  <TransportBreiten>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>-1</TransportBreite>
+      <Name>undefined</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>0</TransportBreite>
+      <Name>1..6-Bit</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>1</TransportBreite>
+      <Name>1 Byte</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>2</TransportBreite>
+      <Name>2 Byte</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>3</TransportBreite>
+      <Name>3 Byte</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>4</TransportBreite>
+      <Name>4 Byte</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>5</TransportBreite>
+      <Name>5 Byte</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>6</TransportBreite>
+      <Name>6 Byte</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>7</TransportBreite>
+      <Name>7 Byte</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>8</TransportBreite>
+      <Name>8 Byte</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>9</TransportBreite>
+      <Name>9 Byte</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>10</TransportBreite>
+      <Name>10 Byte</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>11</TransportBreite>
+      <Name>11 Byte</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>12</TransportBreite>
+      <Name>12 Byte</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>13</TransportBreite>
+      <Name>13 Byte</Name>
+    </TPB_Element>
+    <TPB_Element xsi:type="CTPB">
+      <TransportBreite>14</TransportBreite>
+      <Name>14 Byte</Name>
+    </TPB_Element>
+  </TransportBreiten>
+  <EIS>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS1</sName>
+      <sInfo>EIB_switch</sInfo>
+      <nTPB>0</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS2</sName>
+      <sInfo>EIB_dimming_control</sInfo>
+      <nTPB>0</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS3</sName>
+      <sInfo>EIB_time</sInfo>
+      <nTPB>3</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS4</sName>
+      <sInfo>EIB_date</sInfo>
+      <nTPB>3</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS5</sName>
+      <sInfo>EIB_value (EIB-Float)</sInfo>
+      <nTPB>2</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS6</sName>
+      <sInfo>EIB_scaling</sInfo>
+      <nTPB>1</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS7</sName>
+      <sInfo>EIB_drive</sInfo>
+      <nTPB>0</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS8</sName>
+      <sInfo>EIB_priority_control</sInfo>
+      <nTPB>0</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS9</sName>
+      <sInfo>IEEE-Float</sInfo>
+      <nTPB>4</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS10</sName>
+      <sInfo>16-Bit (signed/unsigned)</sInfo>
+      <nTPB>2</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS11</sName>
+      <sInfo>32-Bit (signed/unsigned)</sInfo>
+      <nTPB>4</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS12</sName>
+      <sInfo>EIB_access_control</sInfo>
+      <nTPB>4</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS13</sName>
+      <sInfo>ASCII_character</sInfo>
+      <nTPB>1</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS14</sName>
+      <sInfo>8-Bit (signed/unsigned)</sInfo>
+      <nTPB>1</nTPB>
+    </EISElement>
+    <EISElement xsi:type="CEIS">
+      <sName>EIS15</sName>
+      <sInfo>14 ASCII_character</sInfo>
+      <nTPB>14</nTPB>
+    </EISElement>
+  </EIS>
+  <DPT>
+    <DPTElement xsi:type="CDPT">
+      <sName>1.xxx</sName>
+      <sInfo>1 Bit 0=Aus/1=Ein</sInfo>
+      <nTPT>0</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>2.xxx</sName>
+      <sInfo>1 Bit Controlled</sInfo>
+      <nTPT>0</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>3.xxx</sName>
+      <sInfo>3 Bit Controlled</sInfo>
+      <nTPT>0</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>4.xxx</sName>
+      <sInfo>1 Byte Character</sInfo>
+      <nTPT>1</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>5.xxx</sName>
+      <sInfo>1 Byte (8 Bit) unsinged</sInfo>
+      <nTPT>1</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>6.xxx</sName>
+      <sInfo>1 Byte (8 Bit) signed</sInfo>
+      <nTPT>1</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>7.xxx</sName>
+      <sInfo>2 Byte (16 Bit) unsigned</sInfo>
+      <nTPT>2</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>8.xxx</sName>
+      <sInfo>2 Byte (16 Bit) signed</sInfo>
+      <nTPT>2</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>9.xxx</sName>
+      <sInfo>2 Byte KNX-Float</sInfo>
+      <nTPT>2</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>10.xxx</sName>
+      <sInfo>3 Byte Time</sInfo>
+      <nTPT>3</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>11.xxx</sName>
+      <sInfo>3 Byte Date</sInfo>
+      <nTPT>3</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>12.xxx</sName>
+      <sInfo>4 Byte (32 Bit) unsigned</sInfo>
+      <nTPT>4</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>13.xxx</sName>
+      <sInfo>4 Byte (32 Bit) signed</sInfo>
+      <nTPT>4</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>14.xxx</sName>
+      <sInfo>4 Byte IEEE-Float</sInfo>
+      <nTPT>4</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>15.xxx</sName>
+      <sInfo>4 Byte Entrance access</sInfo>
+      <nTPT>4</nTPT>
+    </DPTElement>
+    <DPTElement xsi:type="CDPT">
+      <sName>16.xxx</sName>
+      <sInfo>14 Byte String</sInfo>
+      <nTPT>14</nTPT>
+    </DPTElement>
+  </DPT>
+  <GwSetup>
+    <wMagicWord>18957</wMagicWord>
+    <wBaudCode>3</wBaudCode>
+    <wTxSetup>0</wTxSetup>
+    <wKommTimeout>500</wKommTimeout>
+    <wReadDelay>200</wReadDelay>
+    <wPhysAddr>65535</wPhysAddr>
+  </GwSetup>
+</ProjektDaten>

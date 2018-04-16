@@ -1,0 +1,141 @@
+#ifndef __S2_CG_EIB_ADDRESSING_H__
+#define __S2_CG_EIB_ADDRESSING_H__
+
+
+
+
+/*
+* Constructor and Destructor
+*/
+
+/*
+* DIGITAL_INPUT
+*/
+
+
+/*
+* ANALOG_INPUT
+*/
+
+#define __S2_CG_EIB_Addressing_ADDRESS$_STRING_INPUT 0
+#define __S2_CG_EIB_Addressing_ADDRESS$_STRING_MAX_LEN 11
+CREATE_STRING_STRUCT( S2_CG_EIB_Addressing, __ADDRESS$, __S2_CG_EIB_Addressing_ADDRESS$_STRING_MAX_LEN );
+#define __S2_CG_EIB_Addressing_EIB_FB_IN$_STRING_INPUT 1
+#define __S2_CG_EIB_Addressing_EIB_FB_IN$_STRING_MAX_LEN 60
+CREATE_STRING_STRUCT( S2_CG_EIB_Addressing, __EIB_FB_IN$, __S2_CG_EIB_Addressing_EIB_FB_IN$_STRING_MAX_LEN );
+#define __S2_CG_EIB_Addressing_COMMAND_IN$_STRING_INPUT 2
+#define __S2_CG_EIB_Addressing_COMMAND_IN$_STRING_MAX_LEN 36
+CREATE_STRING_STRUCT( S2_CG_EIB_Addressing, __COMMAND_IN$, __S2_CG_EIB_Addressing_COMMAND_IN$_STRING_MAX_LEN );
+
+
+
+/*
+* DIGITAL_OUTPUT
+*/
+
+
+/*
+* ANALOG_OUTPUT
+*/
+
+#define __S2_CG_EIB_Addressing_EIB_FB_OUT$_STRING_OUTPUT 0
+#define __S2_CG_EIB_Addressing_COMMAND_OUT$_STRING_OUTPUT 1
+
+
+/*
+* Direct Socket Variables
+*/
+
+
+
+
+/*
+* INTEGER_PARAMETER
+*/
+/*
+* SIGNED_INTEGER_PARAMETER
+*/
+/*
+* LONG_INTEGER_PARAMETER
+*/
+/*
+* SIGNED_LONG_INTEGER_PARAMETER
+*/
+/*
+* INTEGER_PARAMETER
+*/
+/*
+* SIGNED_INTEGER_PARAMETER
+*/
+/*
+* LONG_INTEGER_PARAMETER
+*/
+/*
+* SIGNED_LONG_INTEGER_PARAMETER
+*/
+/*
+* STRING_PARAMETER
+*/
+
+
+/*
+* INTEGER
+*/
+
+
+/*
+* LONG_INTEGER
+*/
+
+
+/*
+* SIGNED_INTEGER
+*/
+
+
+/*
+* SIGNED_LONG_INTEGER
+*/
+
+
+/*
+* STRING
+*/
+#define __S2_CG_EIB_Addressing_HIGHGROUP_STRING_MAX_LEN 2
+CREATE_STRING_STRUCT( S2_CG_EIB_Addressing, __HIGHGROUP, __S2_CG_EIB_Addressing_HIGHGROUP_STRING_MAX_LEN );
+#define __S2_CG_EIB_Addressing_MIDDLEGROUP_STRING_MAX_LEN 2
+CREATE_STRING_STRUCT( S2_CG_EIB_Addressing, __MIDDLEGROUP, __S2_CG_EIB_Addressing_MIDDLEGROUP_STRING_MAX_LEN );
+#define __S2_CG_EIB_Addressing_UNDERGROUP_HIGH_STRING_MAX_LEN 2
+CREATE_STRING_STRUCT( S2_CG_EIB_Addressing, __UNDERGROUP_HIGH, __S2_CG_EIB_Addressing_UNDERGROUP_HIGH_STRING_MAX_LEN );
+#define __S2_CG_EIB_Addressing_UNDERGROUP_LOW_STRING_MAX_LEN 2
+CREATE_STRING_STRUCT( S2_CG_EIB_Addressing, __UNDERGROUP_LOW, __S2_CG_EIB_Addressing_UNDERGROUP_LOW_STRING_MAX_LEN );
+
+/*
+* STRUCTURE
+*/
+
+START_GLOBAL_VAR_STRUCT( S2_CG_EIB_Addressing )
+{
+   void* InstancePtr;
+   struct GenericOutputString_s sGenericOutStr;
+   unsigned short LastModifiedArrayIndex;
+
+   unsigned short __MARKER1;
+   unsigned short __MARKER2;
+   DECLARE_STRING_STRUCT( S2_CG_EIB_Addressing, __HIGHGROUP );
+   DECLARE_STRING_STRUCT( S2_CG_EIB_Addressing, __MIDDLEGROUP );
+   DECLARE_STRING_STRUCT( S2_CG_EIB_Addressing, __UNDERGROUP_HIGH );
+   DECLARE_STRING_STRUCT( S2_CG_EIB_Addressing, __UNDERGROUP_LOW );
+   DECLARE_STRING_STRUCT( S2_CG_EIB_Addressing, __ADDRESS$ );
+   DECLARE_STRING_STRUCT( S2_CG_EIB_Addressing, __EIB_FB_IN$ );
+   DECLARE_STRING_STRUCT( S2_CG_EIB_Addressing, __COMMAND_IN$ );
+};
+
+START_NVRAM_VAR_STRUCT( S2_CG_EIB_Addressing )
+{
+};
+
+
+
+#endif //__S2_CG_EIB_ADDRESSING_H__
+

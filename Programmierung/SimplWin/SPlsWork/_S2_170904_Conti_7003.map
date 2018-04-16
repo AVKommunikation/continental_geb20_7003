@@ -1,0 +1,488 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+ram              0x80000000         0x00500000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+                0x00000000                __DYNAMIC=0x0
+                0x00400000                PROVIDE (__stack, 0x400000)
+                0x00000000                PROVIDE (hardware_init_hook, 0x0)
+                0x00000000                PROVIDE (_hardware_init_hook, 0x0)
+                0x00000000                PROVIDE (software_init_hook, 0x0)
+                0x00000000                PROVIDE (_software_init_hook, 0x0)
+
+.text           0x80000000    0x33d20
+ *(.text)
+ .text          0x80000000      0x9bc S2_Extron_SW_Series.o
+                0x8000017a                S2_Extron_SW_SeriesEventHandler00001
+                0x800008e6                S2_Extron_SW_Series_main
+                0x8000080e                S2_Extron_SW_Series_EventHandler
+                0x80000000                S2_Extron_SW_SeriesEventHandler00000
+ .text          0x800009bc      0x5ce S2_KeyProA.o
+                0x80000af4                S2_KeyProAEventHandler00002
+                0x80000cb6                S2_KeyProA_main
+                0x80000e04                S2_KeyProA_EventHandler
+                0x800009bc                S2_KeyProAEventHandler00000
+                0x80000e8e                S2_KeyProAEventHandler00001
+ *fill*         0x80000f8a        0x2
+ .text          0x80000f8c    0x14138 S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_.o
+                0x80012afe                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00024
+                0x800106a4                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00015
+                0x80014e20                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00018
+                0x800140ba                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_WPHONEBOOKREQUESTTIMEOUT
+                0x8001266a                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00022
+                0x8000e6aa                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00001
+                0x80013fce                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only__PHONEBOOK_Constructor
+                0x80014232                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00003
+                0x80014976                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00010
+                0x80014798                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler0000E
+                0x800146a6                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler0000B
+                0x800133a8                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only__EventHandler
+                0x8001407c                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_WTOUCHWAIT
+                0x80014a4a                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00011
+                0x80010c4c                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler0001B
+                0x80012346                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00020
+                0x80010ecc                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler0001D
+                0x80014f34                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00019
+                0x80014c2e                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00013
+                0x800058e4                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_WSEARCH
+                0x800143ae                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00005
+                0x8000e7ee                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00009
+                0x80011d1e                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler0001E
+                0x80014072                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only__CONTACTMETHOD_Destructor
+                0x800142f0                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00004
+                0x8001446c                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00006
+                0x80013f5a                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only__CALLS_Constructor
+                0x800121b4                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler0001F
+                0x800124d8                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00021
+                0x8001452a                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00007
+                0x80014b1e                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00012
+                0x8001057a                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00014
+                0x8001096c                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler0001A
+                0x8000e932                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler0000A
+                0x8000ea6a                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler0000C
+                0x8001500c                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler0001C
+                0x80014010                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only__PHONEBOOK_Destructor
+                0x80014136                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_WCLEARDISCONENCTEDCALL
+                0x80010822                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00016
+                0x80014174                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00002
+                0x8001039e                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler0000D
+                0x800134cc                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only__main
+                0x80013fc4                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only__CALLS_Destructor
+                0x800140f8                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_WCLEARINCOMINGCALL
+                0x8000e568                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00000
+                0x80014d5a                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00017
+                0x800127fc                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00023
+                0x8001401a                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only__CONTACTMETHOD_Constructor
+                0x800145e8                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler00008
+                0x800148a4                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_EventHandler0000F
+ .text          0x800150c4      0xcc4 S2_CG_EIB_Addressing.o
+                0x80015b74                S2_CG_EIB_Addressing_EventHandler
+                0x80015740                S2_CG_EIB_AddressingEventHandler00001
+                0x800150c4                S2_CG_EIB_AddressingEventHandler00000
+                0x800159e4                S2_CG_EIB_AddressingEventHandler00002
+                0x80015c6a                S2_CG_EIB_Addressing_main
+ .text          0x80015d88     0x4cc0 S2_CG_EIB_IO_V4_1.o
+                0x800199d6                S2_CG_EIB_IO_V4_1EventHandler00002
+                0x8001892c                S2_CG_EIB_IO_V4_1EventHandler00001
+                0x8001a30a                S2_CG_EIB_IO_V4_1_EventHandler
+                0x8001a8ee                S2_CG_EIB_IO_V4_1WAIT_RX
+                0x8001a886                S2_CG_EIB_IO_V4_1WAIT_CMD
+                0x8001a400                S2_CG_EIB_IO_V4_1_main
+                0x8001a976                S2_CG_EIB_IO_V4_1EventHandler00000
+ .text          0x8001aa48     0x297a S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4.o
+                0x8001b106                S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4EventHandler00003
+                0x8001d32c                S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4WNAMETIMEOUT
+                0x8001cf50                S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4_main
+                0x8001b4c4                S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4EventHandler00004
+                0x8001d37a                S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4EventHandler00001
+                0x8001d2e0                S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4WTIMEOUT
+                0x8001aa48                S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4EventHandler00000
+                0x8001c182                S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4EventHandler00006
+                0x8001b64a                S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4EventHandler00005
+                0x8001ac1c                S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4EventHandler00002
+                0x8001ce6e                S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4_EventHandler
+ *fill*         0x8001d3c2        0x2
+ .text          0x8001d3c4     0x2aa0 S2_Biamp_Level_Processor_v7_4.o
+                0x8001fcb0                S2_Biamp_Level_Processor_v7_4EventHandler00001
+                0x8001e4c8                S2_Biamp_Level_Processor_v7_4EventHandler00006
+                0x8001ebd8                S2_Biamp_Level_Processor_v7_4EventHandler00008
+                0x8001fe12                S2_Biamp_Level_Processor_v7_4EventHandler00005
+                0x8001f3c8                S2_Biamp_Level_Processor_v7_4EventHandler0000B
+                0x8001fba2                S2_Biamp_Level_Processor_v7_4EventHandler00000
+                0x8001f1f0                S2_Biamp_Level_Processor_v7_4EventHandler0000A
+                0x8001e984                S2_Biamp_Level_Processor_v7_4EventHandler00007
+                0x8001de88                S2_Biamp_Level_Processor_v7_4EventHandler00002
+                0x8001fdc0                S2_Biamp_Level_Processor_v7_4EventHandler00004
+                0x8001f698                S2_Biamp_Level_Processor_v7_4_EventHandler
+                0x8001fb4c                S2_Biamp_Level_Processor_v7_4WRAMPWAIT
+                0x8001eee4                S2_Biamp_Level_Processor_v7_4EventHandler00009
+                0x8001f76a                S2_Biamp_Level_Processor_v7_4_main
+                0x8001e2be                S2_Biamp_Level_Processor_v7_4EventHandler00003
+ .text          0x8001fe64     0x169e S2_Biamp_On_Off_Processor_v7_4.o
+                0x800214b0                S2_Biamp_On_Off_Processor_v7_4EventHandler00003
+                0x80020c4c                S2_Biamp_On_Off_Processor_v7_4EventHandler00005
+                0x800210ae                S2_Biamp_On_Off_Processor_v7_4_EventHandler
+                0x8002145e                S2_Biamp_On_Off_Processor_v7_4EventHandler00002
+                0x800211de                S2_Biamp_On_Off_Processor_v7_4_main
+                0x80020d90                S2_Biamp_On_Off_Processor_v7_4EventHandler00006
+                0x80020586                S2_Biamp_On_Off_Processor_v7_4EventHandler00001
+                0x80020790                S2_Biamp_On_Off_Processor_v7_4EventHandler00004
+                0x800201b8                S2_Biamp_On_Off_Processor_v7_4EventHandler00000
+                0x80020ed4                S2_Biamp_On_Off_Processor_v7_4EventHandler00007
+ *fill*         0x80021502        0x2
+ .text          0x80021504      0x432 S2_DialConti.o
+                0x8002177c                S2_DialConti_EventHandler
+                0x8002170a                S2_DialConti_main
+                0x8002189e                S2_DialContiEventHandler00002
+                0x80021806                S2_DialContiEventHandler00001
+                0x80021504                S2_DialContiEventHandler00000
+ *fill*         0x80021936        0x2
+ .text          0x80021938     0x7a18 S2_HD_MD_4K_E_Connection_Manager_v1_0.o
+                0x80023822                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler0000D
+                0x80029234                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00012
+                0x8002859a                S2_HD_MD_4K_E_Connection_Manager_v1_0_EventHandler
+                0x80029146                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00001
+                0x80022ccc                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00005
+                0x800233de                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler0000A
+                0x80023b22                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler0000F
+                0x80023ca0                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00010
+                0x80022b7c                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00004
+                0x80023106                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00008
+                0x800236b6                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler0000C
+                0x800292f0                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00013
+                0x80027de2                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00015
+                0x80027c9a                S2_HD_MD_4K_E_Connection_Manager_v1_0PINGWAIT
+                0x8002354a                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler0000B
+                0x80028828                S2_HD_MD_4K_E_Connection_Manager_v1_0_main
+                0x800228dc                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00002
+                0x80022a2c                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00003
+                0x80022e1c                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00006
+                0x80024bd4                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00014
+                0x80023e1e                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00011
+                0x800239a2                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler0000E
+                0x800290ec                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00000
+                0x80022f9a                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00007
+                0x80023272                S2_HD_MD_4K_E_Connection_Manager_v1_0EventHandler00009
+ .text          0x80029350     0x5836 library.o
+                0x8002d53c                RotateRightLong
+                0x8002db4a                IsSystem
+                0x8002d4a0                Seed
+                0x8002ad98                Remove
+                0x8002d11c                Ltoa
+                0x8002ce48                Atoi
+                0x8002c1b0                InitRampInfoArray
+                0x8002d8f6                Right
+                0x8002e926                LockInputSema
+                0x8002d3ca                Mod
+                0x8002d5b2                Getc
+                0x8002d2fe                SMuldiv
+                0x8002db2c                IsHidden
+                0x8002d1e2                Min
+                0x8002e73a                hextosi
+                0x8002dcd0                WriteIntegerArray
+                0x8002e246                GetSignedIntArrayElementPtr
+                0x8002cb6a                CheckStructArray
+                0x8002e74e                hextosl
+                0x8002de56                WriteSignedIntegerArray
+                0x8002c832                InitStringParamArray
+                0x8002bb04                ReadSignedLongIntegerArray
+                0x8002aa26                GatherToDelimiter
+                0x8002c656                InitStringArray
+                0x8002d1bc                Max
+                0x8002db86                IsReadOnly
+                0x8002d2c6                SMax
+                0x8002abca                GatherByLength
+                0x8002d056                Chr
+                0x8002dca8                ReadSignedLongInteger
+                0x8002d0d4                Itohex
+                0x8002cadc                GetStructArrayElement
+                0x8002cdd0                UNS_SetByte
+                0x8002d8ca                ReverseFindi
+                0x8002bfac                ReadStringArray
+                0x8002e056                GetIntArrayElementPtr
+                0x8002d706                Lower
+                0x8002d4bc                RotateLeft
+                0x8002e86e                ResizeIfAutogrow
+                0x8002c2dc                CheckInputArray
+                0x800298be                ResizeStringArray
+                0x8002cfe8                Atosl
+                0x8002ce10                High
+                0x8002d46c                Rnd
+                0x8002d38e                UMod
+                0x8002d512                RotateLeftLong
+                0x8002e99a                FindNumericChar
+                0x8002e49e                CheckIOArrayBounds2
+                0x8002dae4                MakeProgramFilename
+                0x8002d2e2                SMin
+                0x8002d63a                Left
+                0x8002d57c                CheckBufferThreshold
+                0x8002dc60                ReadSignedInteger
+                0x8002ce3a                LowWord
+                0x80029350                Bit
+                0x8002dc10                ReadLongInteger
+                0x8002cc4e                Byte
+                0x8002e14e                GetLongArrayElementPtr
+                0x8002d89c                ReverseFind
+                0x8002dafa                GetSeries
+                0x8002ea66                InitTcpServer
+                0x8002d6ee                Len
+                0x8002e56e                InitializeRampInfoInternal
+                0x8002d208                Divide
+                0x8002cf54                Atol
+                0x8002daf0                GetModelNumber
+                0x8002e436                CheckIOArrayBounds
+                0x8002c336                CheckStringInputArray
+                0x8002df18                WriteSignedLongIntegerArray
+                0x8002ca26                GetStringArrayElement
+                0x8002d160                Ltohex
+                0x8002d08c                Itoa
+                0x8002d4e6                RotateRight
+                0x8002b086                InternalReverseFind
+                0x8002dbf0                WriteLongInteger
+                0x8002c55a                InitDynamicStringStruct
+                0x8002c44c                SetStringArray
+                0x8002b8e2                ReadSignedIntegerArray
+                0x8002c390                SetOutputArray
+                0x8002dba0                WriteInteger
+                0x8002c9ba                InitStructDynamicArray
+                0x8002b310                SetString
+                0x8002d406                Random
+                0x8002dc38                WriteSignedInteger
+                0x800295b4                Find
+                0x8002db04                GetProgramNumber
+                0x8002d7da                Mid
+                0x8002e9d8                InitTcpClient
+                0x8002a4a2                ResizeStructArray
+                0x8002e33e                GetSignedLongArrayElementPtr
+                0x8002e760                hextol
+                0x8002bd26                ReadString
+                0x8002c6ec                InitDynamicStringArray
+                0x8002e846                UpperChar
+                0x8002cee4                Atosi
+                0x8002dbc8                ReadInteger
+                0x8002d27a                Muldiv
+                0x8002c3fe                SetStringOutputArray
+                0x8002dfdc                WriteString
+                0x80029f16                ResizeIntegerArray
+                0x8002c2a4                InitInOutArray
+                0x8002c8fa                InitNvramStringArray
+                0x8002d1a4                Abs
+                0x8002d34a                SDivide
+                0x8002b4a0                ReadIntegerArray
+                0x80029460                CompareStrings
+                0x8002e81e                LowerChar
+                0x8002eaf6                InitUdpSocket
+                0x8002d564                ClearBuffer
+                0x8002d9b2                Upper
+                0x8002c996                InitStructArray
+                0x8002da88                MakeLower
+                0x8002db68                IsVolume
+                0x8002aef2                RemoveByLength
+                0x8002cbe6                CheckStringOutputArrayIndex
+                0x8002dd92                WriteLongIntegerArray
+                0x8002e61a                InitRampInfoStructArray
+                0x8002ce2c                HighWord
+                0x80029728                ResizeString
+                0x8002db0e                IsDirectory
+                0x8002b6c0                ReadLongIntegerArray
+                0x8002ce1e                Low
+                0x8002a8cc                Gather
+                0x8002dab6                MakeUpper
+                0x8002c51c                InitStringStruct
+                0x8002e506                CheckStringArrayBounds
+                0x8002d24c                CheckDenominator
+                0x8002e722                hextoi
+                0x8002be44                WriteStringArray
+                0x8002cd0e                SetByte
+                0x8002e5c4                InitializeRampInfo
+                0x8002e960                UnLockInputSema
+                0x8002dc88                WriteSignedLongInteger
+                0x8002c60e                InitNvramStringStruct
+ *fill*         0x8002eb86        0xa
+                0x8002eb90                .=ALIGN(0x10)
+ *(.eh_frame)
+                0x8002eb90                .=ALIGN(0x10)
+ *(.gnu.linkonce.t.*)
+                0x8002eb90                .=ALIGN(0x4)
+                0x8002eb90                __CTOR_LIST__=.
+                0x8002eb90                ___CTOR_LIST__=.
+                0x8002eb90        0x4 LONG 0x0 (((__CTOR_END__-__CTOR_LIST__)/0x4)-0x2)
+ *(.ctors)
+                0x8002eb94        0x4 LONG 0x0
+                0x8002eb98                __CTOR_END__=.
+                0x8002eb98                __DTOR_LIST__=.
+                0x8002eb98                ___DTOR_LIST__=.
+                0x8002eb98        0x4 LONG 0x0 (((__DTOR_END__-__DTOR_LIST__)/0x4)-0x2)
+ *(.dtors)
+                0x8002eb9c        0x4 LONG 0x0
+                0x8002eba0                __DTOR_END__=.
+ *(.rodata)
+ .rodata        0x8002eba0      0x33c S2_Extron_SW_Series.o
+ .rodata        0x8002eedc      0x29c S2_KeyProA.o
+ .rodata        0x8002f178     0x184b S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_.o
+ .rodata        0x800309c3      0x341 S2_CG_EIB_Addressing.o
+ .rodata        0x80030d04      0x5b0 S2_CG_EIB_IO_V4_1.o
+ .rodata        0x800312b4      0x432 S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4.o
+ .rodata        0x800316e6      0x4a8 S2_Biamp_Level_Processor_v7_4.o
+ .rodata        0x80031b8e      0x3fc S2_Biamp_On_Off_Processor_v7_4.o
+ .rodata        0x80031f8a      0x263 S2_DialConti.o
+ .rodata        0x800321ed      0xec8 S2_HD_MD_4K_E_Connection_Manager_v1_0.o
+ .rodata        0x800330b5      0xc54 library.o
+ *(.gcc_except_table)
+ *fill*         0x80033d09        0x1
+                0x80033d0a                .=ALIGN(0x2)
+                0x80033d0a                __INIT_SECTION__=.
+                0x80033d0a        0x4 LONG 0x4e560000
+ *(.init)
+                0x80033d0e        0x2 SHORT 0x4e5e
+                0x80033d10        0x2 SHORT 0x4e75
+                0x80033d12                __FINI_SECTION__=.
+                0x80033d12        0x4 LONG 0x4e560000
+ *(.fini)
+                0x80033d16        0x2 SHORT 0x4e5e
+                0x80033d18        0x2 SHORT 0x4e75
+ *(.lit)
+ *fill*         0x80033d1a        0x6
+                0x80033d20                .=ALIGN(0x10)
+                0x80033d20                _etext=.
+                0x80033d20                etext=.
+
+.data           0x80033d20        0x0
+                0x80033d20                copy_start=.
+ *(.shdata)
+ *(.data)
+ *(.gnu.linkonce.d.*)
+                0x80033d20                .=ALIGN(0x10)
+                0x80033d20                _edata=.
+                0x80033d20                copy_end=.
+
+.got
+ *(.got.plt)
+ *(.got)
+
+EntryList       0x80033d20      0xaa0
+ *(EntryList)
+ EntryList      0x80033d20      0x110 S2_Extron_SW_Series.o
+                0x80033d20                S2_Extron_SW_Series_Entry
+ EntryList      0x80033e30      0x110 S2_KeyProA.o
+                0x80033e30                S2_KeyProA_Entry
+ EntryList      0x80033f40      0x110 S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_.o
+                0x80033f40                S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only__Entry
+ EntryList      0x80034050      0x110 S2_CG_EIB_Addressing.o
+                0x80034050                S2_CG_EIB_Addressing_Entry
+ EntryList      0x80034160      0x110 S2_CG_EIB_IO_V4_1.o
+                0x80034160                S2_CG_EIB_IO_V4_1_Entry
+ EntryList      0x80034270      0x110 S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4.o
+                0x80034270                S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4_Entry
+ EntryList      0x80034380      0x110 S2_Biamp_Level_Processor_v7_4.o
+                0x80034380                S2_Biamp_Level_Processor_v7_4_Entry
+ EntryList      0x80034490      0x110 S2_Biamp_On_Off_Processor_v7_4.o
+                0x80034490                S2_Biamp_On_Off_Processor_v7_4_Entry
+ EntryList      0x800345a0      0x110 S2_DialConti.o
+                0x800345a0                S2_DialConti_Entry
+ EntryList      0x800346b0      0x110 S2_HD_MD_4K_E_Connection_Manager_v1_0.o
+                0x800346b0                S2_HD_MD_4K_E_Connection_Manager_v1_0_Entry
+                0x800347c0                .=ALIGN(0x4)
+
+FunctionList    0x800347c0        0x4
+ *(FunctionList)
+ FunctionList   0x800347c0        0x4 globals.o
+                0x800347c0                g_pFunctions
+                0x800347c4                .=ALIGN(0x4)
+
+.bss            0x800347c4        0x0
+                0x800347c4                .=ALIGN(0x4)
+                0x800347c4                __bss_start=.
+ *(.shbss)
+ *(.bss)
+ *(COMMON)
+                0x800347c8                _end=ALIGN(0x8)
+                0x800347c8                __end=_end
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges
+ *(.debug_aranges)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info
+ *(.debug_info)
+
+.debug_abbrev
+ *(.debug_abbrev)
+
+.debug_line
+ *(.debug_line)
+
+.debug_frame
+ *(.debug_frame)
+
+.debug_str
+ *(.debug_str)
+
+.debug_loc
+ *(.debug_loc)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+LOAD S2_Extron_SW_Series.o
+LOAD S2_KeyProA.o
+LOAD S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_.o
+LOAD S2_CG_EIB_Addressing.o
+LOAD S2_CG_EIB_IO_V4_1.o
+LOAD S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4.o
+LOAD S2_Biamp_Level_Processor_v7_4.o
+LOAD S2_Biamp_On_Off_Processor_v7_4.o
+LOAD S2_DialConti.o
+LOAD S2_HD_MD_4K_E_Connection_Manager_v1_0.o
+LOAD globals.o
+LOAD library.o
+OUTPUT(_S2_170904_Conti_7003.spl elf32-m68k)
+
+.comment        0x800347c4      0x1c8
+ .comment       0x800347c4       0x26 S2_Extron_SW_Series.o
+ .comment       0x800347ea       0x26 S2_KeyProA.o
+ .comment       0x80034810       0x26 S2_Cisco_SX80_Drive_v1_4_4__2_Series_Only_.o
+ .comment       0x80034836       0x26 S2_CG_EIB_Addressing.o
+ .comment       0x8003485c       0x26 S2_CG_EIB_IO_V4_1.o
+ .comment       0x80034882       0x26 S2_BiAmp_AudiaFlex_Command_Processor_IP_v7_4.o
+ .comment       0x800348a8       0x26 S2_Biamp_Level_Processor_v7_4.o
+ .comment       0x800348ce       0x26 S2_Biamp_On_Off_Processor_v7_4.o
+ .comment       0x800348f4       0x26 S2_DialConti.o
+ .comment       0x8003491a       0x26 S2_HD_MD_4K_E_Connection_Manager_v1_0.o
+ .comment       0x80034940       0x26 globals.o
+ .comment       0x80034966       0x26 library.o

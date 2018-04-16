@@ -1,0 +1,14 @@
+<Device Model="CP3">
+   <Network Type="Cresnet" Id="01">
+      <Device Model="ST-COM" DeviceId="03"/>
+      <Device Model="C2N-DB8" DeviceId="70" Name="7003"/>
+      <Device Model="C2N-DB8" DeviceId="71" Name="7005"/>
+      <Device Model="C2N-DB8" DeviceId="72" Name="7001"/>
+   </Network>
+   <Network Type="Ethernet" Id="02">
+      <Device Model="TPMC-4SM" DeviceId="03" Name="7005 Havarie"/>
+      <Device Model="TPMC-4SM" DeviceId="04" Name="7001"/>
+      <Device Model="HD-MD4X2-4K-E" DeviceId="08"/>
+      <Device Model="TSW-1052" DeviceId="A5"/>
+   </Network>
+</Device>

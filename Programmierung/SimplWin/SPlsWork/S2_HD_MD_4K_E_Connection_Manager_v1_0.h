@@ -1,0 +1,258 @@
+#ifndef __S2_HD_MD_4K_E_CONNECTION_MANAGER_V1_0_H__
+#define __S2_HD_MD_4K_E_CONNECTION_MANAGER_V1_0_H__
+
+
+
+
+/*
+* Constructor and Destructor
+*/
+
+/*
+* DIGITAL_INPUT
+*/
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_CONNECT_DIG_INPUT 0
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_SYNCHRONIZE_DIG_INPUT 1
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_ENABLE_FRONT_PANEL_LOCK_DIG_INPUT 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_DISABLE_FRONT_PANEL_LOCK_DIG_INPUT 3
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_AUTOMODE_ON_DIG_INPUT 4
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_AUTOMODE_OFF_DIG_INPUT 5
+
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_HDCP_SUPPORT_ON_DIG_INPUT 6
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_HDCP_SUPPORT_ON_ARRAY_LENGTH 6
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_HDCP_SUPPORT_OFF_DIG_INPUT 12
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_HDCP_SUPPORT_OFF_ARRAY_LENGTH 6
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_ENABLE_DIG_INPUT 18
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_ENABLE_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_DISABLE_DIG_INPUT 20
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_DISABLE_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_FORCE_HDCP_ENABLE_DIG_INPUT 22
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_FORCE_HDCP_ENABLE_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_FORCE_HDCP_DISABLE_DIG_INPUT 24
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_FORCE_HDCP_DISABLE_ARRAY_LENGTH 2
+
+/*
+* ANALOG_INPUT
+*/
+
+
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_CONSOLE_REPLY_BUFFER_INPUT 0
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_CONSOLE_REPLY_BUFFER_MAX_LEN 1000
+CREATE_STRING_STRUCT( S2_HD_MD_4K_E_Connection_Manager_v1_0, __CONSOLE_REPLY, __S2_HD_MD_4K_E_Connection_Manager_v1_0_CONSOLE_REPLY_BUFFER_MAX_LEN );
+
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_ROUTE_ANALOG_INPUT 11
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_ROUTE_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_COLOR_SPACE_MODE_ANALOG_INPUT 13
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_COLOR_SPACE_MODE_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_INPUT_NAME_STRING_INPUT 1
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_INPUT_NAME_ARRAY_NUM_ELEMS 6
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_INPUT_NAME_ARRAY_NUM_CHARS 250
+CREATE_STRING_ARRAY( S2_HD_MD_4K_E_Connection_Manager_v1_0, __INPUT_NAME, __S2_HD_MD_4K_E_Connection_Manager_v1_0_INPUT_NAME_ARRAY_NUM_ELEMS, __S2_HD_MD_4K_E_Connection_Manager_v1_0_INPUT_NAME_ARRAY_NUM_CHARS );
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_NAME_STRING_INPUT 7
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_NAME_ARRAY_NUM_ELEMS 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_NAME_ARRAY_NUM_CHARS 250
+CREATE_STRING_ARRAY( S2_HD_MD_4K_E_Connection_Manager_v1_0, __OUTPUT_NAME, __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_NAME_ARRAY_NUM_ELEMS, __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_NAME_ARRAY_NUM_CHARS );
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_TRANSMIT_CEC_MESSAGE_STRING_INPUT 9
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_TRANSMIT_CEC_MESSAGE_ARRAY_NUM_ELEMS 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_TRANSMIT_CEC_MESSAGE_ARRAY_NUM_CHARS 250
+CREATE_STRING_ARRAY( S2_HD_MD_4K_E_Connection_Manager_v1_0, __TRANSMIT_CEC_MESSAGE, __S2_HD_MD_4K_E_Connection_Manager_v1_0_TRANSMIT_CEC_MESSAGE_ARRAY_NUM_ELEMS, __S2_HD_MD_4K_E_Connection_Manager_v1_0_TRANSMIT_CEC_MESSAGE_ARRAY_NUM_CHARS );
+
+/*
+* DIGITAL_OUTPUT
+*/
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_CONNECTED_DIG_OUTPUT 0
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_FRONT_PANEL_LOCK_FB_DIG_OUTPUT 1
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_AUTOMODE_ON_FB_DIG_OUTPUT 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_AUTOMODE_OFF_FB_DIG_OUTPUT 3
+
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_HDCP_SUPPORT_FB_DIG_OUTPUT 4
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_HDCP_SUPPORT_FB_ARRAY_LENGTH 6
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_HDCP_ACTIVE_FB_DIG_OUTPUT 10
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_HDCP_ACTIVE_FB_ARRAY_LENGTH 6
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_SYNC_DETECTED_FB_DIG_OUTPUT 16
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_SYNC_DETECTED_FB_ARRAY_LENGTH 6
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_ENABLED_FB_DIG_OUTPUT 22
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_ENABLED_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_HOTPLUG_DETECTED_FB_DIG_OUTPUT 24
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_HOTPLUG_DETECTED_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_FORCE_HDCP_ENABLED_FB_DIG_OUTPUT 26
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_FORCE_HDCP_ENABLED_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_DISABLED_BY_HDCP_FB_DIG_OUTPUT 28
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_DISABLED_BY_HDCP_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_CEC_ERROR_FB_DIG_OUTPUT 30
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_CEC_ERROR_FB_ARRAY_LENGTH 2
+
+/*
+* ANALOG_OUTPUT
+*/
+
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_CONSOLE_CMD_STRING_OUTPUT 0
+
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_ROUTE_FB_ANALOG_OUTPUT 17
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_ROUTE_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_INPUT_HDCP_STATE_FB_ANALOG_OUTPUT 19
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_INPUT_HDCP_STATE_FB_ARRAY_LENGTH 6
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_HORIZONTAL_RESOLUTION_FB_ANALOG_OUTPUT 25
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_HORIZONTAL_RESOLUTION_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_VERTICAL_RESOLUTION_FB_ANALOG_OUTPUT 27
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_VERTICAL_RESOLUTION_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_FRAMES_PER_SECOND_FB_ANALOG_OUTPUT 29
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_FRAMES_PER_SECOND_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_ASPECT_RATIO_FB_ANALOG_OUTPUT 31
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_ASPECT_RATIO_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_DEEP_COLOR_MODE_FB_ANALOG_OUTPUT 33
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_DEEP_COLOR_MODE_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_COLOR_SPACE_MODE_FB_ANALOG_OUTPUT 35
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_COLOR_SPACE_MODE_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_HDCP_STATE_FB_ANALOG_OUTPUT 37
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_HDCP_STATE_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_INPUT_NAME_FB_STRING_OUTPUT 1
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_INPUT_NAME_FB_ARRAY_LENGTH 6
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_NAME_FB_STRING_OUTPUT 7
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_OUTPUT_NAME_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_RECEIVE_CEC_MESSAGE_FB_STRING_OUTPUT 9
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_RECEIVE_CEC_MESSAGE_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_MANF_STRING_FB_STRING_OUTPUT 11
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_MANF_STRING_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_NAME_STRING_FB_STRING_OUTPUT 13
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_NAME_STRING_FB_ARRAY_LENGTH 2
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_SERIAL_NUMBER_STRING_FB_STRING_OUTPUT 15
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_SERIAL_NUMBER_STRING_FB_ARRAY_LENGTH 2
+
+/*
+* Direct Socket Variables
+*/
+
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_DEVICECLIENT_SOCKET 31
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_DEVICECLIENT_STRING_MAX_LEN 4096
+START_SOCKET_DEFINITION( S2_HD_MD_4K_E_Connection_Manager_v1_0, __DEVICECLIENT )
+{
+   int SocketStatus;
+   enum ESplusSocketType eSocketType;
+   int SocketID;
+   void *SocketPtr;
+CREATE_SOCKET_STRING( S2_HD_MD_4K_E_Connection_Manager_v1_0, SocketRxBuf, __S2_HD_MD_4K_E_Connection_Manager_v1_0_DEVICECLIENT_STRING_MAX_LEN );
+};
+
+
+
+/*
+* INTEGER_PARAMETER
+*/
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_IP_ID_INTEGER_PARAMETER 10
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_SERVER_PORT_INTEGER_PARAMETER 11
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_PING_INTERVAL_INTEGER_PARAMETER 12
+/*
+* SIGNED_INTEGER_PARAMETER
+*/
+/*
+* LONG_INTEGER_PARAMETER
+*/
+/*
+* SIGNED_LONG_INTEGER_PARAMETER
+*/
+/*
+* INTEGER_PARAMETER
+*/
+/*
+* SIGNED_INTEGER_PARAMETER
+*/
+/*
+* LONG_INTEGER_PARAMETER
+*/
+/*
+* SIGNED_LONG_INTEGER_PARAMETER
+*/
+/*
+* STRING_PARAMETER
+*/
+
+
+/*
+* INTEGER
+*/
+
+
+/*
+* LONG_INTEGER
+*/
+
+
+/*
+* SIGNED_INTEGER
+*/
+
+
+/*
+* SIGNED_LONG_INTEGER
+*/
+
+
+/*
+* STRING
+*/
+#define __S2_HD_MD_4K_E_Connection_Manager_v1_0_G_ADDRESS_STRING_MAX_LEN 250
+CREATE_STRING_STRUCT( S2_HD_MD_4K_E_Connection_Manager_v1_0, __G_ADDRESS, __S2_HD_MD_4K_E_Connection_Manager_v1_0_G_ADDRESS_STRING_MAX_LEN );
+
+/*
+* STRUCTURE
+*/
+
+START_GLOBAL_VAR_STRUCT( S2_HD_MD_4K_E_Connection_Manager_v1_0 )
+{
+   void* InstancePtr;
+   struct GenericOutputString_s sGenericOutStr;
+   unsigned short LastModifiedArrayIndex;
+
+   DECLARE_IO_ARRAY( __HDCP_SUPPORT_ON );
+   DECLARE_IO_ARRAY( __HDCP_SUPPORT_OFF );
+   DECLARE_IO_ARRAY( __OUTPUT_ENABLE );
+   DECLARE_IO_ARRAY( __OUTPUT_DISABLE );
+   DECLARE_IO_ARRAY( __FORCE_HDCP_ENABLE );
+   DECLARE_IO_ARRAY( __FORCE_HDCP_DISABLE );
+   DECLARE_IO_ARRAY( __HDCP_SUPPORT_FB );
+   DECLARE_IO_ARRAY( __HDCP_ACTIVE_FB );
+   DECLARE_IO_ARRAY( __SYNC_DETECTED_FB );
+   DECLARE_IO_ARRAY( __OUTPUT_ENABLED_FB );
+   DECLARE_IO_ARRAY( __HOTPLUG_DETECTED_FB );
+   DECLARE_IO_ARRAY( __FORCE_HDCP_ENABLED_FB );
+   DECLARE_IO_ARRAY( __DISABLED_BY_HDCP_FB );
+   DECLARE_IO_ARRAY( __CEC_ERROR_FB );
+   DECLARE_IO_ARRAY( __ROUTE );
+   DECLARE_IO_ARRAY( __COLOR_SPACE_MODE );
+   DECLARE_IO_ARRAY( __ROUTE_FB );
+   DECLARE_IO_ARRAY( __INPUT_HDCP_STATE_FB );
+   DECLARE_IO_ARRAY( __HORIZONTAL_RESOLUTION_FB );
+   DECLARE_IO_ARRAY( __VERTICAL_RESOLUTION_FB );
+   DECLARE_IO_ARRAY( __FRAMES_PER_SECOND_FB );
+   DECLARE_IO_ARRAY( __ASPECT_RATIO_FB );
+   DECLARE_IO_ARRAY( __DEEP_COLOR_MODE_FB );
+   DECLARE_IO_ARRAY( __COLOR_SPACE_MODE_FB );
+   DECLARE_IO_ARRAY( __OUTPUT_HDCP_STATE_FB );
+   DECLARE_IO_ARRAY( __INPUT_NAME_FB );
+   DECLARE_IO_ARRAY( __OUTPUT_NAME_FB );
+   DECLARE_IO_ARRAY( __RECEIVE_CEC_MESSAGE_FB );
+   DECLARE_IO_ARRAY( __MANF_STRING_FB );
+   DECLARE_IO_ARRAY( __NAME_STRING_FB );
+   DECLARE_IO_ARRAY( __SERIAL_NUMBER_STRING_FB );
+   DECLARE_STRING_ARRAY( S2_HD_MD_4K_E_Connection_Manager_v1_0, __INPUT_NAME );
+   DECLARE_STRING_ARRAY( S2_HD_MD_4K_E_Connection_Manager_v1_0, __OUTPUT_NAME );
+   DECLARE_STRING_ARRAY( S2_HD_MD_4K_E_Connection_Manager_v1_0, __TRANSMIT_CEC_MESSAGE );
+   DECLARE_STRING_STRUCT( S2_HD_MD_4K_E_Connection_Manager_v1_0, __CONSOLE_REPLY );
+   DECLARE_SOCKET( S2_HD_MD_4K_E_Connection_Manager_v1_0, __DEVICECLIENT );
+};
+
+START_NVRAM_VAR_STRUCT( S2_HD_MD_4K_E_Connection_Manager_v1_0 )
+{
+   DECLARE_STRING_STRUCT( S2_HD_MD_4K_E_Connection_Manager_v1_0, __G_ADDRESS );
+   unsigned short __G_CONNECTING;
+   unsigned short __G_EARLYCONNECT;
+   unsigned short __G_SEMAPHORE;
+   unsigned short __G_READING_IP_TABLE;
+};
+
+DEFINE_WAITEVENT( S2_HD_MD_4K_E_Connection_Manager_v1_0, PINGWAIT );
+
+
+#endif //__S2_HD_MD_4K_E_CONNECTION_MANAGER_V1_0_H__
+
