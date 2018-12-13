@@ -1,0 +1,406 @@
+// CG-EIB IO V4.1usp  CGEIB Input/Output handling version 4.1
+//  Original Idea: Bernhard Kirsch, Crestron Germany GmbH, AD MMIII 
+// ***********************************************************************
+//  Compiler Directives
+// ***********************************************************************
+#SYMBOL_NAME "CGEIB I/O 4.1"
+#HINT "CGEIB EIB gateway Input/Output handling (2-series)"
+#CATEGORY "0" // Invisible
+#default_volatile // no need to keep something
+
+#HELP_BEGIN           
+Only to be used with the "CG-EIB IO V4.1.umc" module
+
+CGEIB I/O 4.1 - fixes and improvements. (Harald Steindl of MOCOM GmbH, Vienna-Austria)
+    - added ability to accept late ACKs caused by new high speed EIB devices  
+CGEIB I/O 4.0 - new CG-EIB firmware. (Niko Brasseur)
+	- CG-EIB can automatically report back feedback --> don't poll for telegrams automatically
+
+CGEIB I/O 3.0 - input/output handling for CGEIB EIB gateway
+  Version 3.0 by Bernhard Kirsch, Crestron Germany GmbH
+  
+Inputs:
+  Clock   (d) Retrigger gateway poll
+  Rx      (s) RS232 in from gateway
+  EIB_Cmd (s) Command input from macros
+
+Outputs:
+  Tx      (s) RS232 out to gateway
+  EIB_FB  (s) Feedback output to macros
+#HELP_END 
+
+#DEFINE_CONSTANT SendSize      100 // max. number of commands in send queue
+#DEFINE_CONSTANT PollSize       50 // max. number of adresses in poll queue
+#DEFINE_CONSTANT TimeOut_Ticks  10 // max. Clock ticks to wait for a reply
+#DEFINE_CONSTANT MaxParmLen      28 // longest possible value in bytes
+#DEFINE_CONSTANT MaxParmString   56 // twice the value above (precompiler can not calculate :-(
+
+#DEFINE_CONSTANT Action_Idle 0 // nothing to do
+#DEFINE_CONSTANT Action_Send 1 // sending a command
+#DEFINE_CONSTANT Action_Poll 2 // polling a group address
+#DEFINE_CONSTANT Action_Ask  3 // asking for new input
+
+// ***********************************************************************
+//   DIGITAL, ANALOG and SERIAL INPUTS and OUTPUTS
+// ***********************************************************************
+DIGITAL_INPUT Trigger;      // retrigger pulse (10Hz)
+BUFFER_INPUT  Rx[255],      // rs232 input buffer
+              EIB_Cmd[255]; // incoming commands from macros
+ 
+STRING_OUTPUT Tx,           // rs232 output
+              EIB_FB;       // macro feedbacks
+
+// ***********************************************************************
+//   Global Variables
+// ***********************************************************************
+// Flags
+integer Waiting,   // ticks to wait
+        Action,    // current action
+        Proc_Cmd,  // processing macro commands
+        Proc_Rx,   // processing rs232 input
+        NAK_Count; // number of NAKs received (normally 0)
+        
+string Msg[255];   // Current response from gateway        
+          
+// Queue of commands to be sent
+integer Send_Adr[SendSize],
+        Send_In, Send_Out;
+string  Send_Parm[SendSize][MaxParmLen];
+
+// Queue of EIB group addresses to be polled
+integer Poll_Adr[PollSize],
+        Poll_In, Poll_Out;
+     
+// ***********************************************************************
+//   Functions
+// ***********************************************************************
+function main() // Variable initialisation
+{ Waiting   = 0;
+  Action    = Action_Idle;  
+  Proc_Cmd  = 0;
+  Proc_Rx   = 0;
+  NAK_Count = 0;
+  
+  Send_In  = 1;
+  Send_Out = 1;
+  Poll_In  = 1;
+  Poll_Out = 1;
+
+  Rx      = "";
+  EIB_Cmd = "";  
+
+  Tx = "\x02089C\x0D"; // reset Gateway
+  Waiting = TimeOut_Ticks;
+}
+
+string_function Hex(integer i) // 2-byte Hex string
+{ string out[2];
+  if((i & 0xF0) >= 0xA0)
+    out = chr(((i & 0xF0) >> 4) + 0x37);
+  else
+    out = chr(((i & 0xF0) >> 4) | 0x30);
+  if((i & 0xF) >= 0xA)
+    out = out + chr((i & 0xF) + 0x37);
+  else
+    out = out + chr((i & 0xF) | 0x30);
+  return(out);
+}
+
+function Send() // send next command to the gateway
+{ 
+	INTEGER Adr, ParByte, Chk, Ct;
+	STRING Parms[MaxParmString], Par[MaxParmLen];
+	if(not(Waiting))
+	{ 
+		if(Send_In <> Send_Out) // set command waiting?
+		{ 
+			Adr = Send_Adr[Send_Out];
+		    Par = Send_Parm[Send_Out];
+		    Parms = "";
+		    Chk = high(Adr) + low(Adr) + 0x17;
+		    for(Ct = 1 to len(Par))
+		    { 
+		    	ParByte = byte(Par, Ct);
+		        Parms = Parms + Hex(ParByte);
+		        Chk = Chk + ParByte;
+		    }
+		    Tx = "\x020B"
+		         + Hex(high(Adr)) + Hex(low(Adr)) // group address
+		         + "0C" + Parms
+		         + Hex(not(Chk)+0xA5) // checksum
+		         + "\x0D";      
+		    Action = Action_Send; 
+		    Waiting = TimeOut_Ticks;
+		}
+		else if(Poll_In <> Poll_Out) // group address to be polled?
+		{ 
+			Adr = Poll_Adr[Poll_Out];
+		    Tx = "\x020C"
+		         + Hex(high(Adr)) + Hex(low(Adr)) // group address
+		         + Hex(not(high(Adr)+low(Adr)+0xC)+0xA5) // checksum
+		         + "\x0D";
+		    Action = Action_Poll; 
+		    Waiting = TimeOut_Ticks;
+		}
+		/*else // no commands waiting
+		{ Tx = "\x0204A0\x0D"; // ask for new telegrams              //DON'T ASK FOR TELEGRAMS AUTOMATICALLY. ONLY WHEN POLLED (4.0)
+		  Action = Action_Ask;
+		}*/
+	} 
+}
+   
+integer In[130]; // globally for speed     
+function Reply() // parse received messages (in Msg[])
+{ integer Bad, Ct, Char, Idx;
+  string value[MaxParmString];
+  Bad = 0;
+  Idx = 1; // convert to byte array (Hex2Int)
+  for(Ct = 2 to len(Msg) - 1 step 2) // ignore STX and CR
+  { Char = byte(Msg, Ct); // high nibble
+    if((Char >= 0x30) && (Char <= 0x39)) // number
+      In[Idx] = (Char & 0xF) << 4;
+    else if((Char >= 0x41) && (Char <= 0x46)) // letter
+      In[Idx] = ((Char & 0x4F) - 0x37) << 4;
+    else Bad = 1; // invalid character
+    Char = byte(Msg, Ct + 1); // low nibble
+    if((Char >= 0x30) && (Char <= 0x39)) // number
+      In[Idx] = In[Idx] | (Char & 0xF);
+    else if((Char >= 0x41) && (Char <= 0x46)) // letter
+      In[Idx] = In[Idx] | ((Char & 0x4F) - 0x37);
+    else Bad = 1; // invalid character
+    Idx = Idx + 1;    
+  }
+  if(Bad || (Idx <= 2))
+    print("EIB: Bad receive packet len/char\n");
+  else
+  { Idx = Idx - 2; // Check checksum
+    Char = 0;     
+    for(Ct = 1 to Idx)
+    { Char = Char + In[Ct]; }
+    if(((not(Char)+0xA5)^In[Idx+1])&0xFF)
+    { Bad = 1;
+      print("EIB: Bad receive checksum\n");
+    }
+    else // process reply
+    { switch(In[1])
+      { case(0xFC): // value report
+        { value = "";
+          for(Ct = 3 to Idx)
+            value = value + chr(In[Ct] >> 4) + chr(In[Ct] & 0xF);
+          EIB_FB = "\xFE" + chr(In[2] >> 3) + chr(In[2] & 0x7)
+                   + value + "\xFF";
+        }
+        case(0xFE): // error message
+        { if(In[2] & 0x20) print("CGEIB: BA layer\n");
+          if(In[2] & 0x08) print("CGEIB: EEPROM CRC\n");
+          if(In[3] & 0x80) print("CGEIB: Tx overflow\n");
+          if(In[3] & 0x10) print("CGEIB: BA error\n");
+          if(In[3] & 0x08) print("CGEIB: BA busy (EIB not connected?)\n");
+          if(In[3] & 0x01) 
+          { switch(Action)
+            { case(Action_Send): Ct = Send_Adr[Send_Out];
+              case(Action_Poll): Ct = Poll_Adr[Poll_Out];
+              default: Ct = 0xFFFF;
+            }
+            print("CGEIB: Not acknowledged on Adr %d/%d/%d\n",
+                  (Ct & 0x7800) >> 11, (Ct & 0x700) >> 8, Ct & 0xFF);
+          }
+        }
+        default:
+          print("EIB: Unhandled response %Xh\n", In[1]);
+      }
+    }
+  }
+  
+  if(Bad)
+    Tx = "\x15"; // send NAK
+  else
+  { Tx = "\x06"; // send ACK
+    Waiting = 0;
+    NAK_Count = 0;
+	if (len(RX) = 0)      // new in V4.01: Reset Action only when RX is empty
+		{
+		Action = Action_Idle;
+		}
+  }
+}
+     
+// ***********************************************************************
+//   Event Handlers
+// *********************************************************************** 
+push Trigger // clock pulse
+{   
+	if(Waiting)
+	{ 
+		Waiting = Waiting - 1;
+	    if(!(Waiting))
+    	{ 
+    		print("EIB: Timeout!\n");
+		    call Send();
+    	}
+	}
+    else
+    {
+    	call Send();
+    }
+}
+ 
+change EIB_Cmd // macro command input
+{ string Cmd[20], Parms[MaxParmLen];
+  integer Adr, Ct, Searching, Char;
+  if(!(Proc_Cmd))
+  { Proc_Cmd = 1;
+    wait(50, Wait_Cmd)
+    { print("EIB: Proc Cmd crash!\n");
+      Proc_Cmd = 0;
+    }
+    Cmd = remove("\xFF", EIB_Cmd);
+    while(len(Cmd))
+    { switch(byte(Cmd,1))
+      { case(0xFE): // send command
+        { Adr = (byte(Cmd,2) << 11) + (byte(Cmd,3) << 8)
+                + (byte(Cmd,4) << 4) + byte(Cmd,5);
+          Parms = "";
+          Cmd = mid(Cmd, 6, len(Cmd) - 6);
+          if(len(Cmd) & 0x1) // odd number of nibbles?
+            Cmd = "\x00" + Cmd; // we can only generate COMPLETE bytes...
+          for(Ct = 2 to len(Cmd) step 2)
+          { Char = (byte(Cmd,Ct - 1) << 4) + byte(Cmd,Ct);
+            Parms = Parms + chr(Char);
+          }
+          Ct = Send_Out;
+          Searching = 1;
+          while((Ct <> Send_In) && Searching)
+          { if(Send_Adr[Ct] = Adr)
+              Searching = 0;
+            else
+            { Ct = Ct + 1;
+              if(Ct > SendSize) Ct = 1;
+            }
+          }
+          if(Searching) // not found => add to queue
+          { Send_Adr[Send_In] = Adr;
+            Send_Parm[Send_In] = Parms;
+            Send_In = Send_In + 1;
+            if(Send_In > SendSize) Send_In = 1;
+            if(Send_In = Send_Out)
+            { print("EIB: Send queue overflow!\n");
+              Send_Out = Send_Out + 1; // delete oldest entry
+              if(Send_Out > SendSize) Send_Out = 1; 
+            }
+          }
+          else // if group address already in send queue...
+            Send_Parm[Ct] = Parms; // ...replace its value
+        }
+        case(0xFD): // poll
+        { Adr = (byte(Cmd,2) << 11) + (byte(Cmd,3) << 8)
+                + (byte(Cmd,4) << 4) + byte(Cmd,5);
+          Ct = Poll_Out;
+          Searching = 1;
+          while((Ct <> Poll_In) && Searching)
+          { if(Poll_Adr[Ct] = Adr)
+              Searching = 0;
+            else
+            { Ct = Ct + 1;
+              if(Ct > PollSize) Ct = 1;
+            }
+          }
+          if(Searching) // not found => add to queue
+          { Poll_Adr[Poll_In] = Adr;
+            Poll_In = Poll_In + 1;
+            if(Poll_In > PollSize) Poll_In = 1;
+            if(Poll_In = Poll_Out)
+            { print("EIB: Poll queue overflow!\n");
+              Poll_Out = Poll_Out + 1; // delete oldest entry
+              if(Poll_Out > PollSize) Poll_Out = 1; 
+            }
+          }
+        }
+        default:
+          print("EIB: Bad command %Xh\n", byte(Cmd,1));
+      }      
+      Cmd = remove("\xFF", EIB_Cmd);
+    }
+    Proc_Cmd = 0; // command processing loop finished successfully
+    cancelwait(Wait_Cmd);
+  }
+}
+
+change Rx  // incoming RS232/422 data
+{ integer Char, Complete, PollNext;
+  if(!(Proc_Rx))
+  { Proc_Rx = 1;
+    wait(100, Wait_Rx)
+    { print("EIB: Proc Rx crash!\n");
+      Proc_Rx = 0;  
+      clearbuffer(Rx);
+    }
+    Complete = 1; // no incomplete reply found yet
+    PollNext = 1; // continue polling after processing Rx
+    while(len(Rx) && Complete)
+    { switch(byte(Rx,1))
+      { case(0x06): // ACK => something succeeded
+        { switch(Action) // what did we send last?
+          { case(Action_Send):
+            { Send_Out = Send_Out + 1;
+              if(Send_Out > SendSize) Send_Out = 1;
+            }
+            case(Action_Poll):
+            { Poll_Out = Poll_Out + 1;
+              if(Poll_Out > PollSize) Poll_Out = 1;
+            }
+            default: PollNext = 0; // nothing in gateway buffer
+          }
+          Char = getc(Rx); // remove byte from Rx buffer
+          Action = Action_Idle;
+          NAK_Count = 0;
+          Waiting = 0;
+        }
+        case(0x15): // NAK => something went wrong...
+        { NAK_Count = NAK_Count + 1;
+          if(NAK_Count > 2)
+          { switch(Action) // what was it?
+            { case(Action_Send):
+              { Char = Send_Adr[Send_Out];
+                print("EIB: NAK on setting %d/%d/%d\n",
+                      (Char & 0x7800) >> 11, (Char & 0x700) >> 8, Char & 0xFF);
+                Send_Out = Send_Out + 1;
+                if(Send_Out > SendSize) Send_Out = 1;
+              }
+              case(Action_Poll):
+              { Char = Poll_Adr[Poll_Out];
+                print("EIB: NAK on polling %d/%d/%d\n",
+                      (Char & 0x7800) >> 11, (Char & 0x700) >> 8, Char & 0xFF);
+                Poll_Out = Poll_Out + 1;
+                if(Poll_Out > PollSize) Poll_Out = 1;              
+              }
+              default:
+              { print("EIB: NAK\n");
+              }
+            }
+            NAK_Count = 0;
+            Action = Action_Idle; // finished this (badly)
+          }
+          Char = getc(Rx); // remove byte from Rx buffer
+          Waiting = 0; // ...retry
+        }
+        case(0x02): // STX => start of reply
+        { Msg = remove("\x0D", Rx);
+          if(len(Msg)) // got a complete message?
+            call Reply();
+          else // incomplete (no \x0D yet)
+            Complete = 0; // retry later (on next Rx change)
+        }
+        default: Char = getc(Rx); // remove junk byte from Rx buffer
+      }      
+    }
+    Proc_Rx = 0; // input processing loop finished successfully
+    cancelwait(Wait_Rx);
+    if(PollNext)
+      call Send();
+  }
+}
+ 
+// ***********************************************************************
+//   The End.
+// *********************************************************************** 

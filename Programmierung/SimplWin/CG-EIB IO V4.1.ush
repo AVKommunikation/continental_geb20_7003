@@ -1,0 +1,90 @@
+[BEGIN]
+  Version=1
+[END]
+[BEGIN]
+  ObjTp=FSgntr
+  Sgntr=UserSPlus
+  RelVrs=1
+  IntStrVrs=1
+  SPlusVrs=4.04.01
+  CrossCplrVrs=1.3
+[END]
+[BEGIN]
+  ObjTp=Hd
+  Cmn1=||;\\Only to be used with the "CG-EIB IO V4.1.umc" module\\
+  Cmn2=\\CGEIB I/O 4.1 - fixes and improvements. (Harald Steindl of MOCOM||1
+  Cmn3=GmbH, Vienna-Austria)\\    - added ability to accept late ACKs caused||1
+  Cmn4=by new high speed EIB devices  \\CGEIB I/O 4.0 - new CG-EIB firmware.
+  Cmn5=||1(Niko Brasseur)\\	- CG-EIB can automatically report back feedback||1
+  Cmn6=--> don't poll for telegrams automatically\\\\CGEIB I/O 3.0 - input/output||1
+  Cmn7=handling for CGEIB EIB gateway\\  Version 3.0 by Bernhard Kirsch,||1
+  Cmn8=Crestron Germany GmbH\\  \\Inputs:\\  Clock   (d) Retrigger gateway||1
+  Cmn9=poll\\  Rx      (s) RS232 in from gateway\\  EIB_Cmd (s) Command||1
+  Cmn10=input from macros\\\\Outputs:\\  Tx      (s) RS232 out to gateway\\
+  Cmn11=||2EIB_FB  (s) Feedback output to macros
+[END]
+[BEGIN]
+  ObjTp=Symbol
+  Exclusions=1,19,20,21,88,89,167,168,179,213,214,215,216,217,225,226,248,249,266,267,310,718,756,854,
+  Exclusions_CDS=5
+  Inclusions_CDS=6
+  Name=CGEIB I/O 4.1
+  SmplCName=CG-EIB IO V4.1.usp
+  Code=1
+  SysRev5=4.006
+  SMWRev=3.00.00
+  InputCue1=Trigger
+  InputSigType1=Digital
+  InputList2Cue1=Rx
+  InputList2SigType1=Serial
+  InputList2Cue2=EIB_Cmd
+  InputList2SigType2=Serial
+  OutputList2Cue1=Tx
+  OutputList2SigType1=Serial
+  OutputList2Cue2=EIB_FB
+  OutputList2SigType2=Serial
+  ParamCue1=[Reference Name]
+  MinVariableInputs=1
+  MaxVariableInputs=1
+  MinVariableInputsList2=2
+  MaxVariableInputsList2=2
+  MinVariableOutputs=0
+  MaxVariableOutputs=0
+  MinVariableOutputsList2=2
+  MaxVariableOutputsList2=2
+  MinVariableParams=0
+  MaxVariableParams=0
+  Expand=expand_separately
+  Expand2=expand_separately
+  ProgramTree=Logic
+  SymbolTree=0
+  Hint=CGEIB EIB gateway Input/Output handling (2-series)
+  PdfHelp=
+  HelpID= 
+  Render=4
+  Smpl-C=16
+  CompilerCode=-48
+  CompilerParamCode=27
+  CompilerParamCode5=14
+  NumFixedParams=1
+  Pp1=1
+  MPp=1
+  NVStorage=10
+  ParamSigType1=String
+  SmplCInputCue1=o#
+  SmplCOutputCue1=i#
+  SmplCInputList2Cue1=an#
+  SmplCOutputList2Cue1=ai#
+  SPlus2CompiledName=S2_CG_EIB_IO_V4_1
+  SymJam=NonExclusive
+  FileName=CG-EIB IO V4.1.ush
+  SIMPLPlusModuleEncoding=0
+  clz1=Cisco SX80 Corporate Phone Book
+  clz2=Cisco SX80 Phone Book
+[END]
+[BEGIN]
+  ObjTp=Dp
+  H=1
+  Tp=1
+  NoS=False
+[END]

@@ -16,6 +16,9 @@
 #define __S2_DialConti_FRANKFURT_DIG_INPUT 2
 #define __S2_DialConti_MUNCHEN_DIG_INPUT 3
 #define __S2_DialConti_DIAL_DIG_INPUT 4
+#define __S2_DialConti_ACTIVATE_VC_DIG_INPUT 5
+#define __S2_DialConti_ACTIVATE_SIP_DIG_INPUT 6
+#define __S2_DialConti_ACTIVATE_H323_DIG_INPUT 7
 
 
 /*
@@ -25,6 +28,9 @@
 #define __S2_DialConti_NUMBER_STRING_INPUT 0
 #define __S2_DialConti_NUMBER_STRING_MAX_LEN 50
 CREATE_STRING_STRUCT( S2_DialConti, __NUMBER, __S2_DialConti_NUMBER_STRING_MAX_LEN );
+#define __S2_DialConti_NUMBERVC_STRING_INPUT 1
+#define __S2_DialConti_NUMBERVC_STRING_MAX_LEN 50
+CREATE_STRING_STRUCT( S2_DialConti, __NUMBERVC, __S2_DialConti_NUMBERVC_STRING_MAX_LEN );
 
 
 
@@ -111,6 +117,7 @@ START_GLOBAL_VAR_STRUCT( S2_DialConti )
    unsigned short LastModifiedArrayIndex;
 
    DECLARE_STRING_STRUCT( S2_DialConti, __NUMBER );
+   DECLARE_STRING_STRUCT( S2_DialConti, __NUMBERVC );
 };
 
 START_NVRAM_VAR_STRUCT( S2_DialConti )

@@ -1,0 +1,617 @@
+/*******************************************************************************************
+  SIMPL+ Module Information
+*******************************************************************************************/
+/*
+Dealer Name:
+System Name:
+System Number:
+Programmer: Peter Jablonicky
+Comments:
+*/
+
+/*******************************************************************************************
+  Compiler Directives
+*******************************************************************************************/
+//#DEFINE_CONSTANT DEBUG 1
+
+/* 2000-03-01 (mod 400 year, immediately after feb29 */
+#DEFINE_CONSTANT LEAPOCH 951868800
+#DEFINE_CONSTANT DAYS_PER_400Y 146097
+#DEFINE_CONSTANT DAYS_PER_100Y 36524
+#DEFINE_CONSTANT DAYS_PER_4Y   1461
+
+#SYMBOL_NAME "dreamboxEnigma2 Processor v8"
+#DEFINE_CONSTANT FAV_COUNT 20
+#DEFINE_CONSTANT PRESS_TIME 100
+#CATEGORY "37" // Tuners
+#PRINT_TO_TRACE
+#DEFAULT_VOLATILE
+#ENABLE_STACK_CHECKING
+#ENABLE_TRACE
+#ENCODING_UTF16
+
+#HELP_BEGIN
+This module is a part of the makro dreamboxEnigma2
+#HELP_END
+
+/*******************************************************************************************
+  DIGITAL, ANALOG and SERIAL INPUTS and OUTPUTS
+*******************************************************************************************/
+DIGITAL_INPUT go_parse, power_on, power_off, power;
+DIGITAL_INPUT cur_refreh, fav[FAV_COUNT];
+ANALOG_INPUT channel, TCP_status;
+BUFFER_INPUT rx[65534];
+
+DIGITAL_OUTPUT on_fb, off_fb, vol_muted, vol_unmuted, saving, chan_change;
+ANALOG_OUTPUT volume_fb;
+STRING_OUTPUT tx, message, cChannel, cName, cTitle, cDescription, cStart, cEnd, cDuration, cRemaining;
+STRING_OUTPUT fav_name[FAV_COUNT];
+
+/*******************************************************************************************
+  Global Variables
+*******************************************************************************************/
+INTEGER lastPress;	//getLastModifiedArrayIndex() of the favorite button
+INTEGER todo, send_ok, semaphore;
+STRING fileName[50];
+STRING channel_mem[10];
+
+/*******************************************************************************************
+  Functions
+*******************************************************************************************/
+String_Function parse(string data, string left_node, string right_node, integer start)
+{
+	string pom[256];
+	
+	integer token_start, token_len;
+
+	token_start=find(left_node, data, start);
+	token_len=find(right_node, data, token_start);
+
+	if(token_start=0 | token_len=0)
+		return ("");
+     
+    if((token_len - token_start - len(left_node)) > 255)
+		return ("");
+
+	pom = mid(data, token_start + len(left_node), token_len - token_start - len(left_node));
+	return (pom);
+}
+
+String_Function replaceStrM(string source, string orig, string new)
+{
+	integer strPoz, poz;
+	
+	strPoz = 1;
+	poz = find(orig, source, strPoz);
+	
+	while(poz > 0)
+	{         
+		source = mid(source,1,poz-1) + new + mid(source,poz+len(orig),len(source)-poz-len(orig)+1);
+		strPoz = poz + len(new);   
+		poz = find(orig, source, strPoz);
+	}
+
+	return (source);
+}
+
+function get_power_fn()
+{
+	while ( (TCP_status = 1) || (TCP_status = 2) )
+		delay(200);
+
+	tx = "GET /web/powerstate HTTP/1.0\n\n";
+}
+
+function get_volume_fn()
+{
+	while ( (TCP_status = 1) || (TCP_status = 2) )
+		delay(200);
+
+	tx = "GET /web/vol HTTP/1.0\n\n"; 
+}
+
+function get_current_fn()
+{
+	while ( (TCP_status = 1) || (TCP_status = 2) )
+		delay(200);
+
+	tx = "GET /web/subservices HTTP/1.0\n\n"; 
+}
+
+function get_current_full_fn()
+{
+	while ( (TCP_status = 1) || (TCP_status = 2) )
+		delay(200);
+
+	tx = "GET /web/getcurrent HTTP/1.0\n\n"; 
+}
+
+function get_mac_fn()
+{
+	while ( (TCP_status = 1) || (TCP_status = 2) )
+		delay(200);
+
+	tx = "GET /web/deviceinfo HTTP/1.0\n\n"; 
+}
+
+function set_power_on()
+{
+	while ( (TCP_status = 1) || (TCP_status = 2) )
+		delay(200);
+
+	tx = "GET /web/powerstate?newstate=4 HTTP/1.0\n\n";
+	
+	delay(100); 
+	get_power_fn();
+
+	todo = 1; //read favorite list
+}
+
+function set_power_off()
+{
+	while ( (TCP_status = 1) || (TCP_status = 2) )
+		delay(200);
+
+	tx = "GET /web/powerstate?newstate=5 HTTP/1.0\n\n";
+	
+	delay(100); 
+	get_power_fn();
+}
+
+function set_power()
+{
+	while ( (TCP_status = 1) || (TCP_status = 2) )
+		delay(200);
+
+	tx = "GET /web/powerstate?newstate=0 HTTP/1.0\n\n";
+	
+	delay(100); 
+	get_power_fn();
+}
+
+function handle_power()
+{
+	string pom[255];
+
+	pom = parse(rx, "<e2instandby>", "</e2instandby>", 1);
+	if(find("true", pom))
+	{
+		on_fb = off;
+		off_fb = on;
+	}
+	else if(find("false", pom))
+	{
+		off_fb = off;
+		on_fb = on;
+	}
+
+	if(todo = 3)
+		todo = 2;
+}
+   
+
+function handle_volume()
+{
+	string pom[10];
+
+	if(find("<e2ismuted>True</e2ismuted>", rx))
+	{
+		vol_unmuted = off;
+		vol_muted = on;
+	}
+	else if(find("<e2ismuted>False</e2ismuted>", rx))
+	{
+		vol_muted = off;
+		vol_unmuted = on;
+	}
+
+	pom = parse(rx, "<e2current>", "</e2current>", 1);
+	if((65535*atoi(pom) mod 100) >= 50)
+		volume_fb = ((65535*atoi(pom)) / 100) + 1;
+	else
+		volume_fb = (65535*atoi(pom)) / 100;
+}
+
+function handle_current()
+{
+	string channelName[100];
+	string tmpName[100];
+	string tmpRef[100];        
+	string channelRef[100];
+	string line[100], readBuf[4096], writeBuf[4096];
+	SIGNED_INTEGER  nFileHandle, i, poz1, poz2;
+
+	if(lastPress)
+	{
+		channelRef = parse(rx, "<e2servicereference>", "</e2servicereference>", 1);
+		channelName = parse(rx, "<e2servicename>", "</e2servicename>", 1);
+
+		StartFileOperations();
+		nFileHandle = FileOpen(fileName, _O_RDONLY | _O_BINARY);
+		//fileRead(nFileHandle, readBuf, 4096);
+		ReadString(nFileHandle, readBuf);
+		 
+		fileClose(nFileHandle);
+        
+		nFileHandle = FileOpen(fileName, _O_WRONLY | _O_CREAT | _O_BINARY);
+		poz1 = 1;
+		writeBuf = "";
+
+		for(i=1 to FAV_COUNT)
+		{
+			poz2 = find("\n", readBuf, poz1+1);
+			if(i = lastPress)	//replace position with the new channel
+			{
+				makestring(line, "<fav%d><name>%s</name><ref>%s</ref></fav%d>", i, channelName, channelRef, i);
+				fav_name[i] = channelName;
+			}
+			else	//copy old line from the text file
+			{
+				line = mid(readBuf, poz1, poz2-poz1);
+				tmpName = parse(line, "<name>", "</name>", 1);
+				tmpRef = parse(line, "<ref>", "</ref>", 1);
+				makestring(line, "<fav%d><name>%s</name><ref>%s</ref></fav%d>", i, tmpName, tmpRef, i);
+				fav_name[i] = tmpName;
+			}
+#IF_DEFINED DEBUG
+	print("handle current L: %s\n", line);
+#ENDIF
+			poz1 = poz2+2;
+			makestring(writeBuf, "%s%s\n", writeBuf, line);
+		}
+
+		//save buffer to file
+		i = WriteString(nFileHandle, writeBuf);
+		 	
+		fileClose(nFileHandle);
+		endFileOperations();
+
+		lastPress = 0;
+		message = "";
+		saving = off;
+	}
+		
+}
+
+string_function time2hhmmss(string str_t)
+{
+	string pom[25];
+	integer t;
+
+	t = atoi(str_t);
+
+	//minutes
+
+	if(t<60)
+		makestring(pom, "0:00");
+	else if(t<3600)
+		makestring(pom, "0:%02d", t/60);
+	else
+		makestring(pom, "%d:%02d", t/3600, (t - (t/3600)*3600) / 60);
+
+	return (pom);
+}
+
+string_function unix2hhmm(long_integer t)
+{
+	string pom[25];
+	long_integer days, secs;
+	integer remdays, remsecs, remyears;
+	integer qc_cycles, c_cycles, q_cycles;
+	integer years, months;
+	integer wday, yday, leap;
+	integer days_in_month[12];
+    
+	days_in_month[1] = 31;
+	days_in_month[2] = 30;
+	days_in_month[3] = 31;
+	days_in_month[4] = 30;
+	days_in_month[5] = 31;
+	days_in_month[6] = 31;
+	days_in_month[7] = 30;
+	days_in_month[8] = 31;
+	days_in_month[9] = 30;
+	days_in_month[10] = 31;
+	days_in_month[11] = 31;
+	days_in_month[12] = 29;
+
+	secs = t - LEAPOCH;
+	days = secs / 86400;
+	remsecs = secs % 86400;
+	if (remsecs < 0) {
+		remsecs = remsecs + 86400;
+		days = days - 1;
+	}
+
+	wday = (3+days)%7;
+	if (wday < 0) wday = wday + 7;
+
+	qc_cycles = days / DAYS_PER_400Y;
+	remdays = days % DAYS_PER_400Y;
+	if (remdays < 0) {
+		remdays = remdays + DAYS_PER_400Y;
+		qc_cycles = qc_cycles - 1;
+	}
+
+	c_cycles = remdays / DAYS_PER_100Y;
+	if (c_cycles = 4) c_cycles = c_cycles - 1;
+	remdays = remdays - (c_cycles * DAYS_PER_100Y);
+
+	q_cycles = remdays / DAYS_PER_4Y;
+	if (q_cycles = 25) q_cycles = q_cycles - 1;
+	remdays = remdays - (q_cycles * DAYS_PER_4Y);
+
+	remyears = remdays / 365;
+	if (remyears = 4) remyears = remyears - 1;
+	remdays = remdays - (remyears * 365);
+
+	leap = !remyears && (q_cycles || !c_cycles);
+	yday = remdays + 31 + 28 + leap;
+	if (yday >= 365+leap) yday = yday - (365+leap);
+
+	years = remyears + 4*q_cycles + 100*c_cycles + 400*qc_cycles;
+
+	months = 1;
+	while(days_in_month[months] <= remdays)
+	{
+		remdays = remdays - days_in_month[months];
+     	months = months + 1;
+	}
+	
+	makestring(pom, "%d:%d", ((remsecs / 3600)+GetGmtOffset()), ((remsecs / 60)%60));
+	return (pom);
+}
+
+function handle_current_full()
+{
+	string sStart[25], sDuration[25];
+
+	cChannel = parse(rx, "<e2servicename>", "</e2servicename>", 1);
+	cName = parse(rx, "<e2eventname>", "</e2eventname>", 1);
+	cTitle = parse(rx, "<e2eventdescription>", "</e2eventdescription>", 1);
+	cDescription = parse(rx, "<e2eventdescriptionextended>", "</e2eventdescriptionextended>", 1);
+	sStart = parse(rx, "<e2eventstart>", "</e2eventstart>", 1);
+	sDuration = parse(rx, "<e2eventduration>", "</e2eventduration>", 1);
+	cStart = unix2hhmm(atol(sStart));
+	cEnd = unix2hhmm(atol(sStart) + atol(sDuration));
+	cDuration = time2hhmmss(sDuration);
+	cRemaining = time2hhmmss(parse(rx, "<e2eventremaining>", "</e2eventremaining>", 1));
+}
+
+function handle_mac()
+{
+	SIGNED_INTEGER  nFileHandle, i, poz1, poz2;
+	string sBuf[4096], readBuf[4096];
+    string line[100];
+
+	sBuf = parse(rx, "<e2mac>", "</e2mac>", 1);
+	fileName = "\\NVRAM\\DB_" + replaceStrM(sBuf, ":", "-") + ".db";
+	sBuf = "";
+
+	StartFileOperations();
+	nFileHandle = FileOpen(fileName, _O_RDONLY | _O_BINARY);
+	if(nFileHandle = -3024)	//file not found, we will create one
+	{
+		nFileHandle = FileOpen(fileName, _O_WRONLY | _O_CREAT | _O_APPEND | _O_BINARY);
+
+		for(i = 1 to FAV_COUNT)
+		{
+			makestring(sBuf, "<fav%d><name></name><ref></ref></fav%d>\n", i, i);
+			poz1 = WriteString(nFileHandle, sBuf);
+		}
+	}
+	else if(nFileHandle >= 0)	//file open OK
+	{
+		ReadString(nFileHandle, readBuf);
+		poz1 = 1;
+
+#IF_DEFINED DEBUG
+	print("readBuf: %s\n", readBuf);
+#ENDIF
+
+		for(i=1 to FAV_COUNT)
+		{
+			poz2 = find("\n", readBuf, poz1+1);
+			line = mid(readBuf, poz1, poz2-poz1);
+#IF_DEFINED DEBUG
+	print("line: %s\n", line);
+#ENDIF
+			fav_name[i] = parse(line, "<name>", "</name>", 1);
+
+			poz1 = poz2+2;
+		}
+	}
+	else	//unable to open file
+		makestring(message, "unable to open file [code:%d]", nFileHandle);
+
+	fileClose(nFileHandle);
+	endFileOperations();
+}
+
+string_function readLine()
+{
+	string line[100], pom[4096];
+	SIGNED_INTEGER  nFileHandle, i, poz1, poz2;
+
+	if(lastPress)
+	{
+		StartFileOperations();
+		nFileHandle = FileOpen(fileName, _O_RDWR | _O_BINARY);
+		if (nFileHandle < 0)
+		{
+			makestring(message, "unable to open database file [code:%d]", nFileHandle);
+			lastPress = 0;
+			return("");
+		}
+		else
+		{
+//			fileRead(nFileHandle, pom, 4096);
+			ReadString(nFileHandle, pom);
+			fileClose(nFileHandle);
+			endFileOperations();
+	        
+	        i = 0;
+			poz1 = 1;
+	    	do
+			{
+				poz2 = find("\n", pom, poz1+1);
+				line = mid(pom, poz1, poz2-poz1);
+				poz1 = poz2 + 2;
+				i = i + 1;
+			}
+			until(i = lastPress);
+		}
+		
+		lastPress = 0;
+		return(parse(line, "<ref>", "</ref>", 1));
+	}
+}
+
+function load_fav()
+{
+	string pom[50];
+
+    pom = readLine();
+	if(len(pom))
+	{
+		while ( (TCP_status = 1) || (TCP_status = 2) )
+			delay(200);
+		makestring(tx,"GET /web/zap?sRef=%s HTTP/1.0\n\n", pom); 
+	}
+	else
+		message = "empty position";
+}
+
+function set_channel()
+{
+	integer nr;
+
+	if(len(channel_mem) > 0)	//send a number
+	{
+		while ( (TCP_status = 1) || (TCP_status = 2) )
+			delay(200);
+        
+		nr = atoi( left(channel_mem, 1) );
+		if(nr = 0)
+			makestring(tx,"GET /web/remotecontrol?command=11 HTTP/1.0\n\n");
+		else
+			makestring(tx,"GET /web/remotecontrol?command=%d HTTP/1.0\n\n", nr + 1);
+			
+
+		channel_mem = mid(channel_mem,2,10);
+
+		if(len(channel_mem) = 0)
+			send_ok = 1;
+	}
+	else if(send_ok)	//send OK
+	{
+		while ( (TCP_status = 1) || (TCP_status = 2) )
+			delay(200);
+		makestring(tx,"GET /web/remotecontrol?command=352 HTTP/1.0\n\n");
+		send_ok = 0;
+	}
+
+	pulse(10, chan_change);	
+}
+
+/*******************************************************************************************
+  Event Handlers
+*******************************************************************************************/
+PUSH go_parse
+{
+	if(semaphore = 1)
+	{
+		semaphore = 0;
+		if(find("</e2instandby>", rx))
+			handle_power();
+		else if(find("<e2deviceinfo>", rx))
+			handle_mac();
+		else if(find("<e2servicelist>", rx))
+			handle_current();
+		else if(find("<e2currentserviceinformation>", rx))
+			handle_current_full();
+		else if(find("<e2volume>", rx))
+			handle_volume();
+		else if(find("<e2remotecontrol>", rx))
+			set_channel();
+		else
+			clearbuffer(rx);
+
+
+	    
+		//on restart read all feedbacks
+		cswitch(todo)
+		{
+	    	case(3):
+			{
+				todo = 2;
+				get_power_fn();
+				break;
+			}
+	    	case(2):
+			{
+				todo = 1;
+				get_volume_fn();
+				break;
+			}
+	    	case(1):
+			{
+				todo = 0;
+				get_mac_fn();
+				break;
+			}
+		}
+	                                   	
+		clearbuffer(rx);
+
+		semaphore = 1;
+	}
+}
+
+PUSH power_on {	set_power_on(); }
+PUSH power_off { set_power_off(); }
+PUSH power { set_power(); }
+PUSH cur_refreh { get_current_full_fn(); }
+
+PUSH fav
+{
+	lastPress = getLastModifiedArrayIndex();
+	message = "";
+
+	if(lastPress > FAV_COUNT)
+		terminateEvent;
+
+	wait(PRESS_TIME, favoriteTimer)
+	{
+		if(fav[lastPress] = on) //save
+		{ 
+			message = "saving.. please wait"; 
+			saving = on; 
+			get_current_fn(); 
+		}
+		else	//load
+		{ 
+			load_fav();
+			pulse(10, chan_change);	
+		}
+	}
+}
+
+RELEASE fav { retimeWait(0, favoriteTimer); }
+
+CHANGE channel { channel_mem = itoa(channel); set_channel(); }
+
+/*******************************************************************************************
+  Main()
+*******************************************************************************************/
+Function Main()
+{
+	fileName = "";
+	message = "";
+	todo = 3;
+	send_ok = 0;
+	WaitForInitializationComplete();
+	
+	get_power_fn();
+	semaphore = 1;
+}
