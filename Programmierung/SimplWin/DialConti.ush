@@ -34,7 +34,7 @@
   InputSigType5=Digital
   InputCue6=[~UNUSED~]
   InputSigType6=Digital
-  InputCue7=Activate_VC
+  InputCue7=Dial_VC
   InputSigType7=Digital
   InputCue8=Activate_SIP
   InputSigType8=Digital
@@ -82,6 +82,8 @@
   SymJam=NonExclusive
   FileName=DialConti.ush
   SIMPLPlusModuleEncoding=0
+  clz1=Cisco SX80 Corporate Phone Book
+  clz2=Cisco SX80 Phone Book
 [END]
 [BEGIN]
   ObjTp=Dp

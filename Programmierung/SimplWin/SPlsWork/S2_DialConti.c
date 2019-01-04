@@ -57,7 +57,7 @@ RESTORE_GLOBAL_POINTERS ;
 
 }
 
-DEFINE_INDEPENDENT_EVENTHANDLER( S2_DialConti, 00001 /*NumberVC*/ )
+DEFINE_INDEPENDENT_EVENTHANDLER( S2_DialConti, 00001 /*Dial_VC*/ )
 
     {
     /* Begin local function variable declarations */
@@ -69,13 +69,24 @@ DEFINE_INDEPENDENT_EVENTHANDLER( S2_DialConti, 00001 /*NumberVC*/ )
     /* End local function variable declarations */
     
     
-    UpdateSourceCodeLine( INSTANCE_PTR( S2_DialConti ), 156 );
-    if ( GetDigitalInput( INSTANCE_PTR( S2_DialConti ), __S2_DialConti_ACTIVATE_VC_DIG_INPUT )) 
+    UpdateSourceCodeLine( INSTANCE_PTR( S2_DialConti ), 158 );
+    if ( GetDigitalInput( INSTANCE_PTR( S2_DialConti ), __S2_DialConti_ACTIVATE_SIP_DIG_INPUT )) 
         { 
-        UpdateSourceCodeLine( INSTANCE_PTR( S2_DialConti ), 158 );
-        if ( GetDigitalInput( INSTANCE_PTR( S2_DialConti ), __S2_DialConti_ACTIVATE_SIP_DIG_INPUT )) 
+        UpdateSourceCodeLine( INSTANCE_PTR( S2_DialConti ), 160 );
+        if( ObtainStringOutputSemaphore( INSTANCE_PTR( S2_DialConti ) ) == 0 ) {
+        FormatString ( INSTANCE_PTR( S2_DialConti ) , GENERIC_STRING_OUTPUT( S2_DialConti )  ,2 , "%s"  , GLOBAL_STRING_STRUCT( S2_DialConti, __NUMBERVC  )   )  ; 
+        SetSerial( INSTANCE_PTR( S2_DialConti ), __S2_DialConti_TX$_STRING_OUTPUT, GENERIC_STRING_OUTPUT( S2_DialConti ) );
+        ReleaseStringOutputSemaphore( INSTANCE_PTR( S2_DialConti ) ); }
+        
+        ; 
+        } 
+    
+    else 
+        {
+        UpdateSourceCodeLine( INSTANCE_PTR( S2_DialConti ), 162 );
+        if ( GetDigitalInput( INSTANCE_PTR( S2_DialConti ), __S2_DialConti_ACTIVATE_H323_DIG_INPUT )) 
             { 
-            UpdateSourceCodeLine( INSTANCE_PTR( S2_DialConti ), 160 );
+            UpdateSourceCodeLine( INSTANCE_PTR( S2_DialConti ), 164 );
             if( ObtainStringOutputSemaphore( INSTANCE_PTR( S2_DialConti ) ) == 0 ) {
             FormatString ( INSTANCE_PTR( S2_DialConti ) , GENERIC_STRING_OUTPUT( S2_DialConti )  ,2 , "%s"  , GLOBAL_STRING_STRUCT( S2_DialConti, __NUMBERVC  )   )  ; 
             SetSerial( INSTANCE_PTR( S2_DialConti ), __S2_DialConti_TX$_STRING_OUTPUT, GENERIC_STRING_OUTPUT( S2_DialConti ) );
@@ -84,23 +95,7 @@ DEFINE_INDEPENDENT_EVENTHANDLER( S2_DialConti, 00001 /*NumberVC*/ )
             ; 
             } 
         
-        else 
-            {
-            UpdateSourceCodeLine( INSTANCE_PTR( S2_DialConti ), 162 );
-            if ( GetDigitalInput( INSTANCE_PTR( S2_DialConti ), __S2_DialConti_ACTIVATE_H323_DIG_INPUT )) 
-                { 
-                UpdateSourceCodeLine( INSTANCE_PTR( S2_DialConti ), 164 );
-                if( ObtainStringOutputSemaphore( INSTANCE_PTR( S2_DialConti ) ) == 0 ) {
-                FormatString ( INSTANCE_PTR( S2_DialConti ) , GENERIC_STRING_OUTPUT( S2_DialConti )  ,3 , "0%s"  , GLOBAL_STRING_STRUCT( S2_DialConti, __NUMBERVC  )   )  ; 
-                SetSerial( INSTANCE_PTR( S2_DialConti ), __S2_DialConti_TX$_STRING_OUTPUT, GENERIC_STRING_OUTPUT( S2_DialConti ) );
-                ReleaseStringOutputSemaphore( INSTANCE_PTR( S2_DialConti ) ); }
-                
-                ; 
-                } 
-            
-            }
-        
-        } 
+        }
     
     
     S2_DialConti_Exit__Event_1:
@@ -122,7 +117,7 @@ DEFINE_INDEPENDENT_EVENTHANDLER( S2_DialConti, 00002 /*Frankfurt*/ )
     /* End local function variable declarations */
     
     
-    UpdateSourceCodeLine( INSTANCE_PTR( S2_DialConti ), 171 );
+    UpdateSourceCodeLine( INSTANCE_PTR( S2_DialConti ), 170 );
     if( ObtainStringOutputSemaphore( INSTANCE_PTR( S2_DialConti ) ) == 0 ) {
     FormatString ( INSTANCE_PTR( S2_DialConti ) , GENERIC_STRING_OUTPUT( S2_DialConti )  ,13 , "1069201725184"  )  ; 
     SetSerial( INSTANCE_PTR( S2_DialConti ), __S2_DialConti_TX$_STRING_OUTPUT, GENERIC_STRING_OUTPUT( S2_DialConti ) );
@@ -149,7 +144,7 @@ DEFINE_INDEPENDENT_EVENTHANDLER( S2_DialConti, 00003 /*munchen*/ )
     /* End local function variable declarations */
     
     
-    UpdateSourceCodeLine( INSTANCE_PTR( S2_DialConti ), 176 );
+    UpdateSourceCodeLine( INSTANCE_PTR( S2_DialConti ), 175 );
     if( ObtainStringOutputSemaphore( INSTANCE_PTR( S2_DialConti ) ) == 0 ) {
     FormatString ( INSTANCE_PTR( S2_DialConti ) , GENERIC_STRING_OUTPUT( S2_DialConti )  ,13 , "1089204038490"  )  ; 
     SetSerial( INSTANCE_PTR( S2_DialConti ), __S2_DialConti_TX$_STRING_OUTPUT, GENERIC_STRING_OUTPUT( S2_DialConti ) );
@@ -219,6 +214,19 @@ static void ProcessDigitalEvent( struct Signal_s *Signal )
             }
             break;
             
+        case __S2_DialConti_DIAL_VC_DIG_INPUT :
+            if ( Signal->Value /*Push*/ )
+            {
+                SAFESPAWN_EVENTHANDLER( S2_DialConti, 00001 /*Dial_VC*/, 0 );
+                
+            }
+            else /*Release*/
+            {
+                SetSymbolEventStart ( INSTANCE_PTR( S2_DialConti ) ); 
+                
+            }
+            break;
+            
         default :
             SetSymbolEventStart ( INSTANCE_PTR( S2_DialConti ) ); 
             break ;
@@ -249,10 +257,6 @@ static void ProcessStringEvent( struct Signal_s *Signal )
     
     switch ( Signal->SignalNumber )
     {
-        case __S2_DialConti_NUMBERVC_STRING_INPUT :
-            SAFESPAWN_EVENTHANDLER( S2_DialConti, 00001 /*NumberVC*/, 0 );
-            break;
-            
         default :
             SetSymbolEventStart ( INSTANCE_PTR( S2_DialConti ) ); 
             break ;

@@ -2,6 +2,8 @@
 #define __S2_DIALCONTI_H__
 
 
+#include "Cisco_SX80_Corporate_Phone_Book.h"
+#include "Cisco_SX80_Phone_Book.h"
 
 
 /*
@@ -16,7 +18,7 @@
 #define __S2_DialConti_FRANKFURT_DIG_INPUT 2
 #define __S2_DialConti_MUNCHEN_DIG_INPUT 3
 #define __S2_DialConti_DIAL_DIG_INPUT 4
-#define __S2_DialConti_ACTIVATE_VC_DIG_INPUT 5
+#define __S2_DialConti_DIAL_VC_DIG_INPUT 5
 #define __S2_DialConti_ACTIVATE_SIP_DIG_INPUT 6
 #define __S2_DialConti_ACTIVATE_H323_DIG_INPUT 7
 

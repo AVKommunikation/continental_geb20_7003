@@ -48,7 +48,7 @@ Comments:
 	munchen,
 	Dial,
 	_SKIP_,
-    Activate_VC,
+    Dial_VC,
 	Activate_SIP,
 	Activate_H323;
 
@@ -151,18 +151,17 @@ PUSH Dial
 	}   
 } 
 
-Change NumberVC
+
+// Useless at the moment, for future features
+Push Dial_VC
 {
-	if(Activate_VC)
+	if(Activate_SIP)
 	{
-		if(Activate_SIP)
-		{
-			Makestring(Tx$,"%s",NumberVC);
-		}
-		else if(Activate_H323)
-		{
-            Makestring(Tx$,"0%s",NumberVC);
-		}
+		Makestring(Tx$,"%s",NumberVC);
+	}
+	else if(Activate_H323)
+	{
+           Makestring(Tx$,"%s",NumberVC);
 	}
 }   
 

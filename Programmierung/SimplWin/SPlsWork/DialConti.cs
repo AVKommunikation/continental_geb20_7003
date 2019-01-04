@@ -20,7 +20,7 @@ namespace UserModule_DIALCONTI
         Crestron.Logos.SplusObjects.DigitalInput FRANKFURT;
         Crestron.Logos.SplusObjects.DigitalInput MUNCHEN;
         Crestron.Logos.SplusObjects.DigitalInput DIAL;
-        Crestron.Logos.SplusObjects.DigitalInput ACTIVATE_VC;
+        Crestron.Logos.SplusObjects.DigitalInput DIAL_VC;
         Crestron.Logos.SplusObjects.DigitalInput ACTIVATE_SIP;
         Crestron.Logos.SplusObjects.DigitalInput ACTIVATE_H323;
         Crestron.Logos.SplusObjects.StringInput NUMBER;
@@ -61,7 +61,7 @@ namespace UserModule_DIALCONTI
             
         }
         
-    object NUMBERVC_OnChange_1 ( Object __EventInfo__ )
+    object DIAL_VC_OnPush_1 ( Object __EventInfo__ )
     
         { 
         Crestron.Logos.SplusObjects.SignalEventArgs __SignalEventArg__ = (Crestron.Logos.SplusObjects.SignalEventArgs)__EventInfo__;
@@ -69,28 +69,23 @@ namespace UserModule_DIALCONTI
         {
             SplusExecutionContext __context__ = SplusThreadStartCode(__SignalEventArg__);
             
-            __context__.SourceCodeLine = 156;
-            if ( Functions.TestForTrue  ( ( ACTIVATE_VC  .Value)  ) ) 
+            __context__.SourceCodeLine = 158;
+            if ( Functions.TestForTrue  ( ( ACTIVATE_SIP  .Value)  ) ) 
                 { 
-                __context__.SourceCodeLine = 158;
-                if ( Functions.TestForTrue  ( ( ACTIVATE_SIP  .Value)  ) ) 
+                __context__.SourceCodeLine = 160;
+                MakeString ( TX__DOLLAR__ , "{0}", NUMBERVC ) ; 
+                } 
+            
+            else 
+                {
+                __context__.SourceCodeLine = 162;
+                if ( Functions.TestForTrue  ( ( ACTIVATE_H323  .Value)  ) ) 
                     { 
-                    __context__.SourceCodeLine = 160;
+                    __context__.SourceCodeLine = 164;
                     MakeString ( TX__DOLLAR__ , "{0}", NUMBERVC ) ; 
                     } 
                 
-                else 
-                    {
-                    __context__.SourceCodeLine = 162;
-                    if ( Functions.TestForTrue  ( ( ACTIVATE_H323  .Value)  ) ) 
-                        { 
-                        __context__.SourceCodeLine = 164;
-                        MakeString ( TX__DOLLAR__ , "0{0}", NUMBERVC ) ; 
-                        } 
-                    
-                    }
-                
-                } 
+                }
             
             
             
@@ -109,7 +104,7 @@ object FRANKFURT_OnPush_2 ( Object __EventInfo__ )
     {
         SplusExecutionContext __context__ = SplusThreadStartCode(__SignalEventArg__);
         
-        __context__.SourceCodeLine = 171;
+        __context__.SourceCodeLine = 170;
         MakeString ( TX__DOLLAR__ , "1069201725184") ; 
         
         
@@ -128,7 +123,7 @@ object MUNCHEN_OnPush_3 ( Object __EventInfo__ )
     {
         SplusExecutionContext __context__ = SplusThreadStartCode(__SignalEventArg__);
         
-        __context__.SourceCodeLine = 176;
+        __context__.SourceCodeLine = 175;
         MakeString ( TX__DOLLAR__ , "1089204038490") ; 
         
         
@@ -161,8 +156,8 @@ public override void LogosSplusInitialize()
     DIAL = new Crestron.Logos.SplusObjects.DigitalInput( DIAL__DigitalInput__, this );
     m_DigitalInputList.Add( DIAL__DigitalInput__, DIAL );
     
-    ACTIVATE_VC = new Crestron.Logos.SplusObjects.DigitalInput( ACTIVATE_VC__DigitalInput__, this );
-    m_DigitalInputList.Add( ACTIVATE_VC__DigitalInput__, ACTIVATE_VC );
+    DIAL_VC = new Crestron.Logos.SplusObjects.DigitalInput( DIAL_VC__DigitalInput__, this );
+    m_DigitalInputList.Add( DIAL_VC__DigitalInput__, DIAL_VC );
     
     ACTIVATE_SIP = new Crestron.Logos.SplusObjects.DigitalInput( ACTIVATE_SIP__DigitalInput__, this );
     m_DigitalInputList.Add( ACTIVATE_SIP__DigitalInput__, ACTIVATE_SIP );
@@ -181,7 +176,7 @@ public override void LogosSplusInitialize()
     
     
     DIAL.OnDigitalPush.Add( new InputChangeHandlerWrapper( DIAL_OnPush_0, false ) );
-    NUMBERVC.OnSerialChange.Add( new InputChangeHandlerWrapper( NUMBERVC_OnChange_1, false ) );
+    DIAL_VC.OnDigitalPush.Add( new InputChangeHandlerWrapper( DIAL_VC_OnPush_1, false ) );
     FRANKFURT.OnDigitalPush.Add( new InputChangeHandlerWrapper( FRANKFURT_OnPush_2, false ) );
     MUNCHEN.OnDigitalPush.Add( new InputChangeHandlerWrapper( MUNCHEN_OnPush_3, false ) );
     
@@ -207,7 +202,7 @@ const uint EXTERN__DigitalInput__ = 1;
 const uint FRANKFURT__DigitalInput__ = 2;
 const uint MUNCHEN__DigitalInput__ = 3;
 const uint DIAL__DigitalInput__ = 4;
-const uint ACTIVATE_VC__DigitalInput__ = 5;
+const uint DIAL_VC__DigitalInput__ = 5;
 const uint ACTIVATE_SIP__DigitalInput__ = 6;
 const uint ACTIVATE_H323__DigitalInput__ = 7;
 const uint NUMBER__AnalogSerialInput__ = 0;
