@@ -137,8 +137,6 @@ object MUNCHEN_OnPush_3 ( Object __EventInfo__ )
 
 public override void LogosSplusInitialize()
 {
-    SocketInfo __socketinfo__ = new SocketInfo( 1, this );
-    InitialParametersClass.ResolveHostName = __socketinfo__.ResolveHostName;
     _SplusNVRAM = new SplusNVRAM( this );
     
     INTERN = new Crestron.Logos.SplusObjects.DigitalInput( INTERN__DigitalInput__, this );
