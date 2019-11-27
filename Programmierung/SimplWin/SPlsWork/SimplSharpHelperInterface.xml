@@ -6233,6 +6233,8 @@
             URL parser constructor with URL parameter that parses the input URL.
             </summary>
             <param name="aUrl">String containing the URL to parse</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="aUrl"/> is null.</exception>
+            <exception cref="T:System.UriFormatException"><paramref name="aUrl"/> is incorrectly formed or contains invalid credentials.</exception>
         </member>
         <member name="M:Crestron.SimplSharp.Net.Http.UrlParser.#ctor(Crestron.SimplSharp.Net.Http.UrlParser,System.String)">
             <summary>
@@ -6240,6 +6242,8 @@
             </summary>
             <param name="baseUrl">The base URL.</param>
             <param name="relativeUrl">The relative URL to add to the base URL.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="baseUrl"/> is null.</exception>
+            <exception cref="T:System.UriFormatException"><paramref name="baseUrl"/> is incorrectly formed or contains invalid credentials.</exception>
         </member>
         <member name="M:Crestron.SimplSharp.Net.Http.UrlParser.ToString">
             <summary>
@@ -6252,6 +6256,8 @@
             Parses the URL and sets the proper definitions for all aspects of the URL
             </summary>
             <param name="aUrl">String containing the URL to parse</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="aUrl"/> is null.</exception>
+            <exception cref="T:System.UriFormatException"><paramref name="aUrl"/> is incorrectly formed or contains invalid credentials.</exception>
         </member>
         <member name="P:Crestron.SimplSharp.Net.Http.UrlParser.Url">
             <summary>
@@ -24168,7 +24174,7 @@
             <param name="addressToAcceptConnectionFrom"></param>
             <param name="portOnWanSide"></param>
             <param name="addressToConnectTo">Target IP address to connect to.</param>
-            <param name="isHostName">Indicating whether <see cref="!:AddressClientConnectedTo"/> is a host name, not IP address.</param>
+            <param name="isHostName">Indicating whether <see cref="!:addressToAcceptConnectionFrom"/> is a host name, not IP address.</param>
             <returns></returns>
         </member>
         <member name="M:Crestron.SimplSharp.CrestronSockets.SecureTCPServer.SSLHandshakeNegotiationTimer(System.Object)">
@@ -25057,6 +25063,11 @@
             <remarks>
             This method requires firmware version 1.502.xxxx or later
             </remarks>
+        </member>
+        <member name="M:Crestron.SimplSharp.CrestronSockets.SecureTCPClient.DisconnectFromServerInternal">
+            <summary>
+            Internal method - will not check for the state at all.
+            </summary>
         </member>
         <member name="M:Crestron.SimplSharp.CrestronSockets.SecureTCPClient.DisconnectFromServer">
             <summary>
@@ -32244,6 +32255,113 @@
             <summary>
             User data class
             </summary>
+            <example>
+            This example program adds a console command to create a token with GetAuthenticationToken(), then adds another command to call GetUsers() with the token
+            <code>
+            using System;
+            using System.Collections.Generic;
+            using Crestron.SimplSharp;                          	// For Basic SIMPL# Classes
+            using Crestron.SimplSharpPro;                       	// For Basic SIMPL#Pro classes
+            using Crestron.SimplSharp.CrestronAuthentication;
+            
+            public class ControlSystem : CrestronControlSystem
+            {
+            	Authentication.UserToken adminToken;
+            	bool hasToken;
+            
+            	public ControlSystem()
+            	{
+            		try
+            		{	
+            			CrestronConsole.AddNewConsoleCommand(CreateToken, "createtoken", "usage: createtoken username password", ConsoleAccessLevelEnum.AccessAdministrator);
+            		}
+            		catch (Exception e)
+            		{
+            			ErrorLog.Error("Error in the constructor: {0}", e.Message);
+            		}
+            	}
+            
+            	// Create a token for an admin user, or print an error message if the credentials of an existing admin are not provided
+            	public void CreateToken(string args)
+            	{
+            		try
+            		{
+            			string userName = args.Split(' ')[0];
+            			string password = args.Split(' ')[1];
+            			if (hasToken)
+            			{
+            				Authentication.ReleaseAuthenticationToken(adminToken);
+            				hasToken = false;
+            			}
+            			adminToken = Authentication.GetAuthenticationToken(userName, password);
+            			if (adminToken.Valid)
+            			{
+            				if ((adminToken.Access &amp; Authentication.UserAuthenticationLevelEnum.Administrator)
+            						== Authentication.UserAuthenticationLevelEnum.Administrator)
+            				{
+            					CrestronConsole.ConsoleCommandResponse("Admin Token created\r\n");
+            					CrestronConsole.AddNewConsoleCommand(SeeAllUsers, "SeeAllU", "See all the users on the control system", ConsoleAccessLevelEnum.AccessAdministrator);
+            					hasToken = true;
+            				}
+            				else
+            				{
+            					CrestronConsole.ConsoleCommandResponse("Inputted credentials are not for an admin account");
+            					Authentication.ReleaseAuthenticationToken(adminToken);
+            				}
+            			}
+            			else
+            			{
+            				CrestronConsole.ConsoleCommandResponse("The specified username/password pair is incorrect");
+            			}
+            			
+            		}
+            		catch (Exception e)
+            		{
+            			CrestronConsole.ConsoleCommandResponse("Error in CreateToken: {0}", e);
+            		}
+            	}
+            	
+            	public void SeeAllUsers(string args)
+            	{
+            		try
+            		{
+            			if (adminToken.Valid &amp;&amp;
+            				(adminToken.Access &amp; Authentication.UserAuthenticationLevelEnum.Administrator)
+            						== Authentication.UserAuthenticationLevelEnum.Administrator)
+            			{
+            				List&lt;string&gt; users = Authentication.GetUsers(adminToken);
+            				CrestronConsole.ConsoleCommandResponse("User List:\r\n\r\n");
+            				if (users == null)
+            				{
+            					CrestronConsole.ConsoleCommandResponse("Error encountered in GetUsers()");
+            				}
+            				else if (users.Count == 0)
+            				{
+            					CrestronConsole.PrintLine("No Users");
+            				}
+            				else
+            				{
+            					CrestronConsole.ConsoleCommandResponse("User\t\t\t\tAccess Level\r\n");
+            					foreach (var user in users)
+            					{
+            						CrestronConsole.ConsoleCommandResponse("{0}", user);
+            						CrestronConsole.ConsoleCommandResponse("\t\t\t{0}\r\n", Authentication.GetAccessLevelForSpecifiedUser(adminToken, user));
+            					}
+            				}
+            			}
+            			else
+            			{
+            				CrestronConsole.ConsoleCommandResponse("Invalid adminToken provided");
+            			}
+            		}
+            		catch (Exception e)
+            		{
+            			CrestronConsole.ConsoleCommandResponse("Error in SeeAllUsers(): {0}", e);
+            		}
+            	}
+            }
+            </code>
+            </example>       
         </member>
         <member name="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.DisableAuthenticationOnCSOnLinux(System.Boolean,System.Boolean)">
             <summary>
@@ -32307,6 +32425,7 @@
             </summary>
             <param name="utoken">User credential information token</param>
             <returns> None </returns>
+            <exception cref="T:System.SystemException">Unable to add user token.</exception>
         </member>
         <member name="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.RemoveToken(Crestron.SimplSharp.CrestronAuthentication.Authentication.UserToken)">
             <summary>
@@ -32314,11 +32433,13 @@
             </summary>
             <param name="token"> user credentials information </param>
             <returns> None </returns>
+            <exception cref="T:System.SystemException">Unable to remove user token.</exception>
         </member>
         <member name="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.IsTokenValid(Crestron.SimplSharp.CrestronAuthentication.Authentication.UserToken@)">
             <summary> Check whether user token is valid </summary>    
             <param name="utoken"> user token </param> 
             <returns> Flag indicating whether the user token was valid </returns>
+            <exception cref="T:System.SystemException">Unable to validate user token.</exception>
         </member>
         <member name="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.IsTokenAdmin(Crestron.SimplSharp.CrestronAuthentication.Authentication.UserToken)">
             <summary> Check whether this token has admin access </summary>    
@@ -32472,6 +32593,70 @@
             <exception cref="T:Crestron.SimplSharp.CrestronAuthentication.Authentication.PrivilegeException">Higher privileges are required to use this method.</exception>
             <exception cref="T:System.NotSupportedException">This method requires minimum firmware version 1.502.0009 or higher</exception>
         </member>
+        <member name="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.GetGroups(Crestron.SimplSharp.CrestronAuthentication.Authentication.UserToken)">
+            <summary>
+            Method to return the current list of groups and each of its access level in this system.
+            <p>Requires minimum firmware version 1.601.0017</p>
+            </summary>
+            <param name="utoken">UserToken of an Administrator level user.</param>
+            <returns>List of the <see cref="T:Crestron.SimplSharp.CrestronAuthentication.Authentication.GroupInfo"/> that have been added to this system, 'null' on error.</returns>
+            <exception cref="T:System.InvalidOperationException">Authentication is not currently enabled on the controller.</exception>
+            <exception cref="T:Crestron.SimplSharp.CrestronAuthentication.Authentication.PrivilegeException">Higher privileges are required to use this method.</exception>
+            <exception cref="T:System.NotSupportedException">This method requires minimum firmware version 1.601.0017 or higher</exception>
+        </member>
+        <member name="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.ActiveDirectoryLogin(Crestron.SimplSharp.CrestronAuthentication.Authentication.UserToken@,System.String,System.String,System.String)">
+            <summary> 
+            Active directory login to system.
+            <p>Requires minimum firmware version 1.601.0017</p>
+            </summary> 
+            <param name="utoken"> Local user token obtained using "GetAuthenticationToken" method passed as reference.
+            ADConnect member of utoken will be updated if user could login to AD server.</param> 
+            <param name="domain"> Domain to be logged in to the system </param>  
+            <param name="username"> User to be logged in the system </param>  
+            <param name="password"> Password for logged in to be added </param>  
+            <returns> Returns true if domain user was able to login successfully. Else false.</returns>  
+            <exception cref="T:System.InvalidOperationException">Authentication is not currently enabled on the controller.</exception>
+            <exception cref="T:Crestron.SimplSharp.CrestronAuthentication.Authentication.PrivilegeException">Higher privileges are required to use this method.</exception>
+            <exception cref="T:System.ArgumentException">Arguments provided to a method is not valid.</exception>
+            <exception cref="T:System.SystemException">Unable to update user token.</exception>
+        </member>
+        <member name="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.ActiveDirectoryLogout(Crestron.SimplSharp.CrestronAuthentication.Authentication.UserToken@)">
+            <summary> Active directory logout from system </summary> 
+            <p>Requires minimum firmware version 1.601.0017</p>
+            <param name="utoken"> User token obtained using "GetAuthenticationToken" method passed as refernce that is needed to logout from active directory server. </param>
+            <returns> Returns true if user was able to logout successfully from active directory server.</returns>  
+            <exception cref="T:System.InvalidOperationException">Authentication is not currently enabled on the controller.</exception>
+            <exception cref="T:Crestron.SimplSharp.CrestronAuthentication.Authentication.PrivilegeException">Higher privileges are required to use this method.</exception>
+            <exception cref="T:System.ArgumentException">Arguments provided to a method is not valid.</exception>
+            <exception cref="T:System.SystemException">Unable to update user token.</exception>
+        </member>
+        <member name="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.GetAccessLevelForUserCSOnLinux(System.String)">
+            <summary>
+            Method to get the access lever for a specified user on linux
+            </summary>
+            <param name="userName"> user Name</param>
+            <returns> Access level</returns>
+        </member>
+        <member name="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.GetAccessLevelInternal(System.String)">
+            <summary>
+             Internal method to get the access level. Not currerntly supported for VC-4
+            </summary>
+            <param name="userName"> User name</param>
+            <returns> Access level</returns>
+        </member>
+        <member name="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.GetAccessLevelForSpecifiedUser(Crestron.SimplSharp.CrestronAuthentication.Authentication.UserToken,System.String)">
+            <summary>
+            Method to return the access level of the specified user. This returns <see cref="T:Crestron.SimplSharp.CrestronAuthentication.Authentication.UserAuthenticationLevelEnum"/> indicating the access level.
+            </summary>
+            <param name="utoken">Token of an Administrator level user.</param>
+            <param name="userName">Specified user to return access level</param>
+            <returns> Enum indicating user access level. A user could belong to multiple groups so the return value could specify multiple access levels.</returns>
+            <exception cref="T:System.InvalidOperationException">Authentication is not currently enabled on the controller.</exception>
+            <exception cref="T:Crestron.SimplSharp.CrestronAuthentication.Authentication.PrivilegeException">Higher privileges are required to use this method.</exception>
+            <exception cref="T:System.NotSupportedException">This method requires minimum firmware version 1.502.0009 or higher</exception>
+            <exception cref="T:System.ArgumentNullException">Arguments provided to the method are not valid</exception>
+            <exception cref="T:System.NotSupportedException">The method is not currently supported</exception>
+        </member>
         <member name="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.GetAuthenticationToken(System.String,System.String)">
             <summary> Get authentication token for this user.  For use for administering local groups and users or once a domain has been added.</summary>    
             <param name="username"> the user name to get the token for </param> 
@@ -32528,7 +32713,7 @@
             <returns> true if succeeded or false otherwise</returns>
             <exception cref="T:System.InvalidOperationException">Authentication is not currently enabled on the controller.</exception>
             <exception cref="T:Crestron.SimplSharp.CrestronAuthentication.Authentication.PrivilegeException">Higher privileges are required to use this method.</exception>
-            <exception cref="T:System.ArgumentException">Arguments provided to a method is not valid.</exception>
+            <exception cref="T:System.ArgumentException">Arguments provided to a method is not valid.</exception>            
         </member>
         <member name="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.UpdatePasswordForSpecifiedUser(System.String,System.String)">
             <summary>
@@ -32685,6 +32870,12 @@
             user token is valid
             </summary>
         </member>
+        <member name="F:Crestron.SimplSharp.CrestronAuthentication.Authentication.UserToken.m_localusersadconnect">
+            <summary>
+            Local user's domain access connection status
+            This field used by <see cref="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.ActiveDirectoryLogin(Crestron.SimplSharp.CrestronAuthentication.Authentication.UserToken@,System.String,System.String,System.String)"/> and <see cref="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.ActiveDirectoryLogout(Crestron.SimplSharp.CrestronAuthentication.Authentication.UserToken@)"/>.
+            </summary>
+        </member>
         <member name="P:Crestron.SimplSharp.CrestronAuthentication.Authentication.UserToken.UserName">
             <summary>
             user name 
@@ -32753,6 +32944,28 @@
         <member name="P:Crestron.SimplSharp.CrestronAuthentication.Authentication.UserInformation.Authenticated">
             <summary>
             user authentication indicator  
+            </summary>
+        </member>
+        <member name="T:Crestron.SimplSharp.CrestronAuthentication.Authentication.GroupInfo">
+            <summary>
+            Structure defined to keep group name and its access level that are present on the system.
+            </summary>
+        </member>
+        <member name="M:Crestron.SimplSharp.CrestronAuthentication.Authentication.GroupInfo.#ctor(System.String,Crestron.SimplSharp.CrestronAuthentication.Authentication.UserAuthenticationLevelEnum)">
+            <summary>
+            Method to create an instance of <see cref="T:Crestron.SimplSharp.CrestronAuthentication.Authentication.GroupInfo"/>.
+            </summary>
+            <param name="groupName">Group name.</param>
+            <param name="accessLevel">Access level of group.</param>
+        </member>
+        <member name="P:Crestron.SimplSharp.CrestronAuthentication.Authentication.GroupInfo.Name">
+            <summary>
+            Group name
+            </summary>
+        </member>
+        <member name="P:Crestron.SimplSharp.CrestronAuthentication.Authentication.GroupInfo.AccessLevel">
+            <summary>
+            Access level
             </summary>
         </member>
         <member name="T:Crestron.SimplSharp.CrestronAuthentication.Authentication.UserAuthenticationLevelEnum">
@@ -44464,6 +44677,11 @@
             Use <see cref="M:Crestron.SimplSharp.CrestronEnvironment.GetLocalTime"/> to get the updated time and <see cref="O:Crestron.SimplSharp.CrestronEnvironment.GetTimeZone"/> to get the updated timezone.
             </summary>
         </member>
+        <member name="F:Crestron.SimplSharp.eSystemEventType.AuthenticationStateChange">
+            <summary>
+            Event to indicate that the Authentication State has changed. Please use the <see cref="P:Crestron.SimplSharp.CrestronAuthentication.Authentication.Enabled"/> to get the current state.
+            </summary>
+        </member>
         <member name="T:Crestron.SimplSharp.SystemEventHandler">
             <summary>
             Delegate for the system event handler
@@ -52873,6 +53091,41 @@
         <member name="P:Crestron.SimplSharp.XmlException.LinePosition">
             <summary>
             Gets the line position indicating where the error occurred.
+            </summary>
+        </member>
+        <member name="T:Crestron.SimplSharp.Comparers.UInt32EqualityComparer">
+            <summary>
+            Class to determine if two Uints are of the same value.
+            </summary>
+        </member>
+        <member name="M:Crestron.SimplSharp.Comparers.UInt32EqualityComparer.Equals(System.UInt32,System.UInt32)">
+            <summary>
+            Method to determine if two <see cref="T:System.UInt32"/> values are equal.
+            </summary>
+            <param name="x">First <see cref="T:System.UInt32"/> value to compare.</param>
+            <param name="y">Second <see cref="T:System.UInt32"/> value to compare.</param>
+            <returns>'true' the values are the same; 'false' otherwise.</returns>
+        </member>
+        <member name="M:Crestron.SimplSharp.Comparers.UInt32EqualityComparer.GetHashCode(System.UInt32)">
+            <summary>
+            Return the value from <see cref="M:System.UInt32.GetHashCode"/>.
+            </summary>
+            <param name="obj">Object to get the hash code of.</param>
+            <returns>A hash code for the specified object.</returns>
+        </member>
+        <member name="T:Crestron.SimplSharp.Comparers.Int32EqualityComparer">
+            <summary>
+            Class to determine if two ints are of the same value.
+            </summary>
+        </member>
+        <member name="M:Crestron.SimplSharp.Comparers.Int32EqualityComparer.Equals(System.Int32,System.Int32)">
+            <summary>
+            Method to determine if two <see cref="T:System.Int32"/> values are equal.
+            </summary>
+        </member>
+        <member name="M:Crestron.SimplSharp.Comparers.Int32EqualityComparer.GetHashCode(System.Int32)">
+            <summary>
+            Return the value from <see cref="M:System.Int32.GetHashCode"/>.
             </summary>
         </member>
         <member name="M:Crestron.SimplSharp.Ssh.Sftp.Requests.SftpLinkRequest.#ctor(System.UInt32,System.UInt32,System.String,System.String,System.Boolean,System.Action{Crestron.SimplSharp.Ssh.Sftp.Responses.SftpStatusResponse})">
