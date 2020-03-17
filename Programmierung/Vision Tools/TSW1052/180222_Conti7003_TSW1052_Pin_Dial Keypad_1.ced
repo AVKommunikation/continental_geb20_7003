@@ -10,7 +10,7 @@ VTProeVer=6.2.00
 ObjTp=Symbol
 Name=180222_Conti7003_TSW1052_Pin_Dial Keypad_1.ced
 Hint=Dial Keypad_1 (Smart Object ID=14)
-Code=8
+Code=7
 SGControlType=Simple Keypad
 SGControlName=Dial Keypad_1
 GUID=2CB3DE07-9181-4052-90EC-12269FF08F93
@@ -84,14 +84,14 @@ OutputSigType12=Digital
 ParamCue1=SmartObjectId
 ParamSigType1=Constant
 MPp=1
-Pp1=8
-CedH=8
+Pp1=7
+CedH=7
 SmartObjId=14d
 ]
 ; Parameter Properties for Smart Object ID
 [
 ObjTp=Dp
-H=8
+H=7
 Tp=1
 HD=TRUE
 DV=14d
@@ -104,7 +104,7 @@ Sgn=0
 ; Smart Objects Definition section
 [
 ObjTp=CED
-H=8
+H=7
 Name=180222_Conti7003_TSW1052_Pin_Dial Keypad_1.ced
 ;Cedver is the version of the Smart Graphics control, not the CED file format.
 ;If the control definition changes, increment this.

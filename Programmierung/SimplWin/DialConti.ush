@@ -84,6 +84,7 @@
   SIMPLPlusModuleEncoding=0
   clz1=Cisco SX80 Corporate Phone Book
   clz2=Cisco SX80 Phone Book
+  clz3=BiampTesiraLib3
 [END]
 [BEGIN]
   ObjTp=Dp
