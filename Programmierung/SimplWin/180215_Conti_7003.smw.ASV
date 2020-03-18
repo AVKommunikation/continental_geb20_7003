@@ -8754,6 +8754,7 @@ H=195
 SmC=2942
 Nm=180222_Conti7003_TSW1052_Telko_Dial Keypad.ced
 ObjVer=1
+SmVr=1100
 PrH=191
 CF=2
 n1I=12
@@ -10850,8 +10851,6 @@ CedVer=1
 CedMod=
 GUID=6260E5FD-EA7E-481E-AEC3-F7FF25325A1D
 Hint=Dial Keypad (Smart Object ID=13)
-SGControlType=Simple Keypad
-SGControlName=Dial Keypad
 ]
 [
 ObjTp=CED
