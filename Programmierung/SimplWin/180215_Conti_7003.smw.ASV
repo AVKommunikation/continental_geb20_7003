@@ -2331,6 +2331,7 @@ Mx1=0
 ObjTp=Bw
 H=1
 Lx=0
+<<<<<<< Updated upstream
 Ly=200
 Rx=598
 Ry=400
@@ -2340,11 +2341,23 @@ SH=51
 Z=100
 Ht=4
 Hi=2
+=======
+Ly=848
+Rx=1661
+Ry=1272
+Xm=-1
+Ym=-1
+SH=213
+Z=100
+Ht=4
+Hi=6
+>>>>>>> Stashed changes
 ]
 [
 ObjTp=Bw
 H=1
 Lx=0
+<<<<<<< Updated upstream
 Ly=0
 Rx=598
 Ry=200
@@ -2354,11 +2367,23 @@ SH=54
 Z=100
 Ht=4
 Hi=2
+=======
+Ly=424
+Rx=1661
+Ry=848
+Xm=-1
+Ym=-1
+SH=214
+Z=100
+Ht=4
+Hi=6
+>>>>>>> Stashed changes
 ]
 [
 ObjTp=Bw
 H=1
 Lx=0
+<<<<<<< Updated upstream
 Ly=400
 Rx=598
 Ry=600
@@ -2368,6 +2393,17 @@ SH=146
 Z=100
 Ht=1
 Hi=3
+=======
+Ly=0
+Rx=1661
+Ry=424
+Xm=-1
+Ym=-1
+SH=184
+Z=100
+Ht=4
+Hi=6
+>>>>>>> Stashed changes
 ]
 [
 ObjTp=Et
