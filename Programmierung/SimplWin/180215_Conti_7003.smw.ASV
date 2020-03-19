@@ -2331,6 +2331,7 @@ Mx1=0
 ObjTp=Bw
 H=1
 Lx=0
+<<<<<<< HEAD
 Ly=0
 Rx=797
 Ry=601
@@ -2341,6 +2342,74 @@ Z=100
 P=296
 Ht=3
 Hi=29
+=======
+Ly=636
+Rx=830
+Ry=1272
+Xm=-1
+Ym=-1
+SH=178
+Z=100
+P=1488
+Ht=4
+Hi=73
+]
+[
+ObjTp=Bw
+H=1
+Lx=830
+Ly=0
+Rx=1660
+Ry=424
+Xm=-1
+Ym=-1
+SH=68
+Z=100
+Ht=1
+Hi=2
+]
+[
+ObjTp=Bw
+H=1
+Lx=0
+Ly=0
+Rx=830
+Ry=636
+Xm=-1
+Ym=-1
+SH=44
+Z=100
+Ht=4
+Hi=4
+]
+[
+ObjTp=Bw
+H=1
+Lx=830
+Ly=424
+Rx=1660
+Ry=848
+Xm=-1
+Ym=-1
+SH=67
+Z=100
+Ht=3
+Hi=1
+]
+[
+ObjTp=Bw
+H=1
+Lx=830
+Ly=848
+Rx=1660
+Ry=1272
+Xm=-1
+Ym=-1
+SH=142
+Z=100
+Ht=1
+Hi=2
+>>>>>>> master
 ]
 [
 ObjTp=Et
@@ -6929,6 +6998,7 @@ O1=659
 ]
 [
 ObjTp=Sm
+<<<<<<< HEAD
 H=143
 SmC=21
 Nm=Multiple One Shots
@@ -6950,6 +7020,8 @@ P1=1s
 ]
 [
 ObjTp=Sm
+=======
+>>>>>>> master
 H=144
 SmC=156
 Nm=SUBSYSTEM
@@ -14699,21 +14771,27 @@ Nm=VC_Phonebook_Selected_Contact_OS
 ]
 [
 ObjTp=Sg
+<<<<<<< HEAD
 H=656
 Nm=Trennwand_Geschlossen_OS
 ]
 [
 ObjTp=Sg
+=======
+>>>>>>> master
 H=657
 Nm=TSW_SubP_VC_Dial_FB
 ]
 [
 ObjTp=Sg
+<<<<<<< HEAD
 H=658
 Nm=Trennwand_Offen_OS
 ]
 [
 ObjTp=Sg
+=======
+>>>>>>> master
 H=659
 Nm=TSW_SubP_VC_Dial_set
 ]
@@ -14724,11 +14802,14 @@ Nm=TSW_SubP_VC_Dial_reset
 ]
 [
 ObjTp=Sg
+<<<<<<< HEAD
 H=661
 Nm=Tesira_Preset_Shutdown
 ]
 [
 ObjTp=Sg
+=======
+>>>>>>> master
 H=663
 Nm=VC_Keyboard_DoppleDot
 ]
