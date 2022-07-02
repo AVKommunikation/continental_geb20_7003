@@ -29,6 +29,30 @@ namespace Cisco_SX80_Phone_Book;
         // class events
 
         // class functions
+        STRING_FUNCTION getPhoneBookEntryNumber ();
+        STRING_FUNCTION getSearchEntryType ( SIGNED_LONG_INTEGER paramCurrentEntry );
+        STRING_FUNCTION getSearchEntryNumber ();
+        FUNCTION phoneBookTop ();
+        FUNCTION phoneBookUpOneLevel ();
+        FUNCTION searchTop ();
+        FUNCTION searchUpOneLevel ();
+        FUNCTION clearSelected ();
+        FUNCTION clearSelectedMethod ();
+        FUNCTION clearSearchSelected ();
+        FUNCTION clearSearchSelectedMethod ();
+        STRING_FUNCTION dialPhoneBookEntry ( SIGNED_LONG_INTEGER paramEntryNumber );
+        STRING_FUNCTION dialSearchEntry ( SIGNED_LONG_INTEGER paramEntryNumber );
+        FUNCTION setSipEnabled ( SIGNED_LONG_INTEGER paramEnabled );
+        FUNCTION setH323Enabled ( SIGNED_LONG_INTEGER paramEnabled );
+        STRING_FUNCTION getCallMethodProtocol ( LONG_INTEGER paramMethodNumber );
+        STRING_FUNCTION getCallMethodNumber ( LONG_INTEGER paramMethodNumber );
+        LONG_INTEGER_FUNCTION getCallMethodCount ();
+        FUNCTION selectCallMethod ( LONG_INTEGER paramMethodNumber );
+        STRING_FUNCTION getSearchCallMethodProtocol ( LONG_INTEGER paramMethodNumber );
+        STRING_FUNCTION getSearchCallMethodNumber ( LONG_INTEGER paramMethodNumber );
+        LONG_INTEGER_FUNCTION getSearchCallMethodCount ();
+        FUNCTION selectSearchCallMethod ( LONG_INTEGER paramMethodNumber );
+        FUNCTION enableDebug ( INTEGER enable );
         FUNCTION cisco_sendCommand ( SIMPLSHARPSTRING simplString );
         FUNCTION cisco_downloadComplete ( LONG_INTEGER simplValue );
         FUNCTION cisco_downloadBusy ( LONG_INTEGER simplValue );
@@ -73,32 +97,8 @@ namespace Cisco_SX80_Phone_Book;
         FUNCTION clearSearch ();
         STRING_FUNCTION getPhoneBookEntryType ( SIGNED_LONG_INTEGER paramCurrentEntry );
         FUNCTION setShowMultipleMethods ( STRING paramSetting );
-        STRING_FUNCTION getPhoneBookEntryNumber ();
-        STRING_FUNCTION getSearchEntryType ( SIGNED_LONG_INTEGER paramCurrentEntry );
-        STRING_FUNCTION getSearchEntryNumber ();
-        FUNCTION phoneBookTop ();
-        FUNCTION phoneBookUpOneLevel ();
-        FUNCTION searchTop ();
-        FUNCTION searchUpOneLevel ();
-        FUNCTION clearSelected ();
-        FUNCTION clearSelectedMethod ();
-        FUNCTION clearSearchSelected ();
-        FUNCTION clearSearchSelectedMethod ();
-        STRING_FUNCTION dialPhoneBookEntry ( SIGNED_LONG_INTEGER paramEntryNumber );
-        STRING_FUNCTION dialSearchEntry ( SIGNED_LONG_INTEGER paramEntryNumber );
-        FUNCTION setSipEnabled ( SIGNED_LONG_INTEGER paramEnabled );
-        FUNCTION setH323Enabled ( SIGNED_LONG_INTEGER paramEnabled );
-        STRING_FUNCTION getCallMethodProtocol ( LONG_INTEGER paramMethodNumber );
-        STRING_FUNCTION getCallMethodNumber ( LONG_INTEGER paramMethodNumber );
-        LONG_INTEGER_FUNCTION getCallMethodCount ();
-        FUNCTION selectCallMethod ( LONG_INTEGER paramMethodNumber );
-        STRING_FUNCTION getSearchCallMethodProtocol ( LONG_INTEGER paramMethodNumber );
-        STRING_FUNCTION getSearchCallMethodNumber ( LONG_INTEGER paramMethodNumber );
-        LONG_INTEGER_FUNCTION getSearchCallMethodCount ();
-        FUNCTION selectSearchCallMethod ( LONG_INTEGER paramMethodNumber );
-        FUNCTION enableDebug ( INTEGER enable );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -127,8 +127,8 @@ namespace Cisco_SX80_Phone_Book;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;

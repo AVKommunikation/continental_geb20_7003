@@ -68,8 +68,8 @@ namespace Cisco_SX80_Corporate_Phone_Book;
         FUNCTION setShowMultipleMethods ( STRING paramSetting );
         FUNCTION setDebug ( LONG_INTEGER paramDebug );
         FUNCTION DownloadPhoneBook ( ePhoneBookLocation paramPhoneBookLocation );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -196,8 +196,8 @@ namespace Cisco_SX80_Corporate_Phone_Book;
         FUNCTION clear ();
         FUNCTION clearSet ();
         FUNCTION clearNewSet ();
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         STRING searchString[];

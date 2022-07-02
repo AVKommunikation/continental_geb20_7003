@@ -11,8 +11,8 @@ namespace CCI_Library;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -29,8 +29,8 @@ namespace CCI_Library;
         // class functions
         static STRING_FUNCTION ReadFile ( STRING path );
         static FUNCTION WriteFile ( STRING path , STRING str );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -50,8 +50,8 @@ namespace CCI_Library;
         static STRING_FUNCTION convertEncodingBigEndian ( STRING msg );
         static STRING_FUNCTION htmlEncoding ( STRING msg );
         static STRING_FUNCTION encode ( STRING msg , INTEGER size );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;

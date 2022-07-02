@@ -65,8 +65,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         static STRING MUTE[];
@@ -98,8 +98,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -125,8 +125,8 @@ namespace BiampTesiraLib3;
         FUNCTION Dispose ();
         FUNCTION GetInitialized ();
         FUNCTION ProcessResponse ( RequestMsg requestMsg , RequestResponse response );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -159,8 +159,8 @@ namespace BiampTesiraLib3;
         FUNCTION Dispose ();
         FUNCTION GetInitialized ();
         FUNCTION ProcessResponse ( RequestMsg requestMsg , RequestResponse response );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -180,8 +180,8 @@ namespace BiampTesiraLib3;
         // class functions
         static STRING_FUNCTION EscapeValue ( STRING Value );
         static STRING_FUNCTION CleanInstanceTag ( STRING InstanceTag );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -196,8 +196,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -213,8 +213,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -230,8 +230,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -262,8 +262,8 @@ namespace BiampTesiraLib3;
         FUNCTION Reverse ();
         FUNCTION Sort ();
         FUNCTION TrimExcess ();
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -294,8 +294,8 @@ namespace BiampTesiraLib3;
         FUNCTION Reverse ();
         FUNCTION Sort ();
         FUNCTION TrimExcess ();
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -312,8 +312,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -328,8 +328,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -345,8 +345,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -362,8 +362,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -381,8 +381,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -411,8 +411,8 @@ namespace BiampTesiraLib3;
         FUNCTION Dispose ();
         FUNCTION GetInitialized ();
         FUNCTION ProcessResponse ( RequestMsg requestMsg , RequestResponse response );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -429,8 +429,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -446,8 +446,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         static VoipCallStatusStateMap INIT;
@@ -514,8 +514,8 @@ namespace BiampTesiraLib3;
         FUNCTION ProcessResponse ( RequestMsg requestMsg , RequestResponse response );
         FUNCTION Error ( STRING ErrorMessage );
         FUNCTION Dispose ();
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -532,8 +532,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         static STRING GET[];
@@ -550,8 +550,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         static SIGNED_LONG_INTEGER AEC_CLASS_CODE;
@@ -587,8 +587,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -625,8 +625,8 @@ namespace BiampTesiraLib3;
         FUNCTION Dispose ();
         FUNCTION GetInitialized ();
         FUNCTION ProcessResponse ( RequestMsg requestMsg , RequestResponse response );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -644,8 +644,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         static STRING SESSION[];
@@ -661,8 +661,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         SpeedDialList Directory;
@@ -677,8 +677,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         static TesiraLevelAttributeMap LEVEL;
@@ -707,8 +707,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -725,8 +725,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -742,8 +742,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -762,8 +762,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -821,8 +821,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -843,8 +843,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -866,8 +866,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -884,8 +884,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         static STRING LEVEL[];
@@ -911,8 +911,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -928,8 +928,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         static VoipCallStatusPromptMap NONE;
@@ -998,8 +998,8 @@ namespace BiampTesiraLib3;
         FUNCTION Dispose ();
         FUNCTION GetInitialized ();
         FUNCTION ProcessResponse ( RequestMsg requestMsg , RequestResponse response );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1017,8 +1017,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1034,8 +1034,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1051,8 +1051,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1068,8 +1068,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1141,8 +1141,8 @@ namespace BiampTesiraLib3;
         FUNCTION Dispose ();
         FUNCTION GetInitialized ();
         FUNCTION ProcessResponse ( RequestMsg requestMsg , RequestResponse response );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1165,8 +1165,8 @@ namespace BiampTesiraLib3;
         INTEGER_FUNCTION IsDNDResponseModeDND ();
         INTEGER_FUNCTION IsDNDResponseModeBusy ();
         INTEGER_FUNCTION IsDNDResponseModeDecline ();
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1191,8 +1191,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         VoipCallStatuses Call;
@@ -1242,8 +1242,8 @@ namespace BiampTesiraLib3;
         FUNCTION Dispose ();
         FUNCTION GetInitialized ();
         FUNCTION ProcessResponse ( RequestMsg requestMsg , RequestResponse response );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1265,8 +1265,8 @@ namespace BiampTesiraLib3;
         INTEGER_FUNCTION IsAutoAnswerOn ();
         INTEGER_FUNCTION IsRinging ();
         INTEGER_FUNCTION IsDialing ();
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1284,8 +1284,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1305,8 +1305,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         static STRING INPUT[];
@@ -1324,8 +1324,8 @@ namespace BiampTesiraLib3;
         // class functions
         static FUNCTION Register ( Component me );
         static FUNCTION UnRegister ( Component me );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1340,8 +1340,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1359,8 +1359,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1380,8 +1380,8 @@ namespace BiampTesiraLib3;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1416,8 +1416,8 @@ namespace BiampTesiraLib3.Parser;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1432,8 +1432,8 @@ namespace BiampTesiraLib3.Parser;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1448,8 +1448,8 @@ namespace BiampTesiraLib3.Parser;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1464,8 +1464,8 @@ namespace BiampTesiraLib3.Parser;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1480,8 +1480,8 @@ namespace BiampTesiraLib3.Parser;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1496,8 +1496,8 @@ namespace BiampTesiraLib3.Parser;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1512,8 +1512,8 @@ namespace BiampTesiraLib3.Parser;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1528,8 +1528,8 @@ namespace BiampTesiraLib3.Parser;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1545,8 +1545,8 @@ namespace BiampTesiraLib3.Parser;
 
         // class functions
         STRING_FUNCTION Parse ( STRING payload );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1561,8 +1561,8 @@ namespace BiampTesiraLib3.Parser;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1577,8 +1577,8 @@ namespace BiampTesiraLib3.Parser;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1593,8 +1593,8 @@ namespace BiampTesiraLib3.Parser;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1609,8 +1609,8 @@ namespace BiampTesiraLib3.Parser;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1625,8 +1625,8 @@ namespace BiampTesiraLib3.Parser;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1662,8 +1662,8 @@ namespace BiampTesiraLib3.Components;
         FUNCTION Dispose ();
         FUNCTION Poll ();
         FUNCTION GetInitialized ();
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1681,8 +1681,8 @@ namespace BiampTesiraLib3.Components;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1737,8 +1737,8 @@ namespace BiampTesiraLib3.Components;
         FUNCTION Dispose ();
         FUNCTION GetInitialized ();
         FUNCTION ProcessResponse ( RequestMsg requestMsg , RequestResponse response );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1756,8 +1756,8 @@ namespace BiampTesiraLib3.Components;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1818,8 +1818,8 @@ namespace BiampTesiraLib3.Components;
         FUNCTION Dispose ();
         FUNCTION GetInitialized ();
         FUNCTION ProcessResponse ( RequestMsg requestMsg , RequestResponse response );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1855,8 +1855,8 @@ namespace BiampTesiraLib3.Components;
         FUNCTION Dispose ();
         FUNCTION GetInitialized ();
         FUNCTION ProcessResponse ( RequestMsg requestMsg , RequestResponse response );
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1883,8 +1883,8 @@ namespace BiampTesiraLib3.Comm;
         FUNCTION Connect ();
         FUNCTION Disconnect ();
         FUNCTION Dispose ();
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1903,8 +1903,8 @@ namespace BiampTesiraLib3.Comm;
         FUNCTION Connect ();
         FUNCTION Disconnect ();
         FUNCTION Dispose ();
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -1930,8 +1930,8 @@ namespace BiampTesiraLib3.Model;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
@@ -2035,8 +2035,8 @@ namespace BiampTesiraLib3.Tesira_Support;
         // class events
 
         // class functions
-        STRING_FUNCTION ToString ();
         SIGNED_LONG_INTEGER_FUNCTION GetHashCode ();
+        STRING_FUNCTION ToString ();
 
         // class variables
         INTEGER __class_id__;
