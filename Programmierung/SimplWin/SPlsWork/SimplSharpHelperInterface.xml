@@ -13670,9 +13670,20 @@
             </summary>
             <param name="data">DER encoded private key data.</param>
         </member>
+        <member name="M:Crestron.SimplSharp.Ssh.Security.Key.#ctor(System.Byte[],System.Security.Cryptography.HashAlgorithm)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Crestron.SimplSharp.Ssh.Security.Key"/> class with specific hash algo.
+            </summary>
+            <param name="data">DER encoded private key data.</param>
+        </member>
         <member name="M:Crestron.SimplSharp.Ssh.Security.Key.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Crestron.SimplSharp.Ssh.Security.Key"/> class.
+            </summary>
+        </member>
+        <member name="M:Crestron.SimplSharp.Ssh.Security.Key.#ctor(System.Security.Cryptography.HashAlgorithm)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Crestron.SimplSharp.Ssh.Security.Key"/> class with specific hash algo.
             </summary>
         </member>
         <member name="M:Crestron.SimplSharp.Ssh.Security.Key.Sign(System.Byte[])">
@@ -13712,6 +13723,11 @@
             <value>
             The length of the key.
             </value>
+        </member>
+        <member name="P:Crestron.SimplSharp.Ssh.Security.Key.Hash">
+            <summary>
+            Hash Algo for Digital Signature
+            </summary>
         </member>
         <member name="M:Crestron.SimplSharp.Ssh.Security.DsaKey.#ctor">
             <summary>
@@ -22218,6 +22234,11 @@
             Initializes a new instance of the <see cref="T:Crestron.SimplSharp.Ssh.Security.RsaKey"/> class.
             </summary>
         </member>
+        <member name="M:Crestron.SimplSharp.Ssh.Security.RsaKey.#ctor(System.Security.Cryptography.HashAlgorithm,Crestron.SimplSharp.Ssh.Common.ObjectIdentifier)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Crestron.SimplSharp.Ssh.Security.RsaKey"/> class with specific hash algo.
+            </summary>
+        </member>
         <member name="M:Crestron.SimplSharp.Ssh.Security.RsaKey.#ctor(System.Byte[])">
             <summary>
             Initializes a new instance of the <see cref="T:Crestron.SimplSharp.Ssh.Security.RsaKey"/> class.
@@ -22307,6 +22328,11 @@
             <value>
             The public.
             </value>
+        </member>
+        <member name="P:Crestron.SimplSharp.Ssh.Security.RsaKey.OID">
+            <summary>
+            OID for Digital Signature
+            </summary>
         </member>
         <member name="T:Crestron.SimplSharp.Ssh.Security.Cryptography.RIPEMD160Hash">
             <summary>
@@ -23012,7 +23038,7 @@
             Implements RSA digital signature algorithm.
             </summary>
         </member>
-        <member name="M:Crestron.SimplSharp.Ssh.Security.Cryptography.RsaDigitalSignature.#ctor(Crestron.SimplSharp.Ssh.Security.RsaKey)">
+        <member name="M:Crestron.SimplSharp.Ssh.Security.Cryptography.RsaDigitalSignature.#ctor(Crestron.SimplSharp.Ssh.Security.RsaKey,System.Security.Cryptography.HashAlgorithm,Crestron.SimplSharp.Ssh.Common.ObjectIdentifier)">
             <summary>
             Initializes a new instance of the <see cref="T:Crestron.SimplSharp.Ssh.Security.Cryptography.RsaDigitalSignature"/> class.
             </summary>
