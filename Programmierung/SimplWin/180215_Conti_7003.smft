@@ -1,6 +1,5 @@
 <Device Model="CP3">
    <Network Type="Cresnet" Id="01">
-      <Device Model="ST-COM" DeviceId="03"/>
       <Device Model="C2N-DB8" DeviceId="70" Name="7003"/>
       <Device Model="C2N-DB8" DeviceId="71" Name="7005"/>
       <Device Model="C2N-DB8" DeviceId="72" Name="7001"/>
