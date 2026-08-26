@@ -63,12 +63,18 @@ local DEFAULTS = {
 
 local function clamp(v, lo, hi) if v < lo then return lo elseif v > hi then return hi else return v end end
 
--- ==== Layout-Farben =======================================================
-local C_BG    = { 30, 30, 30 }
-local C_GRP   = { 60, 60, 60 }
-local C_TXT   = { 210, 210, 210 }
-local C_BTN   = { 60, 90, 140 }
-local C_ACT   = { 70, 130, 80 }
+-- ==== Layout-Farben: Catppuccin Mocha (fest, theme-unabhaengig) ===========
+local C_BG    = { 30, 30, 46 }    -- base   Seitenhintergrund
+local C_GRP   = { 88, 91, 112 }   -- surface2  Rahmen
+local C_TXT   = { 205, 214, 244 } -- text
+local C_SUB   = { 166, 173, 200 } -- subtext
+local C_BTN   = { 69, 71, 90 }    -- surface1  neutrale Buttons
+local C_ACT   = { 166, 227, 161 } -- green   positiv/primaer
+local C_BLUE  = { 137, 180, 250 } -- blue
+local C_MAUVE = { 203, 166, 247 } -- mauve
+local C_PEACH = { 250, 179, 135 } -- peach   Stop
+local C_RED   = { 243, 139, 168 } -- red
+local C_LED   = { 166, 227, 161 } -- green   LED an
 
 function GetColor(props) return { 40, 60, 100 } end
 
@@ -77,7 +83,7 @@ function GetPrettyName(props)
 end
 
 function GetPages(props)
-  return { { name = "Connection" }, { name = "Setup" }, { name = "Lights/Shades" } }
+  return { { name = "Connection" }, { name = "Setup" }, { name = "Lights/Shades" }, { name = "Debug" } }
 end
 
 function GetProperties()
@@ -100,6 +106,8 @@ function GetControls(props)
   local function add(t) c[#c + 1] = t end
 
   -- Global
+  add({ Name = "IPAddress",    ControlType = "Text", Count = 1, UserPin = true, PinStyle = "Both" })
+  add({ Name = "Port",         ControlType = "Text", Count = 1, UserPin = true, PinStyle = "Both" })
   add({ Name = "Online",       ControlType = "Indicator", IndicatorType = "Led",  Count = 1, UserPin = true, PinStyle = "Output" })
   add({ Name = "Status",       ControlType = "Indicator", IndicatorType = "Text", Count = 1, UserPin = true, PinStyle = "Output" })
   add({ Name = "Version",      ControlType = "Indicator", IndicatorType = "Text", Count = 1 })
@@ -107,6 +115,8 @@ function GetControls(props)
   add({ Name = "Provision",    ControlType = "Button", ButtonType = "Trigger", Count = 1, UserPin = true, PinStyle = "Input" })
   add({ Name = "RefreshAll",   ControlType = "Button", ButtonType = "Trigger", Count = 1, UserPin = true, PinStyle = "Input" })
   add({ Name = "LoadDefaults", ControlType = "Button", ButtonType = "Trigger", Count = 1 })
+  add({ Name = "DebugLog",     ControlType = "Indicator", IndicatorType = "Text", Count = 1, UserPin = true, PinStyle = "Output" })
+  add({ Name = "ClearLog",     ControlType = "Button", ButtonType = "Trigger", Count = 1 })
 
   -- Setup rows
   for i = 1, props["Address Count"].Value do
@@ -119,7 +129,7 @@ function GetControls(props)
   -- Light blocks
   for j = 1, props["Light Count"].Value do
     local p = "L" .. j .. "_"
-    for _, a in ipairs({ "OnOff", "Value", "Dim", "Feedback" }) do
+    for _, a in ipairs({ "OnOff", "OnOffFb", "Value", "Dim" }) do
       add({ Name = p .. a, ControlType = "Text", Count = 1 })
     end
     add({ Name = p .. "On",       ControlType = "Button", ButtonType = "Trigger", Count = 1, UserPin = true, PinStyle = "Both" })
@@ -131,12 +141,10 @@ function GetControls(props)
     add({ Name = p .. "FbValue",  ControlType = "Indicator", IndicatorType = "Meter", Min = 0, Max = 255, Count = 1, UserPin = true, PinStyle = "Output" })
   end
 
-  -- Shade blocks
+  -- Shade blocks (ein Datenpunkt, i.d.R. 4-bit)
   for k = 1, props["Shade Count"].Value do
     local p = "S" .. k .. "_"
-    for _, a in ipairs({ "Up", "Down", "Stop" }) do
-      add({ Name = p .. a, ControlType = "Text", Count = 1 })
-    end
+    add({ Name = p .. "DP", ControlType = "Text", Count = 1 })
     add({ Name = p .. "UpBtn",   ControlType = "Button", ButtonType = "Trigger", Count = 1, UserPin = true, PinStyle = "Both" })
     add({ Name = p .. "DownBtn", ControlType = "Button", ButtonType = "Trigger", Count = 1, UserPin = true, PinStyle = "Both" })
     add({ Name = p .. "StopBtn", ControlType = "Button", ButtonType = "Trigger", Count = 1, UserPin = true, PinStyle = "Both" })
@@ -150,29 +158,35 @@ function GetControlLayout(props)
   local layout, graphics = {}, {}
   local page = props["page_index"].Value
 
+  -- Fester dunkler Seitenhintergrund (garantiert Kontrast, theme-unabhaengig)
+  graphics[#graphics + 1] = { Type = "GroupBox", Position = { 0, 0 }, Size = { 1060, 620 },
+    Fill = C_BG, StrokeWidth = 0, CornerRadius = 0 }
+
   local function grp(text, x, y, w, h)
     graphics[#graphics + 1] = { Type = "GroupBox", Text = text, HTextAlign = "Left",
-      Position = { x, y }, Size = { w, h }, Color = C_GRP, StrokeWidth = 1, CornerRadius = 6 }
+      Position = { x, y }, Size = { w, h }, Color = C_TXT, StrokeColor = C_GRP, StrokeWidth = 1, CornerRadius = 6 }
   end
   local function label(text, x, y, w, h, align)
-    graphics[#graphics + 1] = { Type = "Text", Text = text, Position = { x, y }, Size = { w, h },
+    graphics[#graphics + 1] = { Type = "Label", Text = text, Position = { x, y }, Size = { w, h },
       Color = C_TXT, FontSize = 12, HTextAlign = align or "Left" }
   end
 
   if page == 1 then
     -- Connection
-    grp("Verbindung", 8, 8, 380, 150)
-    label("IP:  " .. tostring(props["IP Address"].Value), 20, 34, 360, 18)
-    label("Port:  " .. tostring(props["Port"].Value), 20, 56, 360, 18)
-    label("Online", 20, 84, 80, 24)
-    layout["Online"]  = { Style = "Led",  Position = { 100, 84 }, Size = { 24, 24 }, Color = { 0, 190, 0 } }
-    label("Status", 20, 116, 80, 24)
-    layout["Status"]  = { Style = "Text", Position = { 100, 114 }, Size = { 270, 24 }, Color = C_TXT }
+    grp("Verbindung", 8, 8, 400, 150)
+    label("IP-Adresse", 20, 36, 90, 20)
+    layout["IPAddress"] = { Style = "Text", Position = { 120, 34 }, Size = { 180, 24 }, Color = C_TXT }
+    label("Port", 20, 64, 90, 20)
+    layout["Port"]      = { Style = "Text", Position = { 120, 62 }, Size = { 90, 24 }, Color = C_TXT }
+    label("Online", 20, 94, 90, 24)
+    layout["Online"]  = { Style = "Led",  Position = { 120, 94 }, Size = { 24, 24 }, Color = C_LED }
+    label("Status", 20, 124, 90, 24)
+    layout["Status"]  = { Style = "Text", Position = { 120, 122 }, Size = { 280, 24 }, Color = C_TXT }
 
-    grp("Firmware / Aktionen", 8, 168, 380, 150)
-    label("Version", 20, 194, 80, 24)
-    layout["Version"]      = { Style = "Text",   Position = { 100, 192 }, Size = { 270, 24 }, Color = C_TXT }
-    layout["Reconnect"]    = { Style = "Button", Legend = "Reconnect",   Position = { 20, 228 },  Size = { 110, 30 }, Color = C_BTN }
+    grp("Firmware / Aktionen", 8, 168, 400, 150)
+    label("Version", 20, 194, 90, 24)
+    layout["Version"]      = { Style = "Text",   Position = { 120, 192 }, Size = { 280, 24 }, Color = C_TXT }
+    layout["Reconnect"]    = { Style = "Button", Legend = "Reconnect",   Position = { 20, 228 },  Size = { 110, 30 }, Color = C_BLUE }
     layout["Provision"]    = { Style = "Button", Legend = "Provision",   Position = { 140, 228 }, Size = { 110, 30 }, Color = C_ACT }
     layout["RefreshAll"]   = { Style = "Button", Legend = "Refresh All", Position = { 260, 228 }, Size = { 110, 30 }, Color = C_BTN }
 
@@ -183,7 +197,7 @@ function GetControlLayout(props)
     label("Data Type",     180, 10, 200, 18)
     label("Name",          390, 10, 190, 18)
     label("Feedback",      590, 10, 120, 18)
-    layout["LoadDefaults"] = { Style = "Button", Legend = "Defaults laden", Position = { 720, 8 }, Size = { 120, 26 }, Color = C_ACT }
+    layout["LoadDefaults"] = { Style = "Button", Legend = "Defaults laden", Position = { 720, 8 }, Size = { 120, 26 }, Color = C_MAUVE }
     local y0, rh = 34, 26
     for i = 1, n do
       local y = y0 + (i - 1) * rh
@@ -191,52 +205,85 @@ function GetControlLayout(props)
       layout["GA_"   .. i] = { Style = "Text",     Position = { 40, y },  Size = { 130, 22 }, Color = C_TXT }
       layout["Type_" .. i] = { Style = "ComboBox", Position = { 180, y }, Size = { 200, 22 }, Color = C_TXT }
       layout["Name_" .. i] = { Style = "Text",     Position = { 390, y }, Size = { 190, 22 }, Color = C_TXT }
-      layout["Fb_"   .. i] = { Style = "Text",     Position = { 590, y }, Size = { 120, 22 }, Color = { 150, 180, 150 } }
+      layout["Fb_"   .. i] = { Style = "Text",     Position = { 590, y }, Size = { 120, 22 }, Color = C_ACT }
+    end
+
+  elseif page == 3 then
+    -- Lights / Shades als Tabellen
+    -- Spalten (x, w)
+    local cIdx  = { 8,   30 }
+    local cOn   = { 44,  110 }   -- On/Off DP
+    local cOnFb = { 160, 110 }   -- On/Off Fb DP
+    local cVal  = { 276, 110 }   -- Value DP
+    local cDim  = { 392, 110 }   -- Dim DP
+    local cAn   = { 508, 50 }
+    local cAus  = { 562, 50 }
+    local cHel  = { 616, 58 }
+    local cDun  = { 678, 58 }
+    local cWert = { 740, 150 }   -- Fader
+    local cLed  = { 896, 24 }
+    local cMet  = { 926, 92 }    -- Meter
+    local rh = 30
+
+    -- Lights: Titel + Spaltenkopf
+    label("Lights", 8, 8, 200, 18)
+    local hL = 30
+    label("#",         cIdx[1],  hL, cIdx[2],  16, "Center")
+    label("On/Off DP", cOn[1],   hL, cOn[2],   16)
+    label("On/Off Fb", cOnFb[1], hL, cOnFb[2], 16)
+    label("Value DP",  cVal[1],  hL, cVal[2],  16)
+    label("Dim DP",    cDim[1],  hL, cDim[2],  16)
+    label("An",        cAn[1],   hL, cAn[2],   16, "Center")
+    label("Aus",       cAus[1],  hL, cAus[2],  16, "Center")
+    label("Heller",    cHel[1],  hL, cHel[2],  16, "Center")
+    label("Dunkler",   cDun[1],  hL, cDun[2],  16, "Center")
+    label("Wert",      cWert[1], hL, cWert[2], 16, "Center")
+    label("Fb",        cLed[1],  hL, cLed[2],  16, "Center")
+    label("Fb-Wert",   cMet[1],  hL, cMet[2],  16, "Center")
+
+    local lc = props["Light Count"].Value
+    local y0 = hL + 22
+    for j = 1, lc do
+      local p, y = "L" .. j .. "_", y0 + (j - 1) * rh
+      label(tostring(j), cIdx[1], y + 4, cIdx[2], 18, "Center")
+      layout[p .. "OnOff"]    = { Style = "ComboBox", Position = { cOn[1],   y }, Size = { cOn[2],   24 }, Color = C_TXT }
+      layout[p .. "OnOffFb"]  = { Style = "ComboBox", Position = { cOnFb[1], y }, Size = { cOnFb[2], 24 }, Color = C_TXT }
+      layout[p .. "Value"]    = { Style = "ComboBox", Position = { cVal[1],  y }, Size = { cVal[2],  24 }, Color = C_TXT }
+      layout[p .. "Dim"]      = { Style = "ComboBox", Position = { cDim[1],  y }, Size = { cDim[2],  24 }, Color = C_TXT }
+      layout[p .. "On"]       = { Style = "Button", Legend = "An",  Position = { cAn[1],  y }, Size = { cAn[2],  26 }, Color = C_ACT }
+      layout[p .. "Off"]      = { Style = "Button", Legend = "Aus", Position = { cAus[1], y }, Size = { cAus[2], 26 }, Color = C_BTN }
+      layout[p .. "Brighter"] = { Style = "Button", Legend = "+",   Position = { cHel[1], y }, Size = { cHel[2], 26 }, Color = C_BTN }
+      layout[p .. "Darker"]   = { Style = "Button", Legend = "-",   Position = { cDun[1], y }, Size = { cDun[2], 26 }, Color = C_BTN }
+      layout[p .. "ValueSet"] = { Style = "Fader",  Position = { cWert[1], y }, Size = { cWert[2], 26 }, Color = C_BLUE }
+      layout[p .. "Fb"]       = { Style = "Led",    Position = { cLed[1], y }, Size = { cLed[2], 24 }, Color = C_LED }
+      layout[p .. "FbValue"]  = { Style = "Meter",  Position = { cMet[1], y }, Size = { cMet[2], 24 }, Color = C_ACT }
+    end
+
+    -- Shades-Tabelle unterhalb
+    local yTitle = y0 + lc * rh + 16
+    local yH = yTitle + 22
+    local yS = yH + 22
+    label("Shades", 8, yTitle, 200, 18)
+    label("#",                  cIdx[1], yH, cIdx[2], 16, "Center")
+    label("Datenpunkt (4-bit)", cOn[1],  yH, 240, 16)
+    label("Auf",  cVal[1],       yH, 60, 16, "Center")
+    label("Stop", cVal[1] + 66,  yH, 60, 16, "Center")
+    label("Ab",   cVal[1] + 132, yH, 60, 16, "Center")
+    for k = 1, props["Shade Count"].Value do
+      local p, y = "S" .. k .. "_", yS + (k - 1) * rh
+      label(tostring(k), cIdx[1], y + 4, cIdx[2], 18, "Center")
+      layout[p .. "DP"]      = { Style = "ComboBox", Position = { cOn[1], y }, Size = { 226, 24 }, Color = C_TXT }
+      layout[p .. "UpBtn"]   = { Style = "Button", Legend = "Auf",  Position = { cVal[1],       y }, Size = { 60, 26 }, Color = C_BTN }
+      layout[p .. "StopBtn"] = { Style = "Button", Legend = "Stop", Position = { cVal[1] + 66,  y }, Size = { 60, 26 }, Color = C_PEACH }
+      layout[p .. "DownBtn"] = { Style = "Button", Legend = "Ab",   Position = { cVal[1] + 132, y }, Size = { 60, 26 }, Color = C_BTN }
     end
 
   else
-    -- Lights / Shades
-    local x = 8
-    for j = 1, props["Light Count"].Value do
-      local p = "L" .. j .. "_"
-      grp("Light " .. j, x, 8, 300, 300)
-      label("On/Off DP",   x + 12, 30,  90, 18)
-      layout[p .. "OnOff"]    = { Style = "ComboBox", Position = { x + 110, 28 },  Size = { 178, 22 }, Color = C_TXT }
-      label("Value DP",    x + 12, 56,  90, 18)
-      layout[p .. "Value"]    = { Style = "ComboBox", Position = { x + 110, 54 },  Size = { 178, 22 }, Color = C_TXT }
-      label("Dim DP",      x + 12, 82,  90, 18)
-      layout[p .. "Dim"]      = { Style = "ComboBox", Position = { x + 110, 80 },  Size = { 178, 22 }, Color = C_TXT }
-      label("Feedback DP", x + 12, 108, 90, 18)
-      layout[p .. "Feedback"] = { Style = "ComboBox", Position = { x + 110, 106 }, Size = { 178, 22 }, Color = C_TXT }
-
-      layout[p .. "On"]       = { Style = "Button", Legend = "An",      Position = { x + 12,  140 }, Size = { 84, 34 }, Color = C_ACT }
-      layout[p .. "Off"]      = { Style = "Button", Legend = "Aus",     Position = { x + 104, 140 }, Size = { 84, 34 }, Color = C_BTN }
-      layout[p .. "Fb"]       = { Style = "Led",    Position = { x + 250, 145 }, Size = { 24, 24 }, Color = { 0, 190, 0 } }
-      layout[p .. "Brighter"] = { Style = "Button", Legend = "Heller",  Position = { x + 12,  184 }, Size = { 84, 34 }, Color = C_BTN }
-      layout[p .. "Darker"]   = { Style = "Button", Legend = "Dunkler", Position = { x + 104, 184 }, Size = { 84, 34 }, Color = C_BTN }
-      label("Wert", x + 12, 228, 60, 18)
-      layout[p .. "ValueSet"] = { Style = "Fader",  Position = { x + 60,  226 }, Size = { 228, 30 }, Color = C_BTN }
-      label("Fb-Wert", x + 12, 268, 60, 18)
-      layout[p .. "FbValue"]  = { Style = "Meter",  Position = { x + 60,  266 }, Size = { 228, 26 }, Color = { 0, 160, 0 } }
-      x = x + 312
-    end
-
-    x = 8
-    local yShade = 320
-    for k = 1, props["Shade Count"].Value do
-      local p = "S" .. k .. "_"
-      grp("Shade " .. k, x, yShade, 300, 190)
-      label("Up DP",   x + 12, yShade + 22, 70, 18)
-      layout[p .. "Up"]   = { Style = "ComboBox", Position = { x + 90, yShade + 20 }, Size = { 198, 22 }, Color = C_TXT }
-      label("Down DP", x + 12, yShade + 48, 70, 18)
-      layout[p .. "Down"] = { Style = "ComboBox", Position = { x + 90, yShade + 46 }, Size = { 198, 22 }, Color = C_TXT }
-      label("Stop DP", x + 12, yShade + 74, 70, 18)
-      layout[p .. "Stop"] = { Style = "ComboBox", Position = { x + 90, yShade + 72 }, Size = { 198, 22 }, Color = C_TXT }
-      layout[p .. "UpBtn"]   = { Style = "Button", Legend = "Auf",  Position = { x + 12,  yShade + 110 }, Size = { 86, 40 }, Color = C_BTN }
-      layout[p .. "StopBtn"] = { Style = "Button", Legend = "Stop", Position = { x + 104, yShade + 110 }, Size = { 86, 40 }, Color = C_ACT }
-      layout[p .. "DownBtn"] = { Style = "Button", Legend = "Ab",   Position = { x + 196, yShade + 110 }, Size = { 86, 40 }, Color = C_BTN }
-      x = x + 312
-    end
+    -- Debug: TX/RX-Log
+    label("TX / RX Log", 8, 8, 300, 18)
+    layout["ClearLog"] = { Style = "Button", Legend = "Clear", Position = { 720, 8 }, Size = { 120, 26 }, Color = C_RED }
+    layout["DebugLog"] = { Style = "Text", Position = { 8, 36 }, Size = { 832, 520 }, Color = C_TXT,
+      HTextAlign = "Left", VTextAlign = "Top", WordWrap = true }
   end
 
   return layout, graphics
@@ -258,12 +305,29 @@ if Controls then
   local SC = 0
   while Controls["S" .. (SC + 1) .. "_UpBtn"] do SC = SC + 1 end
 
-  local IP   = Properties["IP Address"].Value
-  local PORT = tonumber(Properties["Port"].Value) or 10001
+  local DEF_IP   = Properties["IP Address"].Value
+  local DEF_PORT = tostring(Properties["Port"].Value)
   local RECON = tonumber(Properties["Reconnect (s)"].Value) or 5
   local DBG  = Properties["Debug Print"].Value
 
+  -- IP/Port zur Laufzeit aus den Controls (Default aus den Properties)
+  local function curIP()   local v = Controls.IPAddress.String; return (v ~= "" and v) or DEF_IP end
+  local function curPort() return tonumber(Controls.Port.String) or tonumber(DEF_PORT) or 10001 end
+
   local function dbg(s) if DBG then print(s) end end
+
+  -- ---- Debug-Log (TX/RX) fuer die Debug-Seite ----
+  local LOGN = 80
+  local logLines = {}
+  local function stamp()
+    local t = os.date("*t")
+    return string.format("%02d:%02d:%02d", t.hour, t.min, t.sec)
+  end
+  local function logAdd(dir, msg)
+    table.insert(logLines, 1, stamp() .. "  " .. dir .. "  " .. tostring(msg))
+    while #logLines > LOGN do table.remove(logLines) end
+    Controls.DebugLog.String = table.concat(logLines, "\n")
+  end
 
   local sock = TcpSocket.New()
   sock.ReadTimeout = 0
@@ -289,7 +353,7 @@ if Controls then
   txTimer.EventHandler = function()
     if #txq > 0 then
       local cmd = table.remove(txq, 1)
-      if sock.IsConnected then sock:Write(cmd .. "\r") end
+      if sock.IsConnected then sock:Write(cmd .. "\r"); logAdd("TX >", cmd) else logAdd("TX (offen)", cmd) end
       dbg("TX: " .. cmd)
     else
       txTimer:Stop()
@@ -321,11 +385,9 @@ if Controls then
       if c then c.Choices = choices end
     end
     for j = 1, LC do
-      for _, a in ipairs({ "OnOff", "Value", "Dim", "Feedback" }) do setChoices("L" .. j .. "_" .. a) end
+      for _, a in ipairs({ "OnOff", "OnOffFb", "Value", "Dim" }) do setChoices("L" .. j .. "_" .. a) end
     end
-    for k = 1, SC do
-      for _, a in ipairs({ "Up", "Down", "Stop" }) do setChoices("S" .. k .. "_" .. a) end
-    end
+    for k = 1, SC do setChoices("S" .. k .. "_DP") end
   end
 
   -- ---- Feedback anwenden ----
@@ -335,7 +397,7 @@ if Controls then
     if row then Controls["Fb_" .. row].String = valStr end
     local num = tonumber(valStr) or 0
     for j = 1, LC do
-      local fb  = s("L" .. j .. "_Feedback")
+      local fb  = s("L" .. j .. "_OnOffFb")
       local on  = s("L" .. j .. "_OnOff")
       local vd  = s("L" .. j .. "_Value")
       local ledSrc = (fb ~= "" and fb) or (on ~= "" and on) or nil
@@ -356,6 +418,7 @@ if Controls then
   local function handleLine(line)
     line = line:gsub("^%s+", ""):gsub("%s+$", "")
     if line == "" then return end
+    logAdd("RX <", line)
     local h, m, u, val = line:match("(%d+)/(%d+)/(%d+)%s*=%s*(.*)")
     if h then
       local cga = tonumber(h) .. "/" .. tonumber(m) .. "/" .. tonumber(u)
@@ -414,12 +477,15 @@ if Controls then
   end
 
   local function connect()
-    Controls.Status.String = "Verbinde " .. IP .. ":" .. PORT
-    sock:Connect(IP, PORT)
+    local ip, port = curIP(), curPort()
+    Controls.Status.String = "Verbinde " .. ip .. ":" .. port
+    sock:Connect(ip, port)
   end
 
   -- ---- Control-Handler ----
   Controls.Reconnect.EventHandler    = function() sock:Disconnect(); connect() end
+  Controls.IPAddress.EventHandler    = function() sock:Disconnect(); connect() end
+  Controls.Port.EventHandler         = function() sock:Disconnect(); connect() end
   Controls.Provision.EventHandler    = function() provisionAll() end
   Controls.RefreshAll.EventHandler    = function()
     for i = 1, AC do local ga = canon(s("GA_" .. i)); if ga then tx("R" .. ga) end end
@@ -433,6 +499,7 @@ if Controls then
     rebuildMaps()
     if sock.IsConnected then provisionAll() end
   end
+  Controls.ClearLog.EventHandler = function() logLines = {}; Controls.DebugLog.String = "" end
 
   -- Setup-Aenderungen -> Maps neu
   for i = 1, AC do
@@ -444,7 +511,7 @@ if Controls then
 
   -- Zuordnungs-Dropdowns -> Feedback neu bewerten
   for j = 1, LC do
-    for _, a in ipairs({ "OnOff", "Value", "Dim", "Feedback" }) do
+    for _, a in ipairs({ "OnOff", "OnOffFb", "Value", "Dim" }) do
       local c = Controls["L" .. j .. "_" .. a]
       if c then c.EventHandler = function() refreshAllFeedback() end end
     end
@@ -470,10 +537,10 @@ if Controls then
     local dp = nameToDP[name]
     if not dp then return end
     local v
-    if dp.kind == "step" then
+    if dp.kind == "step" then          -- Normalfall: ein 4-bit-DP fuer Auf/Ab/Stop
       v = (action == "Up" and SHD_UP) or (action == "Down" and SHD_DOWN) or SHD_STOP
-    elseif dp.kind == "bit" then
-      v = (action == "Stop") and 1 or 1     -- getrennte GA je Aktion: Trigger=1
+    elseif dp.kind == "bit" then       -- 1-bit UpDown (DPT 1.008): 0=Auf, 1=Ab, Stop=1
+      v = (action == "Up" and 0) or 1
     else
       v = (action == "Up" and 1) or (action == "Down" and 0) or 0
     end
@@ -481,13 +548,16 @@ if Controls then
   end
   for k = 1, SC do
     local p = "S" .. k .. "_"
-    Controls[p .. "UpBtn"].EventHandler   = function() shadeSend(s(p .. "Up"),   "Up") end
-    Controls[p .. "DownBtn"].EventHandler = function() shadeSend(s(p .. "Down"), "Down") end
-    Controls[p .. "StopBtn"].EventHandler = function() shadeSend(s(p .. "Stop"), "Stop") end
+    Controls[p .. "UpBtn"].EventHandler   = function() shadeSend(s(p .. "DP"), "Up") end
+    Controls[p .. "DownBtn"].EventHandler = function() shadeSend(s(p .. "DP"), "Down") end
+    Controls[p .. "StopBtn"].EventHandler = function() shadeSend(s(p .. "DP"), "Stop") end
   end
 
   -- ---- Init ----
   Controls.Online.Boolean = false
+  Controls.DebugLog.String = ""
+  if Controls.IPAddress.String == "" then Controls.IPAddress.String = DEF_IP end
+  if Controls.Port.String == "" then Controls.Port.String = DEF_PORT end
   for i = 1, AC do Controls["Type_" .. i].Choices = typeLabels() end
   rebuildMaps()
   connect()

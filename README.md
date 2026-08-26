@@ -23,16 +23,20 @@ Q-Sys verbindet als TCP-Client.
    **Save As Plugin** wählen.
 
 ### Plugin-Seiten
-- **Connection** – IP/Port (Properties), Online-LED, Status, Firmware-Version,
-  Buttons *Reconnect / Provision / Refresh All*.
+- **Connection** – IP-Adresse und Port zur **Laufzeit** editierbar (Vorbelegung
+  aus den Properties; Änderung verbindet neu), Online-LED, Status,
+  Firmware-Version, Buttons *Reconnect / Provision / Refresh All*.
 - **Setup** – Tabelle (`Address Count` Zeilen): pro Zeile Gruppenadresse,
   Datentyp (Dropdown) und frei vergebbarer Datenpunkt-**Name**. Button
   *Defaults laden* füllt die 10 Beispieladressen des Projekts.
-- **Lights/Shades** – Prefab-Blöcke (`Light Count` / `Shade Count` Properties).
-  Jeder Block wird über Dropdowns den Setup-Namen zugewiesen:
-  - Light: On/Off-, Value-, Dim-, Feedback-Datenpunkt → Buttons An/Aus/Heller/
-    Dunkler, Wert-Fader, Feedback-LED + Meter.
-  - Shade: Up/Down/Stop-Datenpunkt → Buttons Auf/Ab/Stop.
+- **Lights/Shades** – Prefab-Tabellen (`Light Count` / `Shade Count` Properties),
+  eine Zeile je Gerät. Datenpunkte werden per Dropdown aus den Setup-Namen zugewiesen:
+  - Light: DP-Spalten *On/Off*, *On/Off-Fb*, *Value*, *Dim* → Controls An/Aus,
+    +/− (Heller/Dunkler), Wert-Fader, Fb-LED + Fb-Wert-Meter.
+  - Shade: **ein** Datenpunkt (i.d.R. 4-bit) → Auf/Stop/Ab.
+- **Debug** – rollierendes TX/RX-Log (mit Zeitstempel) plus *Clear*.
+
+Design: Catppuccin-Mocha-Palette (feste Farben, theme-unabhängig).
 
 ### Verhalten
 - Beim Verbinden normalisiert das Plugin die Gateway-Optionen
