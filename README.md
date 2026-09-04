@@ -85,3 +85,49 @@ Frame `[55 AA][Content][CS_L CS_H]`; Checksumme = Summe aller Bytes ab Index 2
 
 Quelle: *NovaStar COEX Central Control Protocol Instructions V1.5.0*.
 Presets werden aktuell nicht unterstützt (bei Bedarf ergänzbar: Reg `0x0a000002`).
+
+## Kamera-Steuerung
+
+Seite **Kameras**: Steuerung mehrerer QSC NC-Serie PTZ-Kameras über einen
+Video-Router (`routerCamera`) mit Preview-/Live-Konzept.
+
+- Script: [`scripts/cameras.lua`](scripts/cameras.lua) (in den Text-Controller
+  der Seite einfügen).
+- **Auswahl** `btnSelectCam[1..6]` → Router-Output 10 (Preview). Reihenfolge:
+  Mitte, Übersicht, Front UL/UR/LL/LR (Router-Eingänge 2,3,4,5,6,7).
+  Button 7 = Reserve. Router-Eingang **1 = Autotracker (`acpr`)**.
+- **Take** `btnTake` → schaltet Preview-Kamera auf Router-Output 1 (Live).
+- **PTZ-Pad** „Vorschau steuern" bewegt die **Preview-Kamera** (hold-to-move):
+  `btnCamUp/Down/Left/Right` → `tilt.*`/`pan.*`, `btnZoomIn/Out` → `zoom.in/out`,
+  `btnCamHome` (Mitte) → `preset.home.load`.
+- **Presets** `btnPresetSave/btnPresetRecall[1..3]`: speichern/laden die
+  PTZ-Position (`ptz.preset`-String) der **Live-Kamera**. Recall deaktiviert
+  vorher das Autotracking. Persistenz über das Text-Control **`presetData`**
+  (JSON, Count 1) – Control-Werte überleben Neustart/Reboot. Fehlt das Control,
+  läuft es rein im Speicher (nach Neustart leer).
+- **Autotracking** `btnAutotracking` → schaltet den **Autotracker `acpr`**
+  (`enable`) ein/aus und legt bei EIN den Live-Ausgang auf **Router-Eingang 1**
+  (Tracker-Feed). Bei EIN werden alle übrigen Bedien-Buttons **deaktiviert und
+  transparent** (`IsDisabled` + CssClass `at_locked`) – **außer den Preset-
+  Recall-Buttons**, damit man Autotracking per Recall beenden kann. AUS stellt
+  den Live-Ausgang auf die zuletzt gewählte Kamera zurück.
+
+> **CSS für Transparenz:** damit gesperrte Buttons ausblenden, im Style eine
+> Klasse `.at_locked { opacity: 0.2; }` ergänzen (Wert/Effekt nach Geschmack;
+> `opacity:0` = ganz aus). Ohne die Klasse greift nur `IsDisabled` (nativ grau).
+
+> **ACPR-Enable-Pin:** im Script als `ACPR_ENABLE = "enable"` gesetzt – bei
+> abweichendem Pin-Namen dort anpassen.
+
+> **Steuerung aus dem Core (Startup/Shutdown):** Kommando-Pin `cmdAutotrack`
+> (Boolean, Count 1) an der Cameras-Komponente. Der Core setzt ihn deterministisch:
+> `Component.New("Cameras")["cmdAutotrack"].Boolean = true/false` (AN/AUS) – kein
+> Toggle. Die restliche Logik (acpr, Router, UI-Sperre) bleibt im Cameras-Script.
+
+> **Button-Typen:** `btnSelectCam` = **Toggle** (Radio-Verhalten, aktiver Button
+> bleibt gesetzt, Button 7 nicht wählbar). `btnAutotracking` wird im Script
+> **momentary-tauglich** behandelt (jeder Tastendruck schaltet den Zustand um) –
+> der Funktionszustand rastet ein, die Button-LED selbst hält bei Momentary aber
+> nicht. Für eine **haltende LED** den Button auf echtes **Toggle** stellen; dann
+> den Handler auf `setAutotracking(ctl.Boolean)` zurückändern. `btnTake` und
+> `btnPreset*` sind **Trigger**, das PTZ-Pad **Momentary** (hold-to-move).
