@@ -11,12 +11,17 @@
 
   Anlegen im Gateway: pro Datenpunkt "S<ga>:<n>,E" (Format n + Empfang frei),
   Schreiben "W<ga>=<v>", Lesen "R<ga>". Empfang "[PH>]HH/M/UUU=value".
+
+  Changelog:
+    1.1  Lights: separates Dropdown "Value Fb" fuer den 1-Byte-Wert-Status
+         (eigener Status-DP fuer den Fb-Wert-Meter; Fallback auf "Value DP").
+    1.0  Erstversion.
 =========================================================================== ]]
 
 PluginInfo = {
   Name         = "b+b~EIB Medientechnik Gateway (KNX)",
-  Version      = "1.0",
-  BuildVersion = "1.0.0.0",
+  Version      = "1.1",
+  BuildVersion = "1.1.0.0",
   Id           = "800979aa-3cec-4fca-815d-bd8d28fe8398",
   Author       = "Bjoern Piffler",
   Description  = "KNX/EIB-Anbindung ueber das b+b EIB-Medientechnik-Gateway IP (ASCII/TCP)."
@@ -129,7 +134,7 @@ function GetControls(props)
   -- Light blocks
   for j = 1, props["Light Count"].Value do
     local p = "L" .. j .. "_"
-    for _, a in ipairs({ "OnOff", "OnOffFb", "Value", "Dim" }) do
+    for _, a in ipairs({ "OnOff", "OnOffFb", "Value", "ValueFb", "Dim" }) do
       add({ Name = p .. a, ControlType = "Text", Count = 1 })
     end
     add({ Name = p .. "On",       ControlType = "Button", ButtonType = "Trigger", Count = 1, UserPin = true, PinStyle = "Both" })
@@ -211,45 +216,48 @@ function GetControlLayout(props)
   elseif page == 3 then
     -- Lights / Shades als Tabellen
     -- Spalten (x, w)
-    local cIdx  = { 8,   30 }
-    local cOn   = { 44,  110 }   -- On/Off DP
-    local cOnFb = { 160, 110 }   -- On/Off Fb DP
-    local cVal  = { 276, 110 }   -- Value DP
-    local cDim  = { 392, 110 }   -- Dim DP
-    local cAn   = { 508, 50 }
-    local cAus  = { 562, 50 }
-    local cHel  = { 616, 58 }
-    local cDun  = { 678, 58 }
-    local cWert = { 740, 150 }   -- Fader
-    local cLed  = { 896, 24 }
-    local cMet  = { 926, 92 }    -- Meter
+    local cIdx   = { 8,   24 }
+    local cOn    = { 36,  96 }   -- On/Off DP
+    local cOnFb  = { 136, 96 }   -- On/Off Fb DP
+    local cVal   = { 236, 96 }   -- Value DP
+    local cValFb = { 336, 96 }   -- Value Fb DP (1-Byte Status)
+    local cDim   = { 436, 96 }   -- Dim DP
+    local cAn    = { 538, 46 }
+    local cAus   = { 588, 46 }
+    local cHel   = { 638, 46 }
+    local cDun   = { 688, 46 }
+    local cWert  = { 740, 140 }  -- Fader
+    local cLed   = { 886, 24 }
+    local cMet   = { 914, 100 }  -- Meter
     local rh = 30
 
     -- Lights: Titel + Spaltenkopf
     label("Lights", 8, 8, 200, 18)
     local hL = 30
-    label("#",         cIdx[1],  hL, cIdx[2],  16, "Center")
-    label("On/Off DP", cOn[1],   hL, cOn[2],   16)
-    label("On/Off Fb", cOnFb[1], hL, cOnFb[2], 16)
-    label("Value DP",  cVal[1],  hL, cVal[2],  16)
-    label("Dim DP",    cDim[1],  hL, cDim[2],  16)
-    label("An",        cAn[1],   hL, cAn[2],   16, "Center")
-    label("Aus",       cAus[1],  hL, cAus[2],  16, "Center")
-    label("Heller",    cHel[1],  hL, cHel[2],  16, "Center")
-    label("Dunkler",   cDun[1],  hL, cDun[2],  16, "Center")
-    label("Wert",      cWert[1], hL, cWert[2], 16, "Center")
-    label("Fb",        cLed[1],  hL, cLed[2],  16, "Center")
-    label("Fb-Wert",   cMet[1],  hL, cMet[2],  16, "Center")
+    label("#",         cIdx[1],   hL, cIdx[2],   16, "Center")
+    label("On/Off DP", cOn[1],    hL, cOn[2],    16)
+    label("On/Off Fb", cOnFb[1],  hL, cOnFb[2],  16)
+    label("Value DP",  cVal[1],   hL, cVal[2],   16)
+    label("Value Fb",  cValFb[1], hL, cValFb[2], 16)
+    label("Dim DP",    cDim[1],   hL, cDim[2],   16)
+    label("An",        cAn[1],    hL, cAn[2],    16, "Center")
+    label("Aus",       cAus[1],   hL, cAus[2],   16, "Center")
+    label("Heller",    cHel[1],   hL, cHel[2],   16, "Center")
+    label("Dunkler",   cDun[1],   hL, cDun[2],   16, "Center")
+    label("Wert",      cWert[1],  hL, cWert[2],  16, "Center")
+    label("Fb",        cLed[1],   hL, cLed[2],   16, "Center")
+    label("Fb-Wert",   cMet[1],   hL, cMet[2],   16, "Center")
 
     local lc = props["Light Count"].Value
     local y0 = hL + 22
     for j = 1, lc do
       local p, y = "L" .. j .. "_", y0 + (j - 1) * rh
       label(tostring(j), cIdx[1], y + 4, cIdx[2], 18, "Center")
-      layout[p .. "OnOff"]    = { Style = "ComboBox", Position = { cOn[1],   y }, Size = { cOn[2],   24 }, Color = C_TXT }
-      layout[p .. "OnOffFb"]  = { Style = "ComboBox", Position = { cOnFb[1], y }, Size = { cOnFb[2], 24 }, Color = C_TXT }
-      layout[p .. "Value"]    = { Style = "ComboBox", Position = { cVal[1],  y }, Size = { cVal[2],  24 }, Color = C_TXT }
-      layout[p .. "Dim"]      = { Style = "ComboBox", Position = { cDim[1],  y }, Size = { cDim[2],  24 }, Color = C_TXT }
+      layout[p .. "OnOff"]    = { Style = "ComboBox", Position = { cOn[1],    y }, Size = { cOn[2],    24 }, Color = C_TXT }
+      layout[p .. "OnOffFb"]  = { Style = "ComboBox", Position = { cOnFb[1],  y }, Size = { cOnFb[2],  24 }, Color = C_TXT }
+      layout[p .. "Value"]    = { Style = "ComboBox", Position = { cVal[1],   y }, Size = { cVal[2],   24 }, Color = C_TXT }
+      layout[p .. "ValueFb"]  = { Style = "ComboBox", Position = { cValFb[1], y }, Size = { cValFb[2], 24 }, Color = C_TXT }
+      layout[p .. "Dim"]      = { Style = "ComboBox", Position = { cDim[1],   y }, Size = { cDim[2],   24 }, Color = C_TXT }
       layout[p .. "On"]       = { Style = "Button", Legend = "An",  Position = { cAn[1],  y }, Size = { cAn[2],  26 }, Color = C_ACT }
       layout[p .. "Off"]      = { Style = "Button", Legend = "Aus", Position = { cAus[1], y }, Size = { cAus[2], 26 }, Color = C_BTN }
       layout[p .. "Brighter"] = { Style = "Button", Legend = "+",   Position = { cHel[1], y }, Size = { cHel[2], 26 }, Color = C_BTN }
@@ -266,16 +274,16 @@ function GetControlLayout(props)
     label("Shades", 8, yTitle, 200, 18)
     label("#",                  cIdx[1], yH, cIdx[2], 16, "Center")
     label("Datenpunkt (4-bit)", cOn[1],  yH, 240, 16)
-    label("Auf",  cVal[1],       yH, 60, 16, "Center")
-    label("Stop", cVal[1] + 66,  yH, 60, 16, "Center")
-    label("Ab",   cVal[1] + 132, yH, 60, 16, "Center")
+    label("Auf",  300, yH, 60, 16, "Center")
+    label("Stop", 366, yH, 60, 16, "Center")
+    label("Ab",   432, yH, 60, 16, "Center")
     for k = 1, props["Shade Count"].Value do
       local p, y = "S" .. k .. "_", yS + (k - 1) * rh
       label(tostring(k), cIdx[1], y + 4, cIdx[2], 18, "Center")
-      layout[p .. "DP"]      = { Style = "ComboBox", Position = { cOn[1], y }, Size = { 226, 24 }, Color = C_TXT }
-      layout[p .. "UpBtn"]   = { Style = "Button", Legend = "Auf",  Position = { cVal[1],       y }, Size = { 60, 26 }, Color = C_BTN }
-      layout[p .. "StopBtn"] = { Style = "Button", Legend = "Stop", Position = { cVal[1] + 66,  y }, Size = { 60, 26 }, Color = C_PEACH }
-      layout[p .. "DownBtn"] = { Style = "Button", Legend = "Ab",   Position = { cVal[1] + 132, y }, Size = { 60, 26 }, Color = C_BTN }
+      layout[p .. "DP"]      = { Style = "ComboBox", Position = { cOn[1], y }, Size = { 240, 24 }, Color = C_TXT }
+      layout[p .. "UpBtn"]   = { Style = "Button", Legend = "Auf",  Position = { 300, y }, Size = { 60, 26 }, Color = C_BTN }
+      layout[p .. "StopBtn"] = { Style = "Button", Legend = "Stop", Position = { 366, y }, Size = { 60, 26 }, Color = C_PEACH }
+      layout[p .. "DownBtn"] = { Style = "Button", Legend = "Ab",   Position = { 432, y }, Size = { 60, 26 }, Color = C_BTN }
     end
 
   else
@@ -385,7 +393,7 @@ if Controls then
       if c then c.Choices = choices end
     end
     for j = 1, LC do
-      for _, a in ipairs({ "OnOff", "OnOffFb", "Value", "Dim" }) do setChoices("L" .. j .. "_" .. a) end
+      for _, a in ipairs({ "OnOff", "OnOffFb", "Value", "ValueFb", "Dim" }) do setChoices("L" .. j .. "_" .. a) end
     end
     for k = 1, SC do setChoices("S" .. k .. "_DP") end
   end
@@ -397,14 +405,16 @@ if Controls then
     if row then Controls["Fb_" .. row].String = valStr end
     local num = tonumber(valStr) or 0
     for j = 1, LC do
-      local fb  = s("L" .. j .. "_OnOffFb")
-      local on  = s("L" .. j .. "_OnOff")
-      local vd  = s("L" .. j .. "_Value")
+      local fb   = s("L" .. j .. "_OnOffFb")
+      local on   = s("L" .. j .. "_OnOff")
+      local vfb  = s("L" .. j .. "_ValueFb")
+      local vd   = s("L" .. j .. "_Value")
       local ledSrc = (fb ~= "" and fb) or (on ~= "" and on) or nil
       if ledSrc and nameToDP[ledSrc] and nameToDP[ledSrc].ga == cga then
         Controls["L" .. j .. "_Fb"].Boolean = num ~= 0
       end
-      if vd ~= "" and nameToDP[vd] and nameToDP[vd].ga == cga then
+      local valSrc = (vfb ~= "" and vfb) or (vd ~= "" and vd) or nil
+      if valSrc and nameToDP[valSrc] and nameToDP[valSrc].ga == cga then
         Controls["L" .. j .. "_FbValue"].Value = num
       end
     end
@@ -511,7 +521,7 @@ if Controls then
 
   -- Zuordnungs-Dropdowns -> Feedback neu bewerten
   for j = 1, LC do
-    for _, a in ipairs({ "OnOff", "OnOffFb", "Value", "Dim" }) do
+    for _, a in ipairs({ "OnOff", "OnOffFb", "Value", "ValueFb", "Dim" }) do
       local c = Controls["L" .. j .. "_" .. a]
       if c then c.EventHandler = function() refreshAllFeedback() end end
     end
