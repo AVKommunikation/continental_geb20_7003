@@ -7,13 +7,13 @@ local acpr         = Component.New("acpr")   -- Autotracker, liegt auf Router-In
 
 -- Router-Ausgänge
 local OUT_PREVIEW = 10
-local OUT_LIVE    = 1
+local OUT_LIVE    = { 1, 2, 3, 4, 5, 6 }  -- Live-Feed geht auf alle diese Ausgänge
 
 -- Router-Eingang des Autotrackers (Live-Feed bei Autotracking EIN)
 local IN_TRACKER = 1
 
--- Enable-Pin der ACPR-Komponente. >>> BEI BEDARF ANPASSEN <<<
-local ACPR_ENABLE = "enable"
+-- Bypass-Pin der ACPR-Komponente. Invertiert: Bypass EIN = Tracking AUS.
+local ACPR_BYPASS = "TrackingBypass"
 
 -- Kameras in Reihenfolge der btnSelectCam-Buttons (1..6). Button 7 = Reserve.
 local cameras = {
@@ -27,29 +27,53 @@ local cameras = {
 
 -- Zuordnung PTZ-Pad-Button -> Kamera-Pin (bewegt die Preview-Kamera, hold-to-move)
 local pad = {
-  btnCamUp    = "tilt.up",
-  btnCamDown  = "tilt.down",
-  btnCamLeft  = "pan.left",
-  btnCamRight = "pan.right",
+  btnCamUp      = "tilt.up",
+  btnCamDown    = "tilt.down",
+  btnCamLeft    = "pan.left",
+  btnCamRight   = "pan.right",
   btnCamZoomIn  = "zoom.in",
   btnCamZoomOut = "zoom.out",
 }
 
 local selectedPreview = nil  -- Kamera-Index (1..6) oder nil
 local selectedLive    = nil
-local autotracking    = false
+
+-- Exklusive Modus-Gruppe (Radio): Autotracking + Preset-Recall. Immer genau
+-- einer aktiv oder "none". Buttons sind Toggle (Momentary bleibt nicht an, weil
+-- der Button beim Loslassen seinen Wert selbst auf 0 zurücksetzt); der aktive
+-- Zustand kommt vom Script (LED = Feedback). Jede Zeile = ein Modus + sein Button.
+-- preset = Slot-Nummer (nil bei "auto"). Autotracking beenden nur durch
+-- Preset-Wahl oder den externen cmdAutotrack (Privacy-Modul).
+local cameraModes = {}
+local function addMode(mode, button, preset)
+  if button then cameraModes[#cameraModes + 1] = { mode = mode, button = button, preset = preset } end
+end
+addMode("auto", Controls.btnAutotracking)
+if Controls.btnPresetRecall then
+  for nr, btn in ipairs(Controls.btnPresetRecall) do addMode("preset" .. nr, btn, nr) end
+end
+
+local cameraMode = "none"   -- "auto" | "preset1".."presetN" | "none"
 
 local function previewCam() return selectedPreview and cameras[selectedPreview] or nil end
 local function liveCam()    return selectedLive    and cameras[selectedLive]    or nil end
 
+-- Einen Eingang auf alle Live-Ausgänge routen.
+local function routeLive(input)
+  for _, out in ipairs(OUT_LIVE) do
+    routerCamera["output." .. out .. ".select"].Value = input
+  end
+end
+
 -- Preset-Persistenz --------------------------------------------------------
--- Positionen key "camIndex:presetNr" -> ptz-Koordinaten-String. Ablage im
--- optionalen Text-Control "presetData" (Control-Werte überleben Reboot).
+-- presets["p"..nr] = { cam = <Kamera-Index>, pos = <ptz-Koordinaten-String> }.
+-- Ablage im optionalen Text-Control "presetData" (Control-Werte überleben Reboot).
+-- String-Keys, damit rapidjson konsistent en-/decodiert (keine sparse-Array-Falle).
 local json  = require("rapidjson")
 local STORE = Controls.presetData
 local presets = {}
 
-local function pkey(cam, nr) return cam .. ":" .. nr end
+local function pkey(nr) return "p" .. nr end
 
 local function savePresets()
   if STORE then STORE.String = json.encode(presets) end
@@ -63,7 +87,7 @@ local function loadPresets()
 end
 
 -- UI sperren (Autotracking EIN) --------------------------------------------
--- Alle Bedien-Buttons (außer btnAutotracking) deaktivieren + transparent.
+-- Alle Bedien-Buttons (außer den NO_LOCK-Ausnahmen) deaktivieren + transparent.
 -- Basis-CssClass wird gemerkt, damit die Design-Klasse erhalten bleibt.
 local lockList = {}
 local baseCss  = {}
@@ -107,7 +131,7 @@ end
 local function updateLabels()
   if not Controls.txtCam then return end
   Controls.txtCam[1].String = previewCam() and previewCam().label or "-"
-  Controls.txtCam[2].String = autotracking and "Autotracking"
+  Controls.txtCam[2].String = (cameraMode == "auto") and "Autotracking"
                               or (liveCam() and liveCam().label or "-")
 end
 
@@ -117,24 +141,50 @@ local function updateSelectFeedback()
   end
 end
 
--- Autotracking (ACPR) ------------------------------------------------------
-
-local function applyAutotracking()
-  local en = acpr and acpr[ACPR_ENABLE]
-  if en then en.Boolean = autotracking end
-  if autotracking then
-    routerCamera["output." .. OUT_LIVE .. ".select"].Value = IN_TRACKER
-  elseif selectedLive then
-    routerCamera["output." .. OUT_LIVE .. ".select"].Value = cameras[selectedLive].input
-  end
-  if Controls.btnAutotracking then Controls.btnAutotracking.Boolean = autotracking end
-  setLocked(autotracking)
-  updateLabels()
+-- Preset abrufen: gespeicherte Kamera auf Live schalten und Position anfahren.
+local function recallPreset(nr)
+  local p = presets[pkey(nr)]
+  if not p then return end
+  local cam = cameras[p.cam]
+  if not cam then return end
+  selectedLive = p.cam
+  routeLive(cam.input)                                    -- gespeicherte Kamera auf Live
+  if p.pos then cam.component["ptz.preset"].String = p.pos end  -- Position anfahren
 end
 
-local function setAutotracking(on)
-  autotracking = on
-  applyAutotracking()
+-- Modus setzen: der EINE Umschaltpunkt der Radio-Gruppe.
+-- m = "auto" | "presetN" | "none". Setzt Zustand, LEDs, Routing, ACPR-Bypass,
+-- UI-Sperre und Labels. Button, Preset-Recall und externer Pin laufen alle hier durch.
+-- cameraMode wird VOR den LEDs gesetzt: dadurch sind alle Handler, die das
+-- programmatische LED-Setzen erneut auslöst, idempotent bzw. No-ops -> kein Guard nötig.
+local function setCameraMode(m)
+  local row
+  for _, r in ipairs(cameraModes) do if r.mode == m then row = r end end
+
+  -- Preset gewählt, aber Slot leer: nicht umschalten. LEDs auf den Ist-Zustand
+  -- zurücksetzen, damit der gedrückte Toggle-Button nicht fälschlich anbleibt.
+  if row and row.preset and not presets[pkey(row.preset)] then
+    for _, r in ipairs(cameraModes) do r.button.Boolean = (r.mode == cameraMode) end
+    return
+  end
+
+  cameraMode = m
+  for _, r in ipairs(cameraModes) do r.button.Boolean = (r.mode == m) end  -- Radio-Feedback
+
+  local auto   = (m == "auto")
+  local bypass = acpr and acpr[ACPR_BYPASS]
+  if bypass then bypass.Boolean = not auto end   -- Bypass invertiert: Tracking EIN = Bypass AUS
+
+  if auto then
+    routeLive(IN_TRACKER)
+  elseif row and row.preset then
+    recallPreset(row.preset)
+  elseif selectedLive then
+    routeLive(cameras[selectedLive].input)                -- "none": zuletzt gewählte Live-Kamera
+  end
+
+  setLocked(auto)
+  updateLabels()
 end
 
 -- Aktionen -----------------------------------------------------------------
@@ -149,30 +199,20 @@ local function selectCam(index)
 end
 
 local function take()
-  local cam = previewCam()
-  if not cam then return end
+  if not previewCam() then return end
   selectedLive = selectedPreview
-  routerCamera["output." .. OUT_LIVE .. ".select"].Value = cam.input
-  updateLabels()
+  setCameraMode("none")   -- manueller Take verlässt die Radio-Gruppe, routet die Preview-Kamera live
 end
 
+-- Preset speichern: aktuelle Preview-Kamera + deren Position im Slot ablegen.
 local function savePreset(nr)
-  local cam = liveCam()
+  local cam = previewCam()
   if not cam then return end
-  presets[pkey(selectedLive, nr)] = cam.component["ptz.preset"].String
+  presets[pkey(nr)] = { cam = selectedPreview, pos = cam.component["ptz.preset"].String }
   savePresets()
 end
 
-local function recallPreset(nr)
-  if autotracking then setAutotracking(false) end  -- Autotracking aus, Live zurück auf Kamera
-  local cam = liveCam()
-  if not cam then return end
-  local pos = presets[pkey(selectedLive, nr)]
-  if pos then cam.component["ptz.preset"].String = pos end  -- Position anfahren, falls gespeichert
-end
-
 -- Event-Handler ------------------------------------------------------------
--- Buttons sind Momentary -> nur auf den Tastendruck (Boolean == true) reagieren.
 
 -- Toggle-Buttons mit Radio-Verhalten: aktive Auswahl bleibt gesetzt, ein
 -- programmatisch abgeschalteter (nicht gewählter) Button löst nichts aus.
@@ -189,27 +229,30 @@ end
 -- btnTake ist ein Trigger: feuert direkt, kein Boolean.
 if Controls.btnTake then Controls.btnTake.EventHandler = function() take() end end
 
--- Momentary-tauglich: bei jedem Tastendruck (steigende Flanke) umschalten,
--- Loslass-Event (Boolean=false) ignorieren. Funktioniert auch mit gehaltener Taste.
-if Controls.btnAutotracking then
-  Controls.btnAutotracking.EventHandler = function(ctl)
-    if ctl.Boolean then setAutotracking(not autotracking) end
+-- Modus-Buttons (Autotracking + Preset-Recall) = Toggle, Radio-Verhalten:
+--   steigende Flanke                  -> diesen Modus wählen
+--   fallende Flanke am aktiven Button -> wieder anschalten (bleibt an)
+-- Dadurch lässt sich der aktive Modus nicht durch erneutes Drücken abwählen;
+-- verlassen wird er nur durch einen anderen Modus, Take oder cmdAutotrack.
+for _, row in ipairs(cameraModes) do
+  row.button.EventHandler = function(ctl)
+    if ctl.Boolean then setCameraMode(row.mode)
+    elseif cameraMode == row.mode then ctl.Boolean = true end
   end
 end
 
--- Externer Kommando-Pin für den Core (Startup/Shutdown): setzt Autotracking
--- deterministisch auf den Pin-Zustand (true = an, false = aus), kein Toggle.
+-- Externer Kommando-Pin (Core / Privacy-Modul): schaltet Autotracking
+-- deterministisch. Aus -> "none", damit kein Button leuchtet.
 if Controls.cmdAutotrack then
-  Controls.cmdAutotrack.EventHandler = function(ctl) setAutotracking(ctl.Boolean) end
+  Controls.cmdAutotrack.EventHandler = function(ctl)
+    if ctl.Boolean then setCameraMode("auto")
+    elseif cameraMode == "auto" then setCameraMode("none") end
+  end
 end
 
 -- Preset-Buttons sind Trigger: direkt feuern, kein Boolean.
 for nr, btn in ipairs(Controls.btnPresetSave) do
   btn.EventHandler = function() savePreset(nr) end
-end
-
-for nr, btn in ipairs(Controls.btnPresetRecall) do
-  btn.EventHandler = function() recallPreset(nr) end
 end
 
 -- PTZ-Pad "Vorschau steuern" -> Preview-Kamera (hold-to-move). Optional.
@@ -231,19 +274,9 @@ if Controls.btnCamHome then
   end
 end
 
--- ACPR-Status extern spiegeln (falls anderswo umgeschaltet).
-if acpr and acpr[ACPR_ENABLE] then
-  acpr[ACPR_ENABLE].EventHandler = function(c)
-    if c.Boolean ~= autotracking then
-      autotracking = c.Boolean
-      applyAutotracking()
-    end
-  end
-end
-
 -- Init ---------------------------------------------------------------------
 
 loadPresets()
-autotracking = acpr and acpr[ACPR_ENABLE] and acpr[ACPR_ENABLE].Boolean or false
+local trackingOn = acpr and acpr[ACPR_BYPASS] and not acpr[ACPR_BYPASS].Boolean  -- Bypass invertiert
 updateSelectFeedback()
-applyAutotracking()  -- setzt Labels, Button-Feedback und Sperr-Zustand
+setCameraMode(trackingOn and "auto" or "none")  -- setzt Labels, LEDs, Routing und Sperr-Zustand

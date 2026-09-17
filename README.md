@@ -100,9 +100,10 @@ Video-Router (`routerCamera`) mit Preview-/Live-Konzept.
 - **PTZ-Pad** „Vorschau steuern" bewegt die **Preview-Kamera** (hold-to-move):
   `btnCamUp/Down/Left/Right` → `tilt.*`/`pan.*`, `btnZoomIn/Out` → `zoom.in/out`,
   `btnCamHome` (Mitte) → `preset.home.load`.
-- **Presets** `btnPresetSave/btnPresetRecall[1..3]`: speichern/laden die
-  PTZ-Position (`ptz.preset`-String) der **Live-Kamera**. Recall deaktiviert
-  vorher das Autotracking. Persistenz über das Text-Control **`presetData`**
+- **Presets** `btnPresetSave/btnPresetRecall[1..3]`: **Save** legt die aktuelle
+  **Preview-Kamera + deren PTZ-Position** im Slot ab (`{cam, pos}`). **Recall**
+  schaltet die gespeicherte Kamera auf **Live** und fährt die Position an; vorher
+  wird Autotracking beendet. Persistenz über das Text-Control **`presetData`**
   (JSON, Count 1) – Control-Werte überleben Neustart/Reboot. Fehlt das Control,
   läuft es rein im Speicher (nach Neustart leer).
 - **Autotracking** `btnAutotracking` → schaltet den **Autotracker `acpr`**
@@ -116,18 +117,21 @@ Video-Router (`routerCamera`) mit Preview-/Live-Konzept.
 > Klasse `.at_locked { opacity: 0.2; }` ergänzen (Wert/Effekt nach Geschmack;
 > `opacity:0` = ganz aus). Ohne die Klasse greift nur `IsDisabled` (nativ grau).
 
-> **ACPR-Enable-Pin:** im Script als `ACPR_ENABLE = "enable"` gesetzt – bei
-> abweichendem Pin-Namen dort anpassen.
+> **ACPR-Pin:** Tracking wird über `ACPR_BYPASS = "TrackingBypass"` geschaltet –
+> **invertiert** (Bypass EIN = Tracking AUS), daher `bypass.Boolean = not autotracking`.
 
 > **Steuerung aus dem Core (Startup/Shutdown):** Kommando-Pin `cmdAutotrack`
 > (Boolean, Count 1) an der Cameras-Komponente. Der Core setzt ihn deterministisch:
 > `Component.New("Cameras")["cmdAutotrack"].Boolean = true/false` (AN/AUS) – kein
 > Toggle. Die restliche Logik (acpr, Router, UI-Sperre) bleibt im Cameras-Script.
 
-> **Button-Typen:** `btnSelectCam` = **Toggle** (Radio-Verhalten, aktiver Button
-> bleibt gesetzt, Button 7 nicht wählbar). `btnAutotracking` wird im Script
-> **momentary-tauglich** behandelt (jeder Tastendruck schaltet den Zustand um) –
-> der Funktionszustand rastet ein, die Button-LED selbst hält bei Momentary aber
-> nicht. Für eine **haltende LED** den Button auf echtes **Toggle** stellen; dann
-> den Handler auf `setAutotracking(ctl.Boolean)` zurückändern. `btnTake` und
-> `btnPreset*` sind **Trigger**, das PTZ-Pad **Momentary** (hold-to-move).
+- **Exklusive Gruppe** `btnAutotracking` + `btnPresetRecall[1..3]`: genau einer
+  ist aktiv (Zustand `activeMode`). Drückt man einen, bleibt er an, die anderen
+  gehen aus; ein manueller **Take** löst die Gruppe (alle aus).
+
+> **Button-Typen:** `btnSelectCam`, `btnAutotracking` und `btnPresetRecall` sind
+> **Momentary** – das Script hält den Zustand (`selectedPreview`/`activeMode`) und
+> malt die LEDs selbst (`updateSelectFeedback`/`updateModeFeedback`), reagiert auf
+> die steigende Flanke und malt nach jedem Event neu. So können Button und Logik
+> nicht auseinanderlaufen. `btnTake` und `btnPresetSave` sind **Trigger**, das
+> PTZ-Pad **Momentary** (hold-to-move).
